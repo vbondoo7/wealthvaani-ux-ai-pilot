@@ -36,6 +36,11 @@
     --ring: 222 84% 48%;
 
     --radius: 0.75rem;
+    
+    /* Add teal, indigo and saffron values for gradient usage */
+    --teal: #00a6b4;
+    --indigo: #4040e4;
+    --saffron: #ff7e31;
   }
 
   * {
