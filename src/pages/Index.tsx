@@ -30,7 +30,15 @@ const Index = () => {
   useEffect(() => {
     const completed = localStorage.getItem('onboardingCompleted');
     setOnboardingCompleted(completed === 'true');
-  }, []);
+    
+    // Set current screen based on route path
+    const path = location.pathname.replace('/', '');
+    if (path && path !== 'dashboard') {
+      setCurrentScreen(path);
+    } else if (location.pathname === '/') {
+      setCurrentScreen('dashboard');
+    }
+  }, [location.pathname]);
 
   // Update localStorage when onboarding is completed
   useEffect(() => {
@@ -42,6 +50,10 @@ const Index = () => {
   // Update URL when screen changes
   useEffect(() => {
     if (currentScreen !== 'dashboard' && location.pathname === '/') {
+      navigate(`/${currentScreen}`, { replace: true });
+    } else if (currentScreen === 'dashboard' && location.pathname !== '/') {
+      navigate('/', { replace: true });
+    } else if (location.pathname !== '/' && location.pathname !== `/${currentScreen}`) {
       navigate(`/${currentScreen}`, { replace: true });
     }
   }, [currentScreen, navigate, location.pathname]);
@@ -86,64 +98,64 @@ const Index = () => {
     }
   };
 
-  // Only show navigation on screens other than dashboard (which has its own navigation)
-  const showGlobalNavigation = currentScreen !== 'dashboard';
-
+  // Modified to always show navigation bar
   return (
     <div className="min-h-screen bg-background pb-20">
-      {renderScreen()}
+      <div className="pb-16">
+        {renderScreen()}
+      </div>
       
-      {/* Global Navigation Bar - Shows on all screens except dashboard */}
-      {showGlobalNavigation && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border/60 h-16 px-4 shadow-md z-50">
-          <div className="max-w-md mx-auto h-full flex-between">
+      {/* Global Navigation Bar - Always visible on all screens */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border/60 h-16 px-4 shadow-md z-50">
+        <div className="max-w-md mx-auto h-full flex-between">
+          <Button 
+            variant="ghost" 
+            className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'dashboard' ? 'text-wealthveda-indigo' : ''}`}
+            onClick={() => setCurrentScreen('dashboard')}
+          >
+            <BarChart3 className="h-5 w-5" />
+            <span className="text-xs">Dashboard</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'budget' ? 'text-wealthveda-indigo' : ''}`}
+            onClick={() => setCurrentScreen('budget')}
+          >
+            <Wallet className="h-5 w-5" />
+            <span className="text-xs">Budget</span>
+          </Button>
+          
+          <div className="relative">
             <Button 
-              variant="ghost" 
-              className="flex flex-col h-full items-center gap-1"
-              onClick={() => setCurrentScreen('dashboard')}
+              className={`rounded-full h-12 w-12 absolute -top-6 left-1/2 transform -translate-x-1/2 shadow-lg ${
+                currentScreen === 'chat' ? 'bg-wealthveda-indigo hover:bg-wealthveda-indigo/90' : 'bg-wealthveda-teal hover:bg-wealthveda-teal/90'
+              }`}
+              onClick={() => setCurrentScreen('chat')}
             >
-              <BarChart3 className="h-5 w-5" />
-              <span className="text-xs">Dashboard</span>
-            </Button>
-            
-            <Button 
-              variant="ghost"
-              className="flex flex-col h-full items-center gap-1"
-              onClick={() => setCurrentScreen('budget')}
-            >
-              <Wallet className="h-5 w-5" />
-              <span className="text-xs">Budget</span>
-            </Button>
-            
-            <div className="relative">
-              <Button 
-                className="rounded-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 h-12 w-12 absolute -top-6 left-1/2 transform -translate-x-1/2 shadow-lg"
-                onClick={() => setCurrentScreen('chat')}
-              >
-                <MessageCircle className="h-6 w-6" />
-              </Button>
-            </div>
-            
-            <Button 
-              variant="ghost"
-              className="flex flex-col h-full items-center gap-1"
-              onClick={() => setCurrentScreen('banking')}
-            >
-              <TrendingUp className="h-5 w-5" />
-              <span className="text-xs">Invest</span>
-            </Button>
-            
-            <Button 
-              variant="ghost"
-              className="flex flex-col h-full items-center gap-1"
-              onClick={() => setCurrentScreen('goals')}
-            >
-              <Calendar className="h-5 w-5" />
-              <span className="text-xs">Goals</span>
+              <MessageCircle className="h-6 w-6" />
             </Button>
           </div>
-        </nav>
-      )}
+          
+          <Button 
+            variant="ghost"
+            className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'banking' ? 'text-wealthveda-indigo' : ''}`}
+            onClick={() => setCurrentScreen('banking')}
+          >
+            <TrendingUp className="h-5 w-5" />
+            <span className="text-xs">Invest</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'goals' ? 'text-wealthveda-indigo' : ''}`}
+            onClick={() => setCurrentScreen('goals')}
+          >
+            <Calendar className="h-5 w-5" />
+            <span className="text-xs">Goals</span>
+          </Button>
+        </div>
+      </nav>
     </div>
   );
 };

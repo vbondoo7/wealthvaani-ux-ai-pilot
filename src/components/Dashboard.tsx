@@ -24,7 +24,7 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-20">
+    <div className="flex flex-col min-h-screen bg-background">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur">
         <div className="wv-container py-4">
           <div className="flex-between">
@@ -166,56 +166,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
           </div>
         </div>
       </main>
-
-      {/* Navigation - Updated to ensure visibility */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border/60 h-16 px-4 shadow-md z-50">
-        <div className="max-w-md mx-auto h-full flex-between">
-          <Button 
-            variant="ghost" 
-            className="flex flex-col h-full items-center gap-1"
-            onClick={() => onChangeScreen('dashboard')}
-          >
-            <BarChart3 className="h-5 w-5 text-wealthveda-indigo" />
-            <span className="text-xs">Dashboard</span>
-          </Button>
-          
-          <Button 
-            variant="ghost"
-            className="flex flex-col h-full items-center gap-1"
-            onClick={() => onChangeScreen('budget')}
-          >
-            <Wallet className="h-5 w-5" />
-            <span className="text-xs">Budget</span>
-          </Button>
-          
-          <div className="relative">
-            <Button 
-              className="rounded-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 h-12 w-12 absolute -top-6 left-1/2 transform -translate-x-1/2 shadow-lg"
-              onClick={() => onChangeScreen('chat')}
-            >
-              <MessageCircle className="h-6 w-6" />
-            </Button>
-          </div>
-          
-          <Button 
-            variant="ghost"
-            className="flex flex-col h-full items-center gap-1"
-            onClick={() => onChangeScreen('banking')}
-          >
-            <TrendingUp className="h-5 w-5" />
-            <span className="text-xs">Invest</span>
-          </Button>
-          
-          <Button 
-            variant="ghost"
-            className="flex flex-col h-full items-center gap-1"
-            onClick={() => onChangeScreen('goals')}
-          >
-            <Calendar className="h-5 w-5" />
-            <span className="text-xs">Goals</span>
-          </Button>
-        </div>
-      </nav>
     </div>
   );
 };
