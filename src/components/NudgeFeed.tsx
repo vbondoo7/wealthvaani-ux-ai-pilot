@@ -27,7 +27,7 @@ const NudgeCard: React.FC<NudgeCardProps> = ({
   description, 
   action,
   dueDate,
-  icon
+  icon: customIcon
 }) => {
   const getTypeStyles = () => {
     switch (type) {
@@ -35,31 +35,31 @@ const NudgeCard: React.FC<NudgeCardProps> = ({
         return {
           bgColor: 'bg-wealthveda-saffron/10',
           textColor: 'text-wealthveda-saffron',
-          icon: icon || <Calendar className="h-4 w-4" />
+          icon: customIcon || <Calendar className="h-4 w-4" />
         };
       case 'opportunity':
         return {
           bgColor: 'bg-wealthveda-teal/10',
           textColor: 'text-wealthveda-teal',
-          icon: icon || <TrendingUp className="h-4 w-4" />
+          icon: customIcon || <TrendingUp className="h-4 w-4" />
         };
       case 'risk':
         return {
           bgColor: 'bg-destructive/10',
           textColor: 'text-destructive',
-          icon: icon || <BellRing className="h-4 w-4" />
+          icon: customIcon || <BellRing className="h-4 w-4" />
         };
       case 'tip':
         return {
           bgColor: 'bg-wealthveda-indigo/10',
           textColor: 'text-wealthveda-indigo',
-          icon: icon || <Info className="h-4 w-4" />
+          icon: customIcon || <Info className="h-4 w-4" />
         };
       default:
         return {
           bgColor: 'bg-muted',
           textColor: 'text-muted-foreground',
-          icon: icon || <Info className="h-4 w-4" />
+          icon: customIcon || <Info className="h-4 w-4" />
         };
     }
   };
@@ -117,7 +117,7 @@ const NudgeFeed: React.FC = () => {
     {
       type: 'opportunity',
       title: 'SIP Top-up',
-      description: 'Increase your child's education SIP by ₹1,000 to reach your goal faster.',
+      description: "Increase your child's education SIP by ₹1,000 to reach your goal faster.",
       action: 'Top-up SIP',
       icon: <ArrowUp className="h-4 w-4" />
     },
