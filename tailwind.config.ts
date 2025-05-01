@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// WealthVeda custom colors
+				wealthveda: {
+					teal: '#23A699',
+					indigo: '#4044C9',
+					saffron: '#F58634',
+					light: '#F7F8FC',
+					dark: '#242F40',
+					accent: '#7557FF'
 				}
 			},
 			borderRadius: {
@@ -84,12 +94,30 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'pulse-slow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.8' },
+				},
+				'slide-up': {
+					'0%': { transform: 'translateY(10px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
+				'slide-up': 'slide-up 0.3s ease-out',
+			},
+			backgroundImage: {
+				'gradient-teal-indigo': 'linear-gradient(135deg, #23A699 0%, #4044C9 100%)',
+				'gradient-saffron-teal': 'linear-gradient(135deg, #F58634 0%, #23A699 100%)',
+				'gradient-indigo-teal': 'linear-gradient(135deg, #4044C9 0%, #23A699 100%)',
+			},
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
