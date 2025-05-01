@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   BarChart3, 
@@ -25,7 +24,7 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-16">
+    <div className="flex flex-col min-h-screen bg-background pb-20">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur">
         <div className="wv-container py-4">
           <div className="flex-between">
@@ -168,8 +167,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
         </div>
       </main>
 
-      {/* Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/60 h-16 px-4">
+      {/* Navigation - Updated to ensure visibility */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border/60 h-16 px-4 shadow-md z-50">
         <div className="max-w-md mx-auto h-full flex-between">
           <Button 
             variant="ghost" 

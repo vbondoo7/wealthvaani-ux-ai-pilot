@@ -11,6 +11,14 @@ import NotificationSettings from '@/components/NotificationSettings';
 import BudgetAndExpenses from '@/components/BudgetAndExpenses';
 import SavingRecommendations from '@/components/SavingRecommendations';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { 
+  BarChart3, 
+  MessageCircle, 
+  TrendingUp, 
+  Calendar,
+  Wallet
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>('dashboard');
@@ -78,9 +86,64 @@ const Index = () => {
     }
   };
 
+  // Only show navigation on screens other than dashboard (which has its own navigation)
+  const showGlobalNavigation = currentScreen !== 'dashboard';
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       {renderScreen()}
+      
+      {/* Global Navigation Bar - Shows on all screens except dashboard */}
+      {showGlobalNavigation && (
+        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border/60 h-16 px-4 shadow-md z-50">
+          <div className="max-w-md mx-auto h-full flex-between">
+            <Button 
+              variant="ghost" 
+              className="flex flex-col h-full items-center gap-1"
+              onClick={() => setCurrentScreen('dashboard')}
+            >
+              <BarChart3 className="h-5 w-5" />
+              <span className="text-xs">Dashboard</span>
+            </Button>
+            
+            <Button 
+              variant="ghost"
+              className="flex flex-col h-full items-center gap-1"
+              onClick={() => setCurrentScreen('budget')}
+            >
+              <Wallet className="h-5 w-5" />
+              <span className="text-xs">Budget</span>
+            </Button>
+            
+            <div className="relative">
+              <Button 
+                className="rounded-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 h-12 w-12 absolute -top-6 left-1/2 transform -translate-x-1/2 shadow-lg"
+                onClick={() => setCurrentScreen('chat')}
+              >
+                <MessageCircle className="h-6 w-6" />
+              </Button>
+            </div>
+            
+            <Button 
+              variant="ghost"
+              className="flex flex-col h-full items-center gap-1"
+              onClick={() => setCurrentScreen('banking')}
+            >
+              <TrendingUp className="h-5 w-5" />
+              <span className="text-xs">Invest</span>
+            </Button>
+            
+            <Button 
+              variant="ghost"
+              className="flex flex-col h-full items-center gap-1"
+              onClick={() => setCurrentScreen('goals')}
+            >
+              <Calendar className="h-5 w-5" />
+              <span className="text-xs">Goals</span>
+            </Button>
+          </div>
+        </nav>
+      )}
     </div>
   );
 };
