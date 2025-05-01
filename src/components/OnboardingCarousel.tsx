@@ -1,103 +1,85 @@
 
 import React, { useState } from 'react';
-import { Check, ChevronRight, Wallet, BarChart3, Bell } from "lucide-react";
+import { ChevronRight, Lightbulb, Wallet, Shield, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-interface OnboardingStep {
-  title: string;
-  description: string;
-  icon: React.ElementType;
-}
-
-const steps: OnboardingStep[] = [
-  {
-    title: "Welcome to WealthVeda",
-    description: "तपसः आत्मज्ञानम् (Knowledge through financial discipline) - Your personal finance AI assistant",
-    icon: Wallet
-  },
-  {
-    title: "Track Your Money",
-    description: "Connect your bank accounts securely and let AI analyze your spending patterns",
-    icon: BarChart3
-  },
-  {
-    title: "Smart Alerts",
-    description: "Get personalized notifications before problems arise, not after",
-    icon: Bell
-  }
-];
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useNavigate } from 'react-router-dom';
 
 const OnboardingCarousel: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const navigate = useNavigate();
   
-  const nextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
+  const slides = [
+    {
+      title: "Namaste to a Smarter Financial Future",
+      description: "WealthVeda - Your AI-powered financial assistant that makes money management simple and effective.",
+      icon: <Lightbulb className="h-12 w-12 text-wealthveda-saffron" />
+    },
+    {
+      title: "Personalized Financial Insights",
+      description: "Get proactive nudges and recommendations tailored to your spending patterns and financial goals.",
+      icon: <Wallet className="h-12 w-12 text-wealthveda-teal" />
+    },
+    {
+      title: "Secure Bank Connections",
+      description: "Connect your accounts securely using Account Aggregator framework. Your data stays encrypted and private.",
+      icon: <Shield className="h-12 w-12 text-wealthveda-indigo" />
+    },
+    {
+      title: "Ask Anything About Your Money",
+      description: "Chat with our AI assistant about budgets, investments, or financial queries in simple language.",
+      icon: <Bot className="h-12 w-12 text-wealthveda-saffron" />
+    }
+  ];
+
+  const handleNext = () => {
+    if (currentSlide < slides.length - 1) {
+      setCurrentSlide(currentSlide + 1);
+    } else {
+      navigate('/goal-selection'); // Go to the goal selection screen
     }
   };
-  
-  const StepIndicator = () => (
-    <div className="flex gap-2 justify-center mt-8">
-      {steps.map((_, index) => (
-        <div
-          key={index}
-          className={cn(
-            "h-2 rounded-full transition-all duration-300",
-            index === currentStep
-              ? "w-8 bg-wealthveda-teal"
-              : "w-2 bg-muted"
-          )}
-        />
-      ))}
-    </div>
-  );
-
-  const currentStepData = steps[currentStep];
-  const Icon = currentStepData.icon;
-  const isLastStep = currentStep === steps.length - 1;
 
   return (
-    <div className="flex flex-col h-full justify-between py-8">
-      <div className="space-y-8 flex flex-col items-center text-center px-6">
-        <div className="w-16 h-16 rounded-full bg-wealthveda-teal/10 flex-center">
-          <Icon className="w-8 h-8 text-wealthveda-teal" />
+    <div className="flex flex-col h-full">
+      <div className="flex-1 p-6 flex flex-col items-center justify-center">
+        <div className="mb-6">
+          {slides[currentSlide].icon}
         </div>
         
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold">{currentStepData.title}</h1>
-          <p className="text-muted-foreground">{currentStepData.description}</p>
+        <h1 className="text-2xl font-bold text-center mb-3">
+          {slides[currentSlide].title}
+        </h1>
+        
+        <p className="text-center text-muted-foreground mb-8">
+          {slides[currentSlide].description}
+        </p>
+        
+        <div className="flex gap-1.5 mb-8">
+          {slides.map((_, index) => (
+            <div 
+              key={index} 
+              className={`h-1.5 rounded-full ${index === currentSlide 
+                ? 'w-6 bg-primary' 
+                : 'w-1.5 bg-muted'}`}
+            />
+          ))}
         </div>
         
-        <div className="relative h-56 w-full bg-gradient-to-br from-wealthveda-teal/10 to-wealthveda-indigo/10 rounded-2xl flex-center">
-          <div className="absolute inset-0 flex-center">
-            {/* Placeholder for illustration */}
-            <div className="text-lg text-muted-foreground/50 italic">Illustration {currentStep + 1}</div>
+        <AspectRatio ratio={16/9} className="bg-muted/50 rounded-xl mb-6 overflow-hidden">
+          <div className="h-full flex items-center justify-center">
+            <span className="text-muted-foreground">Illustration {currentSlide + 1}</span>
           </div>
-        </div>
-        
-        <StepIndicator />
+        </AspectRatio>
       </div>
       
-      <div className="px-6 pt-4">
+      <div className="px-6 py-8 border-t">
         <Button 
-          onClick={nextStep}
-          className={cn(
-            "w-full rounded-xl h-12",
-            isLastStep ? "bg-wealthveda-teal hover:bg-wealthveda-teal/90" : "bg-wealthveda-indigo hover:bg-wealthveda-indigo/90"
-          )}
+          onClick={handleNext} 
+          className="w-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 h-12"
         >
-          {isLastStep ? (
-            <>
-              <span>Get Started</span>
-              <Check className="ml-2 h-4 w-4" />
-            </>
-          ) : (
-            <>
-              <span>Continue</span>
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </>
-          )}
+          {currentSlide < slides.length - 1 ? 'Continue' : 'Get Started'}
+          <ChevronRight className="h-4 w-4 ml-2" />
         </Button>
       </div>
     </div>

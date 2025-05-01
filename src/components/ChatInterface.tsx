@@ -1,281 +1,169 @@
 
 import React, { useState } from 'react';
-import { 
-  Send, 
-  Mic, 
-  ArrowUp, 
-  MessageCircle, 
-  X, 
-  Clock,
-  DollarSign,
-  TrendingUp
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { Send, Mic, User, Bot, ArrowUp, TrendingUp, Calendar } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-interface Message {
-  id: number;
+interface ChatMessage {
+  id: string;
   type: 'user' | 'assistant' | 'suggestion';
   content: string;
-  timestamp?: string;
+  timestamp: Date;
 }
-
-const suggestions = [
-  "How much did I spend on food last month?",
-  "When is my credit card bill due?",
-  "How can I save more for my child's education?",
-  "What's my current investment allocation?"
-];
-
-const ChatBubble: React.FC<{ message: Message }> = ({ message }) => {
-  const isUser = message.type === 'user';
-  const isSuggestion = message.type === 'suggestion';
-  
-  if (isSuggestion) {
-    return (
-      <Button
-        variant="outline"
-        size="sm"
-        className="mr-2 mb-2 text-xs whitespace-normal h-auto py-1.5 text-left justify-start font-normal"
-      >
-        {message.content}
-      </Button>
-    );
-  }
-
-  return (
-    <div className={cn(
-      "mb-4 max-w-[85%]",
-      isUser ? "ml-auto" : "mr-auto"
-    )}>
-      <div className={cn(
-        "rounded-2xl p-3",
-        isUser 
-          ? "bg-wealthveda-indigo text-white rounded-tr-none" 
-          : "bg-muted rounded-tl-none"
-      )}>
-        <p className="text-sm">{message.content}</p>
-      </div>
-      {message.timestamp && (
-        <p className="text-xs text-muted-foreground mt-1 px-1">
-          {message.timestamp}
-        </p>
-      )}
-    </div>
-  );
-};
-
-interface AssistantCardProps {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
-  change?: string;
-  isPositive?: boolean;
-}
-
-const AssistantCard: React.FC<AssistantCardProps> = ({
-  icon,
-  title,
-  value,
-  change,
-  isPositive = true
-}) => {
-  return (
-    <div className="border rounded-xl p-3 mb-4">
-      <div className="flex items-center gap-2 mb-1.5">
-        <div className="w-8 h-8 rounded-full bg-muted flex-center">
-          {icon}
-        </div>
-        <span className="text-sm font-medium">{title}</span>
-      </div>
-      <div className="text-lg font-bold">{value}</div>
-      {change && (
-        <div className={cn(
-          "flex items-center text-xs",
-          isPositive ? "text-wealthveda-teal" : "text-destructive"
-        )}>
-          <ArrowUp className={cn(
-            "h-3 w-3 mr-1",
-            !isPositive && "transform rotate-180"
-          )} />
-          {change}
-        </div>
-      )}
-    </div>
-  );
-};
 
 const ChatInterface: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    { 
-      id: 1, 
-      type: 'assistant', 
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: '1',
+      type: 'assistant',
       content: 'Namaste Rahul! How can I help you with your finances today?',
-      timestamp: '11:23 AM'
+      timestamp: new Date()
     }
   ]);
-  const [input, setInput] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  
+  const suggestions = [
+    { id: 's1', text: 'How much did I spend on restaurants this month?', icon: <TrendingUp className="h-3 w-3" /> },
+    { id: 's2', text: 'When is my HDFC credit card payment due?', icon: <Calendar className="h-3 w-3" /> },
+    { id: 's3', text: 'Increase my child\'s education SIP', icon: <ArrowUp className="h-3 w-3" /> }
+  ];
   
   const handleSendMessage = () => {
-    if (!input.trim()) return;
+    if (!inputValue.trim()) return;
     
-    const newUserMessage = {
-      id: messages.length + 1,
-      type: 'user' as const,
-      content: input,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: inputValue,
+      timestamp: new Date()
     };
     
-    setMessages([...messages, newUserMessage]);
-    setInput('');
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
     
     // Simulate assistant response
     setTimeout(() => {
-      if (input.toLowerCase().includes('spend')) {
-        setMessages(prev => [
-          ...prev,
-          {
-            id: prev.length + 1,
-            type: 'assistant',
-            content: 'Here\'s your spending breakdown for last month:',
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          }
-        ]);
+      let response = '';
+      
+      if (inputValue.toLowerCase().includes('spend') && inputValue.toLowerCase().includes('restaurant')) {
+        response = 'You\'ve spent ₹3,450 on restaurants this month, which is 40% higher than your monthly average. Would you like to see a breakdown of these expenses?';
+      } else if (inputValue.toLowerCase().includes('credit card') || inputValue.toLowerCase().includes('payment')) {
+        response = 'Your HDFC credit card payment of ₹12,450 is due on May 4th, 2025 (in 3 days). Would you like me to schedule this payment for you?';
+      } else if (inputValue.toLowerCase().includes('sip') || inputValue.toLowerCase().includes('education')) {
+        response = 'Your current SIP for your child\'s education is ₹5,000 per month. Based on your cash flow, you can increase it by ₹1,000 without impacting other expenses. Would you like me to make this change?';
       } else {
-        setMessages(prev => [
-          ...prev,
-          {
-            id: prev.length + 1,
-            type: 'assistant',
-            content: 'I understand you want to know more about your finances. Let me help you with that.',
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          }
-        ]);
+        response = 'I\'ve noted your question. Let me analyze your financial data and get back to you with the most accurate information.';
       }
+      
+      const botMessage: ChatMessage = {
+        id: Date.now().toString(),
+        type: 'assistant',
+        content: response,
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, botMessage]);
     }, 1000);
   };
-  
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSendMessage();
     }
   };
+  
+  const handleSuggestionClick = (suggestion: string) => {
+    setInputValue(suggestion);
+    
+    // Focus the input after selecting a suggestion
+    const inputElement = document.getElementById('chat-input');
+    inputElement?.focus();
+  };
 
   return (
-    <div className="flex flex-col h-screen bg-background">
-      <div className="border-b border-border p-4 flex-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-wealthveda-teal/10 text-wealthveda-teal flex-center">
-            <MessageCircle className="h-4 w-4" />
-          </div>
-          <div>
-            <h1 className="font-medium">WealthVeda Assistant</h1>
-            <div className="text-xs text-wealthveda-teal flex items-center">
-              <span className="w-1.5 h-1.5 bg-wealthveda-teal rounded-full mr-1"></span>
-              Online
-            </div>
-          </div>
-        </div>
-        <Button variant="ghost" size="icon">
-          <X className="h-4 w-4" />
-        </Button>
+    <div className="flex flex-col h-screen pb-16">
+      <div className="p-4 border-b flex-shrink-0">
+        <h1 className="text-lg font-bold">WealthVeda Assistant</h1>
+        <p className="text-sm text-muted-foreground">Ask me anything about your finances</p>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-4">
-        {/* Messages */}
-        {messages.map((message) => (
-          <ChatBubble key={message.id} message={message} />
-        ))}
-        
-        {/* Sample visualization for demo */}
-        {messages.some(m => m.content.toLowerCase().includes('spend')) && (
-          <div className="mb-4 max-w-[85%] mr-auto">
-            <div className="mb-2 text-sm font-medium">April 2025 Spending</div>
-            
-            <div className="space-y-3 bg-muted p-3 rounded-2xl rounded-tl-none mb-1">
-              <AssistantCard 
-                icon={<DollarSign className="h-4 w-4 text-wealthveda-saffron" />} 
-                title="Total Spent" 
-                value="₹42,850"
-                change="+18% vs March"
-                isPositive={false}
-              />
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map(message => (
+          <div 
+            key={message.id}
+            className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div className={`flex gap-3 max-w-[85%] ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+              <Avatar className={`h-8 w-8 ${message.type === 'user' ? 'bg-wealthveda-indigo/20' : 'bg-wealthveda-teal/20'}`}>
+                <AvatarFallback>
+                  {message.type === 'user' ? (
+                    <User className="h-4 w-4 text-wealthveda-indigo" />
+                  ) : (
+                    <Bot className="h-4 w-4 text-wealthveda-teal" />
+                  )}
+                </AvatarFallback>
+              </Avatar>
               
-              <div className="space-y-2">
-                <div className="flex-between text-xs">
-                  <span>Food & Dining</span>
-                  <span className="font-medium">₹12,450</span>
-                </div>
-                <div className="h-2 bg-muted-foreground/20 rounded-full">
-                  <div className="h-full bg-wealthveda-saffron rounded-full" style={{ width: '29%' }}></div>
-                </div>
-                
-                <div className="flex-between text-xs">
-                  <span>Shopping</span>
-                  <span className="font-medium">₹9,800</span>
-                </div>
-                <div className="h-2 bg-muted-foreground/20 rounded-full">
-                  <div className="h-full bg-wealthveda-indigo rounded-full" style={{ width: '23%' }}></div>
-                </div>
-                
-                <div className="flex-between text-xs">
-                  <span>Bills & Utilities</span>
-                  <span className="font-medium">₹7,600</span>
-                </div>
-                <div className="h-2 bg-muted-foreground/20 rounded-full">
-                  <div className="h-full bg-wealthveda-teal rounded-full" style={{ width: '18%' }}></div>
-                </div>
-                
-                <div className="flex-between text-xs">
-                  <span>Others</span>
-                  <span className="font-medium">₹13,000</span>
-                </div>
-                <div className="h-2 bg-muted-foreground/20 rounded-full">
-                  <div className="h-full bg-muted-foreground/60 rounded-full" style={{ width: '30%' }}></div>
-                </div>
+              <div className={`rounded-xl p-3 ${
+                message.type === 'user' 
+                  ? 'bg-wealthveda-indigo text-white rounded-tr-none' 
+                  : 'bg-muted rounded-tl-none'
+              }`}>
+                <p className="text-sm">{message.content}</p>
+                <p className="text-xs opacity-70 mt-1 text-right">
+                  {message.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                </p>
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-1 px-1">
-              11:24 AM
-            </p>
           </div>
-        )}
+        ))}
         
-        <div className="flex flex-wrap mb-2 mt-4">
-          <div className="text-xs text-muted-foreground w-full mb-2">Try asking:</div>
-          {suggestions.map((suggestion, index) => (
-            <ChatBubble 
-              key={`suggestion-${index}`} 
-              message={{ id: 1000 + index, type: 'suggestion', content: suggestion }}
-            />
-          ))}
+        <div className="pt-4">
+          <p className="text-xs text-muted-foreground mb-2">Suggested queries:</p>
+          <div className="flex flex-wrap gap-2">
+            {suggestions.map(suggestion => (
+              <Button
+                key={suggestion.id}
+                variant="outline"
+                size="sm"
+                className="text-xs h-7 bg-muted/50"
+                onClick={() => handleSuggestionClick(suggestion.text)}
+              >
+                {suggestion.icon}
+                <span className="ml-1">{suggestion.text}</span>
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
       
-      <div className="border-t border-border p-4">
-        <div className="flex gap-2">
-          <Button variant="outline" size="icon" className="rounded-full">
+      <div className="p-4 border-t bg-background">
+        <div className="flex gap-2 items-center">
+          <Input
+            id="chat-input"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Ask about your finances..."
+            className="flex-1"
+          />
+          <Button 
+            size="icon" 
+            variant="outline" 
+            className="rounded-full h-10 w-10"
+          >
             <Mic className="h-5 w-5" />
           </Button>
-          
-          <div className="flex-1 relative">
-            <Input 
-              type="text"
-              placeholder="Ask me anything about your finances..."
-              className="pr-10 h-11 rounded-full bg-muted border-none"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-            />
-            <Button 
-              size="icon" 
-              className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-wealthveda-indigo hover:bg-wealthveda-indigo/90"
-              onClick={handleSendMessage}
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
+          <Button 
+            size="icon" 
+            onClick={handleSendMessage} 
+            disabled={!inputValue.trim()}
+            className="rounded-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 h-10 w-10"
+          >
+            <Send className="h-5 w-5" />
+          </Button>
         </div>
       </div>
     </div>

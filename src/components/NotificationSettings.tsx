@@ -1,229 +1,228 @@
 
 import React, { useState } from 'react';
-import { 
-  Bell, 
-  Clock, 
-  DollarSign, 
-  TrendingUp, 
-  BellOff, 
-  Info,
-  ArrowDown
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
+import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { 
+  BellRing, 
+  Calendar, 
+  TrendingUp, 
+  CreditCard, 
+  BarChart3, 
+  AlertCircle, 
+  Check,
+  ChevronLeft
+} from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
-interface NotificationSetting {
+interface NotificationCategory {
   id: string;
   title: string;
   description: string;
   icon: React.ReactNode;
-  enabled: boolean;
-  category: 'essential' | 'financial' | 'goals';
+  types: {
+    id: string;
+    title: string;
+    description: string;
+    enabled: boolean;
+  }[];
 }
 
 const NotificationSettings: React.FC = () => {
-  const [notifications, setNotifications] = useState<NotificationSetting[]>([
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<NotificationCategory[]>([
     {
-      id: "bills",
-      title: "Bill Payment Reminders",
-      description: "Get notified before bills are due",
-      icon: <Clock className="h-4 w-4" />,
-      enabled: true,
-      category: 'essential'
+      id: 'payments',
+      title: 'Bill Payments',
+      description: 'Credit card, loan, and utility bill reminders',
+      icon: <Calendar className="h-5 w-5 text-wealthveda-saffron" />,
+      types: [
+        {
+          id: 'payment-due',
+          title: 'Payment Due Reminders',
+          description: 'Receive alerts before bill due dates',
+          enabled: true
+        },
+        {
+          id: 'auto-debit',
+          title: 'Auto-debit Notifications',
+          description: 'Get alerts when auto-payments are processed',
+          enabled: true
+        },
+        {
+          id: 'payment-overdue',
+          title: 'Overdue Payments',
+          description: 'Get alerted when you miss a payment',
+          enabled: true
+        }
+      ]
     },
     {
-      id: "unusual",
-      title: "Unusual Transactions",
-      description: "Alerts for suspicious activity",
-      icon: <Info className="h-4 w-4" />,
-      enabled: true,
-      category: 'essential'
+      id: 'investments',
+      title: 'Investment Insights',
+      description: 'SIP, market changes, and investment opportunities',
+      icon: <TrendingUp className="h-5 w-5 text-wealthveda-teal" />,
+      types: [
+        {
+          id: 'sip-reminder',
+          title: 'SIP Reminders',
+          description: 'Alerts for upcoming SIP dates',
+          enabled: true
+        },
+        {
+          id: 'market-drop',
+          title: 'Market Drop Alerts',
+          description: 'Alerts when markets drop significantly',
+          enabled: false
+        },
+        {
+          id: 'investment-opp',
+          title: 'Investment Opportunities',
+          description: 'Suggestions for new investments',
+          enabled: true
+        }
+      ]
     },
     {
-      id: "lowBalance",
-      title: "Low Balance Alerts",
-      description: "When accounts drop below threshold",
-      icon: <ArrowDown className="h-4 w-4" />,
-      enabled: true,
-      category: 'essential'
+      id: 'spending',
+      title: 'Spending Patterns',
+      description: 'Unusual activity and budget limit notifications',
+      icon: <CreditCard className="h-5 w-5 text-destructive" />,
+      types: [
+        {
+          id: 'unusual-activity',
+          title: 'Unusual Spending Activity',
+          description: 'Alerts for spending that deviates from your pattern',
+          enabled: true
+        },
+        {
+          id: 'budget-limit',
+          title: 'Budget Limit Warnings',
+          description: 'When you approach or exceed budget limits',
+          enabled: true
+        }
+      ]
     },
     {
-      id: "spending",
-      title: "Budget Alerts",
-      description: "When you're approaching budget limits",
-      icon: <DollarSign className="h-4 w-4" />,
-      enabled: true,
-      category: 'financial'
-    },
-    {
-      id: "investment",
-      title: "Investment Opportunities",
-      description: "Personalized investment suggestions",
-      icon: <TrendingUp className="h-4 w-4" />,
-      enabled: false,
-      category: 'financial'
-    },
-    {
-      id: "goalProgress",
-      title: "Goal Progress Updates",
-      description: "Weekly updates on your financial goals",
-      icon: <TrendingUp className="h-4 w-4" />,
-      enabled: true,
-      category: 'goals'
-    },
-    {
-      id: "goalRisk",
-      title: "Goal Risk Alerts",
-      description: "When your goals are at risk",
-      icon: <Info className="h-4 w-4" />,
-      enabled: true,
-      category: 'goals'
+      id: 'account',
+      title: 'Account Updates',
+      description: 'Balance changes and security notifications',
+      icon: <BarChart3 className="h-5 w-5 text-wealthveda-indigo" />,
+      types: [
+        {
+          id: 'large-transactions',
+          title: 'Large Transactions',
+          description: 'Alerts for large deposits or withdrawals',
+          enabled: true
+        },
+        {
+          id: 'low-balance',
+          title: 'Low Balance Warnings',
+          description: 'When your account balance falls below threshold',
+          enabled: true
+        }
+      ]
     }
   ]);
 
-  const toggleNotification = (id: string) => {
-    setNotifications(prev => 
-      prev.map(notification => 
-        notification.id === id 
-          ? { ...notification, enabled: !notification.enabled }
-          : notification
-      )
-    );
+  const toggleNotification = (categoryId: string, typeId: string) => {
+    setCategories(categories.map(category => {
+      if (category.id === categoryId) {
+        return {
+          ...category,
+          types: category.types.map(type => {
+            if (type.id === typeId) {
+              return { ...type, enabled: !type.enabled };
+            }
+            return type;
+          })
+        };
+      }
+      return category;
+    }));
   };
 
-  const getNotificationsByCategory = (category: string) => {
-    return notifications.filter(notification => notification.category === category);
+  const saveSettings = () => {
+    // Save to localStorage or backend API
+    navigate(-1);
   };
 
   return (
-    <div className="wv-container">
-      <div className="space-y-2 mb-6">
-        <h1 className="text-2xl font-bold">Notifications</h1>
-        <p className="text-muted-foreground">
-          Control how and when WealthVeda sends you alerts
+    <div className="wv-container py-6">
+      <div className="flex items-center gap-3 mb-6">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8" 
+          onClick={() => navigate(-1)}
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </Button>
+        <h1 className="text-xl font-bold">Notification Settings</h1>
+      </div>
+      
+      <div className="bg-wealthveda-saffron/10 p-4 rounded-xl border border-wealthveda-saffron/20 flex gap-3 mb-6">
+        <AlertCircle className="h-5 w-5 text-wealthveda-saffron shrink-0 mt-0.5" />
+        <p className="text-sm">
+          Customize which AI nudges and notifications you want to receive. We recommend keeping important financial alerts enabled.
         </p>
       </div>
       
-      <div className="flex-between mb-4">
-        <div className="flex items-center gap-2">
-          <Bell className="h-5 w-5 text-wealthveda-indigo" />
-          <h2 className="font-medium">All Notifications</h2>
-        </div>
-        <Switch 
-          checked={notifications.every(n => n.enabled)}
-          onCheckedChange={() => {
-            const allEnabled = notifications.every(n => n.enabled);
-            setNotifications(prev => 
-              prev.map(notification => ({
-                ...notification,
-                enabled: !allEnabled
-              }))
-            );
-          }}
-        />
-      </div>
-      
       <div className="space-y-6">
-        <div>
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">ESSENTIAL ALERTS</h3>
-          <div className="space-y-4">
-            {getNotificationsByCategory('essential').map(notification => (
-              <div key={notification.id} className="flex-between">
-                <div className="flex items-center gap-3">
-                  <div className={cn(
-                    "w-8 h-8 rounded-full flex-center",
-                    notification.enabled
-                      ? "bg-wealthveda-teal/10 text-wealthveda-teal"
-                      : "bg-muted text-muted-foreground"
-                  )}>
-                    {notification.enabled ? notification.icon : <BellOff className="h-4 w-4" />}
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium">{notification.title}</div>
-                    <div className="text-xs text-muted-foreground">{notification.description}</div>
-                  </div>
-                </div>
-                <Switch 
-                  checked={notification.enabled}
-                  onCheckedChange={() => toggleNotification(notification.id)}
-                />
+        {categories.map(category => (
+          <div key={category.id}>
+            <div className="flex gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-muted">
+                {category.icon}
               </div>
-            ))}
-          </div>
-        </div>
-        
-        <Separator />
-        
-        <div>
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">FINANCIAL INSIGHTS</h3>
-          <div className="space-y-4">
-            {getNotificationsByCategory('financial').map(notification => (
-              <div key={notification.id} className="flex-between">
-                <div className="flex items-center gap-3">
-                  <div className={cn(
-                    "w-8 h-8 rounded-full flex-center",
-                    notification.enabled
-                      ? "bg-wealthveda-indigo/10 text-wealthveda-indigo"
-                      : "bg-muted text-muted-foreground"
-                  )}>
-                    {notification.enabled ? notification.icon : <BellOff className="h-4 w-4" />}
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium">{notification.title}</div>
-                    <div className="text-xs text-muted-foreground">{notification.description}</div>
-                  </div>
-                </div>
-                <Switch 
-                  checked={notification.enabled}
-                  onCheckedChange={() => toggleNotification(notification.id)}
-                />
+              <div>
+                <h2 className="font-medium">{category.title}</h2>
+                <p className="text-sm text-muted-foreground">{category.description}</p>
               </div>
-            ))}
-          </div>
-        </div>
-        
-        <Separator />
-        
-        <div>
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">GOAL TRACKING</h3>
-          <div className="space-y-4">
-            {getNotificationsByCategory('goals').map(notification => (
-              <div key={notification.id} className="flex-between">
-                <div className="flex items-center gap-3">
-                  <div className={cn(
-                    "w-8 h-8 rounded-full flex-center",
-                    notification.enabled
-                      ? "bg-wealthveda-saffron/10 text-wealthveda-saffron"
-                      : "bg-muted text-muted-foreground"
-                  )}>
-                    {notification.enabled ? notification.icon : <BellOff className="h-4 w-4" />}
+            </div>
+            
+            <div className="space-y-3 ml-1">
+              {category.types.map(type => (
+                <div 
+                  key={type.id} 
+                  className="flex items-center justify-between py-2"
+                >
+                  <div className="pr-4">
+                    <h3 className="text-sm font-medium">{type.title}</h3>
+                    <p className="text-xs text-muted-foreground">{type.description}</p>
                   </div>
-                  <div>
-                    <div className="text-sm font-medium">{notification.title}</div>
-                    <div className="text-xs text-muted-foreground">{notification.description}</div>
-                  </div>
+                  <Toggle 
+                    pressed={type.enabled}
+                    onPressedChange={() => toggleNotification(category.id, type.id)}
+                    className="data-[state=on]:bg-wealthveda-teal"
+                  >
+                    {type.enabled && <Check className="h-3 w-3" />}
+                  </Toggle>
                 </div>
-                <Switch 
-                  checked={notification.enabled}
-                  onCheckedChange={() => toggleNotification(notification.id)}
-                />
-              </div>
-            ))}
+              ))}
+            </div>
+            
+            <Separator className="mt-4 mb-4" />
           </div>
-        </div>
+        ))}
       </div>
       
-      <Button 
-        className="w-full mt-8 bg-wealthveda-teal hover:bg-wealthveda-teal/90"
-      >
-        Save Preferences
-      </Button>
-      
-      <p className="text-xs text-muted-foreground text-center mt-4">
-        You will still receive critical security alerts regardless of these settings
-      </p>
+      <div className="flex gap-3 mt-8">
+        <Button 
+          variant="outline" 
+          className="flex-1"
+          onClick={() => navigate(-1)}
+        >
+          Cancel
+        </Button>
+        <Button 
+          className="flex-1 bg-wealthveda-teal hover:bg-wealthveda-teal/90"
+          onClick={saveSettings}
+        >
+          <BellRing className="h-4 w-4 mr-2" />
+          Save Preferences
+        </Button>
+      </div>
     </div>
   );
 };

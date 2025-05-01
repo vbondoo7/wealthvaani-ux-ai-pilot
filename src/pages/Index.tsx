@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OnboardingCarousel from '@/components/OnboardingCarousel';
 import GoalSelection from '@/components/GoalSelection';
@@ -12,6 +12,19 @@ import NotificationSettings from '@/components/NotificationSettings';
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>('dashboard');
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean>(false);
+  
+  // Load onboarding status from localStorage
+  useEffect(() => {
+    const completed = localStorage.getItem('onboardingCompleted');
+    setOnboardingCompleted(completed === 'true');
+  }, []);
+
+  // Update localStorage when onboarding is completed
+  useEffect(() => {
+    if (onboardingCompleted) {
+      localStorage.setItem('onboardingCompleted', 'true');
+    }
+  }, [onboardingCompleted]);
   
   if (!onboardingCompleted) {
     return (
@@ -35,7 +48,7 @@ const Index = () => {
   const renderScreen = () => {
     switch (currentScreen) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard onChangeScreen={setCurrentScreen} />;
       case 'banking':
         return <BankConnection />;
       case 'goals':
@@ -45,7 +58,7 @@ const Index = () => {
       case 'notifications':
         return <NotificationSettings />;
       default:
-        return <Dashboard />;
+        return <Dashboard onChangeScreen={setCurrentScreen} />;
     }
   };
 

@@ -1,215 +1,154 @@
 
 import React from 'react';
-import {
-  ArrowUp,
-  Calendar,
-  Check,
-  Clock,
-  TrendingUp,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-interface GoalProps {
-  id: string;
-  name: string;
-  targetAmount: string;
-  currentAmount: string;
-  progress: number;
-  targetDate: string;
-  monthlyContribution: string;
-  returns: string;
-  icon: string;
-}
-
-const goals: GoalProps[] = [
-  {
-    id: "education",
-    name: "Child's Education",
-    targetAmount: "₹18,00,000",
-    currentAmount: "₹2,40,000",
-    progress: 13,
-    targetDate: "Feb 2032",
-    monthlyContribution: "₹5,000",
-    returns: "+9.8%",
-    icon: "🎓"
-  },
-  {
-    id: "emergency",
-    name: "Emergency Fund",
-    targetAmount: "₹4,50,000",
-    currentAmount: "₹2,70,000",
-    progress: 60,
-    targetDate: "Nov 2025",
-    monthlyContribution: "₹15,000",
-    returns: "+6.2%",
-    icon: "🛡️"
-  },
-  {
-    id: "retirement",
-    name: "Retirement",
-    targetAmount: "₹1,20,00,000",
-    currentAmount: "₹8,40,000",
-    progress: 7,
-    targetDate: "Mar 2045",
-    monthlyContribution: "₹10,000",
-    returns: "+10.4%",
-    icon: "👵"
-  }
-];
-
-const GoalCard: React.FC<GoalProps> = ({ 
-  name, 
-  targetAmount, 
-  currentAmount, 
-  progress, 
-  targetDate,
-  monthlyContribution,
-  returns,
-  icon
-}) => {
-  return (
-    <div className="wv-card mb-4">
-      <div className="flex-between mb-3">
-        <div className="flex items-center gap-2">
-          <div className="text-2xl">{icon}</div>
-          <h3 className="font-medium">{name}</h3>
-        </div>
-        <span className="text-xs bg-muted rounded-full px-2 py-0.5 flex items-center">
-          <Calendar className="h-3 w-3 mr-1" />
-          {targetDate}
-        </span>
-      </div>
-      
-      <div className="flex-between mb-1">
-        <span className="text-sm text-muted-foreground">Saved: {currentAmount}</span>
-        <span className="text-sm font-medium">Target: {targetAmount}</span>
-      </div>
-      
-      <Progress value={progress} className="h-2.5 bg-muted mb-4" />
-      
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="bg-muted/50 p-2 rounded-lg">
-          <div className="text-xs text-muted-foreground mb-1">Monthly SIP</div>
-          <div className="font-medium">{monthlyContribution}</div>
-        </div>
-        
-        <div className="bg-muted/50 p-2 rounded-lg">
-          <div className="text-xs text-muted-foreground mb-1">Returns</div>
-          <div className="font-medium text-wealthveda-teal flex items-center">
-            {returns}
-            <ArrowUp className="h-3 w-3 ml-1" />
-          </div>
-        </div>
-      </div>
-      
-      <div className="flex gap-2">
-        <Button 
-          variant="outline" 
-          className="flex-1 text-sm"
-        >
-          Details
-        </Button>
-        <Button 
-          className="flex-1 text-sm bg-wealthveda-indigo hover:bg-wealthveda-indigo/90"
-        >
-          Modify Goal
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-interface InsightCardProps {
-  title: string;
-  description: string;
-  type: 'positive' | 'warning' | 'neutral';
-  icon: React.ReactNode;
-}
-
-const InsightCard: React.FC<InsightCardProps> = ({
-  title,
-  description,
-  type,
-  icon
-}) => {
-  return (
-    <div className={cn(
-      "wv-card border-l-4 mb-3",
-      type === 'positive' && "border-l-wealthveda-teal",
-      type === 'warning' && "border-l-wealthveda-saffron",
-      type === 'neutral' && "border-l-wealthveda-indigo",
-    )}>
-      <div className="flex items-start gap-3">
-        <div className={cn(
-          "min-w-8 h-8 rounded-full flex-center",
-          type === 'positive' && "bg-wealthveda-teal/10 text-wealthveda-teal",
-          type === 'warning' && "bg-wealthveda-saffron/10 text-wealthveda-saffron",
-          type === 'neutral' && "bg-wealthveda-indigo/10 text-wealthveda-indigo",
-        )}>
-          {icon}
-        </div>
-        
-        <div>
-          <h3 className="font-medium text-sm">{title}</h3>
-          <p className="text-xs text-muted-foreground">{description}</p>
-        </div>
-      </div>
-    </div>
-  );
-};
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ArrowUp, TrendingUp, CalendarClock } from "lucide-react";
 
 const GoalTracker: React.FC = () => {
+  const goals = [
+    {
+      id: 'education',
+      name: "Child's Education",
+      targetYear: 2032,
+      targetAmount: 1800000,  // 18L
+      savedAmount: 240000,    // 2.4L
+      monthlyContribution: 5000,
+      progress: 13,
+      icon: <TrendingUp className="h-5 w-5" />
+    },
+    {
+      id: 'home',
+      name: "Buy a Home",
+      targetYear: 2028,
+      targetAmount: 5000000,  // 50L
+      savedAmount: 800000,    // 8L
+      monthlyContribution: 30000,
+      progress: 16,
+      icon: <TrendingUp className="h-5 w-5" />
+    }
+  ];
+  
+  const formatAmount = (amount: number) => {
+    if (amount >= 100000) {
+      return `₹${(amount / 100000).toFixed(1)}L`;
+    } else {
+      return `₹${(amount / 1000).toFixed(0)}K`;
+    }
+  };
+
   return (
-    <div className="wv-container">
-      <div className="flex-between mb-4">
-        <h1 className="text-xl font-bold">Your Goals</h1>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="text-xs h-8"
-        >
-          <Check className="h-3 w-3 mr-1" />
-          Add Goal
-        </Button>
-      </div>
+    <div className="wv-container py-6">
+      <h1 className="text-xl font-bold mb-2">Your Financial Goals</h1>
+      <p className="text-sm text-muted-foreground mb-6">
+        Track your progress and stay on target
+      </p>
       
-      <Tabs defaultValue="goals">
-        <TabsList className="grid w-full grid-cols-2 mb-4">
-          <TabsTrigger value="goals">Goals</TabsTrigger>
-          <TabsTrigger value="insights">Insights</TabsTrigger>
+      <Tabs defaultValue={goals[0].id}>
+        <TabsList className="w-full mb-6">
+          {goals.map(goal => (
+            <TabsTrigger 
+              key={goal.id} 
+              value={goal.id}
+              className="flex-1"
+            >
+              {goal.name}
+            </TabsTrigger>
+          ))}
         </TabsList>
         
-        <TabsContent value="goals" className="mt-0">
-          {goals.map((goal) => (
-            <GoalCard key={goal.id} {...goal} />
-          ))}
-        </TabsContent>
-        
-        <TabsContent value="insights" className="mt-0">
-          <InsightCard 
-            title="On Track for Emergency Fund"
-            description="You'll reach your emergency fund goal 2 months earlier at this rate."
-            type="positive"
-            icon={<TrendingUp className="h-4 w-4" />}
-          />
-          
-          <InsightCard 
-            title="Education Goal at Risk"
-            description="At current contribution rate, you may fall short by ₹3.2 lakhs."
-            type="warning"
-            icon={<Clock className="h-4 w-4" />}
-          />
-          
-          <InsightCard 
-            title="Investment Allocation Tip"
-            description="Consider increasing equity allocation for long-term goals like retirement."
-            type="neutral"
-            icon={<ArrowUp className="h-4 w-4" />}
-          />
-        </TabsContent>
+        {goals.map(goal => (
+          <TabsContent key={goal.id} value={goal.id} className="space-y-6">
+            <div className="wv-card bg-gradient-to-br from-wealthveda-teal/10 to-wealthveda-indigo/10">
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="font-bold text-lg">{goal.name}</h2>
+                <span className="text-xs bg-wealthveda-indigo/10 text-wealthveda-indigo px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <CalendarClock className="h-3 w-3" />
+                  {goal.targetYear} Target
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-wealthveda-teal/10 flex-center">
+                  {goal.icon}
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">
+                    {formatAmount(goal.targetAmount)}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Target amount
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mb-6 mt-2">
+                <div className="flex-between mb-1">
+                  <span className="text-sm text-muted-foreground">
+                    Saved: {formatAmount(goal.savedAmount)}
+                  </span>
+                  <span className="text-sm font-medium">
+                    {goal.progress}% Complete
+                  </span>
+                </div>
+                
+                <Progress value={goal.progress} className="h-2.5 bg-muted" />
+              </div>
+              
+              <div className="p-3 bg-background rounded-lg mb-4 border border-border/60">
+                <div className="flex-between mb-2">
+                  <span className="text-sm">Monthly contribution</span>
+                  <span className="font-medium">₹{goal.monthlyContribution.toLocaleString()}</span>
+                </div>
+                <div className="flex-between">
+                  <span className="text-sm">Months remaining</span>
+                  <span className="font-medium">{(goal.targetYear - 2025) * 12}</span>
+                </div>
+              </div>
+              
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  size="sm"
+                >
+                  Adjust Target
+                </Button>
+                <Button 
+                  className="flex-1 bg-wealthveda-teal hover:bg-wealthveda-teal/90"
+                  size="sm"
+                >
+                  <ArrowUp className="h-4 w-4 mr-1" />
+                  Increase SIP
+                </Button>
+              </div>
+            </div>
+            
+            <div className="wv-card">
+              <h3 className="font-medium mb-2">AI Recommendation</h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                Increasing your SIP by ₹3,000 can help you reach your goal 8 months earlier.
+              </p>
+              <Button 
+                className="w-full text-xs h-8 rounded-lg bg-wealthveda-indigo hover:bg-wealthveda-indigo/90"
+              >
+                See Detailed Projection
+              </Button>
+            </div>
+            
+            <div className="flex items-center p-4 bg-muted rounded-xl">
+              <div className="w-10 h-10 rounded-full bg-background flex-center mr-3">
+                <TrendingUp className="h-4 w-4 text-wealthveda-teal" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium">Did you know?</h3>
+                <p className="text-xs text-muted-foreground">
+                  Investing early helps you gain from the power of compounding. Each year of delay can reduce your final corpus by up to 15%.
+                </p>
+              </div>
+            </div>
+          </TabsContent>
+        ))}
       </Tabs>
     </div>
   );

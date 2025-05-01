@@ -17,7 +17,11 @@ import { cn } from "@/lib/utils";
 
 import NudgeFeed from './NudgeFeed';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onChangeScreen: (screen: string) => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
   return (
     <div className="flex flex-col min-h-screen bg-background pb-16">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur">
@@ -27,7 +31,12 @@ const Dashboard: React.FC = () => {
               <h1 className="text-lg font-bold">Namaste, Rahul</h1>
               <p className="text-sm text-muted-foreground">Let's manage your finances</p>
             </div>
-            <Button size="icon" variant="outline" className="rounded-full">
+            <Button 
+              size="icon" 
+              variant="outline" 
+              className="rounded-full"
+              onClick={() => onChangeScreen('notifications')}
+            >
               <Bell className="h-5 w-5 text-wealthveda-indigo" />
             </Button>
           </div>
@@ -105,10 +114,19 @@ const Dashboard: React.FC = () => {
           <Progress value={13} className="h-2.5 bg-muted" />
           
           <div className="mt-3 flex gap-2">
-            <Button variant="outline" size="sm" className="text-xs flex-1">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-xs flex-1"
+              onClick={() => onChangeScreen('goals')}
+            >
               Details
             </Button>
-            <Button size="sm" className="text-xs flex-1 bg-wealthveda-teal hover:bg-wealthveda-teal/90">
+            <Button 
+              size="sm" 
+              className="text-xs flex-1 bg-wealthveda-teal hover:bg-wealthveda-teal/90"
+              onClick={() => onChangeScreen('chat')}
+            >
               Increase SIP
             </Button>
           </div>
@@ -141,20 +159,49 @@ const Dashboard: React.FC = () => {
       {/* Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/60 h-16 px-4">
         <div className="max-w-md mx-auto h-full flex-between">
-          <Button variant="ghost" className="flex flex-col h-full items-center gap-1">
+          <Button 
+            variant="ghost" 
+            className="flex flex-col h-full items-center gap-1"
+            onClick={() => onChangeScreen('dashboard')}
+          >
             <BarChart3 className="h-5 w-5 text-wealthveda-indigo" />
             <span className="text-xs">Dashboard</span>
           </Button>
           
-          <Button className="rounded-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 h-12 w-12 absolute -top-6 left-1/2 transform -translate-x-1/2 shadow-lg">
-            <MessageCircle className="h-6 w-6" />
+          <Button 
+            variant="ghost"
+            className="flex flex-col h-full items-center gap-1"
+            onClick={() => onChangeScreen('banking')}
+          >
+            <Calendar className="h-5 w-5" />
+            <span className="text-xs">Banking</span>
           </Button>
           
-          <div className="w-16"></div>
+          <div className="relative">
+            <Button 
+              className="rounded-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 h-12 w-12 absolute -top-6 left-1/2 transform -translate-x-1/2 shadow-lg"
+              onClick={() => onChangeScreen('chat')}
+            >
+              <MessageCircle className="h-6 w-6" />
+            </Button>
+          </div>
           
-          <Button variant="ghost" className="flex flex-col h-full items-center gap-1">
-            <Calendar className="h-5 w-5" />
-            <span className="text-xs">Planner</span>
+          <Button 
+            variant="ghost"
+            className="flex flex-col h-full items-center gap-1"
+            onClick={() => onChangeScreen('chat')}
+          >
+            <MessageCircle className="h-5 w-5" />
+            <span className="text-xs">Chat</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className="flex flex-col h-full items-center gap-1"
+            onClick={() => onChangeScreen('goals')}
+          >
+            <TrendingUp className="h-5 w-5" />
+            <span className="text-xs">Goals</span>
           </Button>
         </div>
       </nav>
