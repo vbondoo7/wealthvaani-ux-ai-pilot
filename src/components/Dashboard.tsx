@@ -8,12 +8,14 @@ import {
   Calendar, 
   ArrowUp,
   ArrowDown,
-  Info
+  Info,
+  Wallet
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 import NudgeFeed from './NudgeFeed';
 
@@ -68,7 +70,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
         
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="wv-card">
+          <div className="wv-card cursor-pointer" onClick={() => onChangeScreen('banking')}>
             <div className="flex items-center gap-2 mb-2">
               <div className="w-8 h-8 rounded-full bg-wealthveda-indigo/10 flex-center">
                 <TrendingUp className="h-4 w-4 text-wealthveda-indigo" />
@@ -82,10 +84,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
             </div>
           </div>
           
-          <div className="wv-card">
+          <div className="wv-card cursor-pointer" onClick={() => onChangeScreen('budget')}>
             <div className="flex items-center gap-2 mb-2">
               <div className="w-8 h-8 rounded-full bg-wealthveda-saffron/10 flex-center">
-                <Calendar className="h-4 w-4 text-wealthveda-saffron" />
+                <Wallet className="h-4 w-4 text-wealthveda-saffron" />
               </div>
               <span className="text-sm font-medium">This Month</span>
             </div>
@@ -136,7 +138,17 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
 
         {/* AI Nudges Feed */}
         <div>
-          <h2 className="font-semibold mb-3">Smart Actions</h2>
+          <div className="flex-between mb-3">
+            <h2 className="font-semibold">Smart Actions</h2>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-xs text-wealthveda-indigo"
+              onClick={() => onChangeScreen('saving-recommendations')}
+            >
+              View All
+            </Button>
+          </div>
           <NudgeFeed />
         </div>
         
@@ -171,10 +183,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
           <Button 
             variant="ghost"
             className="flex flex-col h-full items-center gap-1"
-            onClick={() => onChangeScreen('banking')}
+            onClick={() => onChangeScreen('budget')}
           >
-            <Calendar className="h-5 w-5" />
-            <span className="text-xs">Banking</span>
+            <Wallet className="h-5 w-5" />
+            <span className="text-xs">Budget</span>
           </Button>
           
           <div className="relative">
@@ -189,10 +201,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
           <Button 
             variant="ghost"
             className="flex flex-col h-full items-center gap-1"
-            onClick={() => onChangeScreen('chat')}
+            onClick={() => onChangeScreen('banking')}
           >
-            <MessageCircle className="h-5 w-5" />
-            <span className="text-xs">Chat</span>
+            <TrendingUp className="h-5 w-5" />
+            <span className="text-xs">Invest</span>
           </Button>
           
           <Button 
@@ -200,7 +212,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
             className="flex flex-col h-full items-center gap-1"
             onClick={() => onChangeScreen('goals')}
           >
-            <TrendingUp className="h-5 w-5" />
+            <Calendar className="h-5 w-5" />
             <span className="text-xs">Goals</span>
           </Button>
         </div>

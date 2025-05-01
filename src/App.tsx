@@ -13,6 +13,8 @@ import ChatInterface from "./components/ChatInterface";
 import NotificationSettings from "./components/NotificationSettings";
 import OnboardingCarousel from "./components/OnboardingCarousel";
 import GoalSelection from "./components/GoalSelection";
+import BudgetAndExpenses from "./components/BudgetAndExpenses";
+import SavingRecommendations from "./components/SavingRecommendations";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ const App = () => (
           <Route path="/notifications" element={<NotificationSettings />} />
           <Route path="/onboarding" element={<OnboardingCarousel />} />
           <Route path="/goal-selection" element={<GoalSelection />} />
+          <Route path="/budget" element={<BudgetAndExpenses />} />
+          <Route path="/saving-recommendations" element={<SavingRecommendations />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

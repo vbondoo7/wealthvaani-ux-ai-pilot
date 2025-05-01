@@ -8,10 +8,15 @@ import BankConnection from '@/components/BankConnection';
 import GoalTracker from '@/components/GoalTracker';
 import ChatInterface from '@/components/ChatInterface';
 import NotificationSettings from '@/components/NotificationSettings';
+import BudgetAndExpenses from '@/components/BudgetAndExpenses';
+import SavingRecommendations from '@/components/SavingRecommendations';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>('dashboard');
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   
   // Load onboarding status from localStorage
   useEffect(() => {
@@ -25,6 +30,13 @@ const Index = () => {
       localStorage.setItem('onboardingCompleted', 'true');
     }
   }, [onboardingCompleted]);
+  
+  // Update URL when screen changes
+  useEffect(() => {
+    if (currentScreen !== 'dashboard' && location.pathname === '/') {
+      navigate(`/${currentScreen}`, { replace: true });
+    }
+  }, [currentScreen, navigate, location.pathname]);
   
   if (!onboardingCompleted) {
     return (
@@ -57,6 +69,10 @@ const Index = () => {
         return <ChatInterface />;
       case 'notifications':
         return <NotificationSettings />;
+      case 'budget':
+        return <BudgetAndExpenses />;
+      case 'saving-recommendations':
+        return <SavingRecommendations />;
       default:
         return <Dashboard onChangeScreen={setCurrentScreen} />;
     }
