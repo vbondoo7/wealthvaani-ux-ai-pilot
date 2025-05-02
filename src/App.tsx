@@ -6,15 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./components/Dashboard";
-import BankConnection from "./components/BankConnection";
-import GoalTracker from "./components/GoalTracker";
-import ChatInterface from "./components/ChatInterface";
-import NotificationSettings from "./components/NotificationSettings";
-import OnboardingCarousel from "./components/OnboardingCarousel";
-import GoalSelection from "./components/GoalSelection";
-import BudgetAndExpenses from "./components/BudgetAndExpenses";
-import SavingRecommendations from "./components/SavingRecommendations";
 
 const queryClient = new QueryClient();
 
@@ -25,17 +16,19 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Index />} />
-          <Route path="/banking" element={<BankConnection />} />
-          <Route path="/goals" element={<GoalTracker />} />
-          <Route path="/chat" element={<ChatInterface />} />
-          <Route path="/notifications" element={<NotificationSettings />} />
-          <Route path="/onboarding" element={<OnboardingCarousel />} />
-          <Route path="/goal-selection" element={<GoalSelection />} />
-          <Route path="/budget" element={<BudgetAndExpenses />} />
-          <Route path="/saving-recommendations" element={<SavingRecommendations />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* All routes go through Index component which handles the navigation */}
+          <Route path="/" element={<Index />}>
+            <Route path="dashboard" element={null} />
+            <Route path="banking" element={null} />
+            <Route path="goals" element={null} />
+            <Route path="chat" element={null} />
+            <Route path="notifications" element={null} />
+            <Route path="onboarding" element={null} />
+            <Route path="goal-selection" element={null} />
+            <Route path="budget" element={null} />
+            <Route path="saving-recommendations" element={null} />
+          </Route>
+          {/* Fallback route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

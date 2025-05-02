@@ -10,7 +10,7 @@ import ChatInterface from '@/components/ChatInterface';
 import NotificationSettings from '@/components/NotificationSettings';
 import BudgetAndExpenses from '@/components/BudgetAndExpenses';
 import SavingRecommendations from '@/components/SavingRecommendations';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { 
   BarChart3, 
   MessageCircle, 
