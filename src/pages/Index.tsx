@@ -11,27 +11,36 @@ import NotificationSettings from '@/components/NotificationSettings';
 import BudgetAndExpenses from '@/components/BudgetAndExpenses';
 import SavingRecommendations from '@/components/SavingRecommendations';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { 
-  BarChart3, 
-  MessageCircle, 
-  TrendingUp, 
+import AuthForms from '@/components/auth/AuthForms';
+import ProfileCreation from '@/components/profile/ProfileCreation';
+import UserProfile from '@/components/profile/UserProfile';
+import SavedNudges from '@/components/nudges/SavedNudges';
+import Transactions from '@/components/transactions/Transactions';
+import SubscriptionPlans from '@/components/subscription/SubscriptionPlans';
+import useUserStore from '@/lib/userStore';
+import Logo from '@/components/logo/Logo';
+import {
+  BarChart3,
+  MessageCircle,
+  TrendingUp,
   Calendar,
-  Wallet
+  Wallet,
+  Bell,
+  User,
+  CreditCard,
+  BadgeIndianRupee,
+  BellRing
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>('dashboard');
-  const [onboardingCompleted, setOnboardingCompleted] = useState<boolean>(false);
+  const { isAuthenticated, currentUser } = useUserStore();
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Load onboarding status from localStorage
+  // Set current screen based on route path
   useEffect(() => {
-    const completed = localStorage.getItem('onboardingCompleted');
-    setOnboardingCompleted(completed === 'true');
-    
-    // Set current screen based on route path
     const path = location.pathname.replace('/', '');
     if (path && path !== 'dashboard') {
       setCurrentScreen(path);
@@ -39,13 +48,6 @@ const Index = () => {
       setCurrentScreen('dashboard');
     }
   }, [location.pathname]);
-
-  // Update localStorage when onboarding is completed
-  useEffect(() => {
-    if (onboardingCompleted) {
-      localStorage.setItem('onboardingCompleted', 'true');
-    }
-  }, [onboardingCompleted]);
   
   // Update URL when screen changes - fix for infinite loop
   useEffect(() => {
@@ -57,7 +59,36 @@ const Index = () => {
     }
   }, [currentScreen, navigate, location.pathname]);
   
-  if (!onboardingCompleted) {
+  // Authentication state
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-wealthveda-indigo/5 to-wealthveda-teal/5">
+        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+          <div className="flex justify-center mb-8">
+            <Logo size="lg" />
+          </div>
+          <AuthForms onSuccess={() => setCurrentScreen('dashboard')} />
+        </div>
+      </div>
+    );
+  }
+  
+  // Profile creation state
+  if (isAuthenticated && currentUser && !currentUser.profileCreated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-wealthveda-indigo/5 to-wealthveda-teal/5">
+        <div className="container mx-auto p-6">
+          <div className="flex justify-center mb-8">
+            <Logo size="lg" />
+          </div>
+          <ProfileCreation onComplete={() => setCurrentScreen('dashboard')} />
+        </div>
+      </div>
+    );
+  }
+  
+  // Onboarding state
+  if (isAuthenticated && currentUser && !currentUser.goals.length) {
     return (
       <Tabs defaultValue="onboarding" className="min-h-screen">
         <TabsList className="hidden">
@@ -92,14 +123,49 @@ const Index = () => {
         return <BudgetAndExpenses />;
       case 'saving-recommendations':
         return <SavingRecommendations />;
+      case 'profile':
+        return <UserProfile />;
+      case 'saved-nudges':
+        return <SavedNudges />;
+      case 'transactions':
+        return <Transactions />;
+      case 'subscription':
+        return <SubscriptionPlans />;
       default:
         return <Dashboard onChangeScreen={setCurrentScreen} />;
     }
   };
 
-  // Modified to always show navigation bar
   return (
     <div className="min-h-screen bg-background pb-20">
+      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b">
+        <div className="container mx-auto p-4 flex justify-between items-center">
+          <Logo />
+          <div className="flex gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setCurrentScreen('saved-nudges')}
+              className="relative"
+            >
+              <BellRing className="h-5 w-5" />
+              {currentUser?.savedNudges?.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-wealthveda-saffron text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {currentUser.savedNudges.length}
+                </span>
+              )}
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setCurrentScreen('profile')}
+            >
+              <User className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </header>
+      
       <div className="pb-16">
         {renderScreen()}
       </div>
@@ -118,11 +184,13 @@ const Index = () => {
           
           <Button 
             variant="ghost"
-            className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'budget' ? 'text-wealthveda-indigo' : ''}`}
-            onClick={() => setCurrentScreen('budget')}
+            className={`flex flex-col h-full items-center gap-1 ${
+              ['budget', 'transactions'].includes(currentScreen) ? 'text-wealthveda-indigo' : ''
+            }`}
+            onClick={() => setCurrentScreen('transactions')}
           >
-            <Wallet className="h-5 w-5" />
-            <span className="text-xs">Budget</span>
+            <CreditCard className="h-5 w-5" />
+            <span className="text-xs">Money</span>
           </Button>
           
           <div className="relative">
@@ -138,16 +206,20 @@ const Index = () => {
           
           <Button 
             variant="ghost"
-            className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'banking' ? 'text-wealthveda-indigo' : ''}`}
-            onClick={() => setCurrentScreen('banking')}
+            className={`flex flex-col h-full items-center gap-1 ${
+              ['banking', 'subscription'].includes(currentScreen) ? 'text-wealthveda-indigo' : ''
+            }`}
+            onClick={() => setCurrentScreen('subscription')}
           >
-            <TrendingUp className="h-5 w-5" />
-            <span className="text-xs">Invest</span>
+            <BadgeIndianRupee className="h-5 w-5" />
+            <span className="text-xs">Plans</span>
           </Button>
           
           <Button 
             variant="ghost"
-            className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'goals' ? 'text-wealthveda-indigo' : ''}`}
+            className={`flex flex-col h-full items-center gap-1 ${
+              currentScreen === 'goals' ? 'text-wealthveda-indigo' : ''
+            }`}
             onClick={() => setCurrentScreen('goals')}
           >
             <Calendar className="h-5 w-5" />

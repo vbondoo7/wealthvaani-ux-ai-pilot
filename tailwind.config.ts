@@ -1,16 +1,15 @@
 
-import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
-import twanimate from "tailwindcss-animate";
+import type { Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-	],
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
+  prefix: "",
   theme: {
     container: {
       center: true,
@@ -21,10 +20,7 @@ const config: Config = {
     },
     extend: {
       colors: {
-        border: {
-          DEFAULT: "hsl(var(--border))",
-          '60': "hsl(var(--border) / 0.6)",
-        },
+        border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -57,51 +53,33 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // WealthVeda app specific colors
-        wealthveda: {
-          teal: "#00a6b4",
-          indigo: "#4040e4",
-          saffron: "#ff7e31",
-          dark: "#1A1F2C",
-        }
+        // Custom WealthVeda colors
+        "wealthveda-indigo": "hsl(var(--wealthveda-indigo))",
+        "wealthveda-teal": "hsl(var(--wealthveda-teal))",
+        "wealthveda-saffron": "hsl(var(--wealthveda-saffron))",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      fontFamily: {
-        sans: ["Inter", ...fontFamily.sans],
-      },
       keyframes: {
         "accordion-down": {
-          from: { height: "0", opacity: "0" },
-          to: { height: "var(--radix-accordion-content-height)", opacity: "1" },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-            opacity: "1",
-          },
-          to: { height: "0", opacity: "0" },
-        },
-        "slide-up": {
-          from: { transform: "translateY(10px)", opacity: "0" },
-          to: { transform: "translateY(0)", opacity: "1" },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "slide-up": "slide-up 0.3s ease-out",
-      },
-      backgroundImage: {
-        "gradient-teal-indigo": 
-          "linear-gradient(135deg, var(--teal) 0%, var(--indigo) 100%)",
       },
     },
   },
-  plugins: [twanimate],
-};
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
 
-export default config;
+export default config
