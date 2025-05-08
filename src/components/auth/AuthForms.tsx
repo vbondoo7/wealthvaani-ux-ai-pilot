@@ -1,11 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import useUserStore from '@/lib/userStore';
+import { useLocation } from 'react-router-dom';
+import { predefinedUsers } from '@/lib/config';
 
 export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
   const [email, setEmail] = useState<string>('');
@@ -63,6 +65,26 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+      </div>
+      
+      <div className="text-sm text-muted-foreground">
+        <p>Predefined accounts:</p>
+        <ul className="list-disc pl-5 mt-1">
+          {predefinedUsers.map((user) => (
+            <li key={user.id}>
+              <button 
+                type="button" 
+                className="text-wealthveda-indigo underline"
+                onClick={() => {
+                  setEmail(user.email);
+                  setPassword(user.password);
+                }}
+              >
+                {user.name}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
       
       <Button 
@@ -182,8 +204,11 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
 };
 
 const AuthForms: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
+  const location = useLocation();
+  const defaultTab = location.state?.defaultTab === 'signup' ? 'signup' : 'login';
+
   return (
-    <Tabs defaultValue="login" className="w-full">
+    <Tabs defaultValue={defaultTab} className="w-full">
       <TabsList className="grid w-full grid-cols-2 mb-6">
         <TabsTrigger value="login">Login</TabsTrigger>
         <TabsTrigger value="signup">Sign Up</TabsTrigger>

@@ -1,9 +1,9 @@
-
 import { create } from 'zustand';
 import { 
   User, Goal, Nudge, Transaction, PersonalDetails, FinancialDetails 
 } from './types';
 import { sampleGoals, sampleNudges, sampleTransactions, generateId, sampleSubscriptions } from './mockData';
+import { predefinedUsers } from './config';
 
 interface UserStore {
   users: User[];
@@ -34,7 +34,8 @@ interface UserStore {
 }
 
 const useUserStore = create<UserStore>((set, get) => ({
-  users: [],
+  // Initialize with predefined users
+  users: [...predefinedUsers],
   currentUser: null,
   isAuthenticated: false,
   
@@ -50,7 +51,7 @@ const useUserStore = create<UserStore>((set, get) => ({
       id: generateId(),
       name,
       email,
-      password, // In a real app, this would be hashed
+      password,
       profileCreated: false,
       goals: [],
       savedNudges: [],

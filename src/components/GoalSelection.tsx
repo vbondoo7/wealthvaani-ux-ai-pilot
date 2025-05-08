@@ -3,18 +3,22 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Home, GraduationCap, Car, HeartPulse, Plane, Landmark } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast";
+import useUserStore from '@/lib/userStore';
 
 const GoalSelection: React.FC = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const { addGoal } = useUserStore();
   
   const goals = [
-    { id: "home", label: "Buy a Home", icon: <Home className="h-6 w-6" /> },
-    { id: "education", label: "Child's Education", icon: <GraduationCap className="h-6 w-6" /> },
-    { id: "car", label: "Buy a Car", icon: <Car className="h-6 w-6" /> },
-    { id: "health", label: "Medical Emergency", icon: <HeartPulse className="h-6 w-6" /> },
-    { id: "vacation", label: "Dream Vacation", icon: <Plane className="h-6 w-6" /> },
-    { id: "retirement", label: "Retirement", icon: <Landmark className="h-6 w-6" /> }
+    { id: "home", label: "Buy a Home", icon: <Home className="h-6 w-6" />, cost: 4000000, timelineYears: 7 },
+    { id: "education", label: "Child's Education", icon: <GraduationCap className="h-6 w-6" />, cost: 1500000, timelineYears: 10 },
+    { id: "car", label: "Buy a Car", icon: <Car className="h-6 w-6" />, cost: 800000, timelineYears: 3 },
+    { id: "emergency", label: "Emergency Fund", icon: <HeartPulse className="h-6 w-6" />, cost: 300000, timelineYears: 2 },
+    { id: "vacation", label: "Dream Vacation", icon: <Plane className="h-6 w-6" />, cost: 500000, timelineYears: 2 },
+    { id: "retirement", label: "Retirement", icon: <Landmark className="h-6 w-6" />, cost: 10000000, timelineYears: 25 }
   ];
   
   const toggleGoal = (goalId: string) => {
@@ -26,10 +30,31 @@ const GoalSelection: React.FC = () => {
   };
 
   const handleContinue = () => {
-    // Save selected goals to localStorage or context
-    localStorage.setItem('selectedGoals', JSON.stringify(selectedGoals));
-    localStorage.setItem('onboardingCompleted', 'true');
-    navigate('/dashboard');
+    // Add selected goals to user store
+    selectedGoals.forEach(goalId => {
+      const goal = goals.find(g => g.id === goalId);
+      if (goal) {
+        addGoal({
+          name: goal.id,
+          cost: goal.cost,
+          timelineYears: goal.timelineYears,
+          monthlySavings: Math.round(goal.cost / (goal.timelineYears * 12)),
+          investment: 'mutual_funds',
+          progress: 0,
+          savedAmount: 0
+        });
+      }
+    });
+    
+    toast({
+      title: "Goals set successfully!",
+      description: "Welcome to your personalized financial dashboard.",
+    });
+    
+    // Navigate to dashboard
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 500);
   };
 
   return (

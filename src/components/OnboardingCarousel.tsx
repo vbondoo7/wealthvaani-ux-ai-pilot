@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
 
 const OnboardingCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const slides = [
     {
@@ -37,11 +39,17 @@ const OnboardingCarousel: React.FC = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      // Instead of using click() which isn't available on Element type,
-      // we'll directly set the active tab using the Tabs component state
-      document.querySelector('[data-tab="goals"]')?.setAttribute('data-state', 'active');
-      document.querySelector('[data-value="goals"]')?.setAttribute('data-state', 'active');
-      document.querySelector('[data-value="onboarding"]')?.setAttribute('data-state', 'inactive');
+      // Force a navigation to the goals page instead of changing tab state
+      // This ensures proper routing and state management
+      toast({
+        title: "Welcome to Wealthवाणी",
+        description: "Let's set up your financial goals!",
+      });
+      
+      // Use a slight delay to allow the toast to show
+      setTimeout(() => {
+        navigate('/goal-selection');
+      }, 500);
     }
   };
 

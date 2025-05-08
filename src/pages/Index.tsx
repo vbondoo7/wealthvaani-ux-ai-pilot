@@ -17,8 +17,11 @@ import UserProfile from '@/components/profile/UserProfile';
 import SavedNudges from '@/components/nudges/SavedNudges';
 import Transactions from '@/components/transactions/Transactions';
 import SubscriptionPlans from '@/components/subscription/SubscriptionPlans';
+import FinancialAnalytics from '@/components/analytics/FinancialAnalytics';
+import LandingPage from '@/components/LandingPage';
 import useUserStore from '@/lib/userStore';
 import Logo from '@/components/logo/Logo';
+import { notificationService } from '@/lib/notificationService';
 import {
   BarChart3,
   MessageCircle,
@@ -29,12 +32,13 @@ import {
   User,
   CreditCard,
   BadgeIndianRupee,
-  BellRing
+  BellRing,
+  BarChart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
-  const [currentScreen, setCurrentScreen] = useState<string>('dashboard');
+  const [currentScreen, setCurrentScreen] = useState<string>('landing');
   const { isAuthenticated, currentUser } = useUserStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,11 +49,11 @@ const Index = () => {
     if (path && path !== 'dashboard') {
       setCurrentScreen(path);
     } else if (location.pathname === '/') {
-      setCurrentScreen('dashboard');
+      setCurrentScreen(isAuthenticated ? 'dashboard' : 'landing');
     }
-  }, [location.pathname]);
+  }, [location.pathname, isAuthenticated]);
   
-  // Update URL when screen changes - fix for infinite loop
+  // Update URL when screen changes
   useEffect(() => {
     const path = location.pathname.replace('/', '');
     const currentPath = currentScreen === 'dashboard' ? '' : currentScreen;
@@ -59,7 +63,25 @@ const Index = () => {
     }
   }, [currentScreen, navigate, location.pathname]);
   
-  // Authentication state
+  // Start notification service when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && currentUser?.profileCreated) {
+      notificationService.start();
+    } else {
+      notificationService.stop();
+    }
+    
+    return () => {
+      notificationService.stop();
+    };
+  }, [isAuthenticated, currentUser]);
+  
+  // Non-authenticated landing page
+  if (!isAuthenticated && currentScreen === 'landing') {
+    return <LandingPage />;
+  }
+  
+  // Authentication screen
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-wealthveda-indigo/5 to-wealthveda-teal/5">
@@ -87,24 +109,13 @@ const Index = () => {
     );
   }
   
-  // Onboarding state
-  if (isAuthenticated && currentUser && !currentUser.goals.length) {
-    return (
-      <Tabs defaultValue="onboarding" className="min-h-screen">
-        <TabsList className="hidden">
-          <TabsTrigger value="onboarding">Onboarding</TabsTrigger>
-          <TabsTrigger value="goals" data-tab="goals">Goals</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="onboarding" className="h-screen">
-          <OnboardingCarousel />
-        </TabsContent>
-        
-        <TabsContent value="goals" className="h-screen">
-          <GoalSelection />
-        </TabsContent>
-      </Tabs>
-    );
+  // Onboarding state - fixed navigation flow
+  if (currentScreen === 'onboarding') {
+    return <OnboardingCarousel />;
+  }
+
+  if (currentScreen === 'goal-selection') {
+    return <GoalSelection />;
   }
 
   const renderScreen = () => {
@@ -131,6 +142,8 @@ const Index = () => {
         return <Transactions />;
       case 'subscription':
         return <SubscriptionPlans />;
+      case 'analytics':
+        return <FinancialAnalytics onAction={setCurrentScreen} />;
       default:
         return <Dashboard onChangeScreen={setCurrentScreen} />;
     }
@@ -185,12 +198,12 @@ const Index = () => {
           <Button 
             variant="ghost"
             className={`flex flex-col h-full items-center gap-1 ${
-              ['budget', 'transactions'].includes(currentScreen) ? 'text-wealthveda-indigo' : ''
+              ['budget', 'transactions', 'analytics'].includes(currentScreen) ? 'text-wealthveda-indigo' : ''
             }`}
-            onClick={() => setCurrentScreen('transactions')}
+            onClick={() => setCurrentScreen('analytics')}
           >
-            <CreditCard className="h-5 w-5" />
-            <span className="text-xs">Money</span>
+            <BarChart className="h-5 w-5" />
+            <span className="text-xs">Analytics</span>
           </Button>
           
           <div className="relative">

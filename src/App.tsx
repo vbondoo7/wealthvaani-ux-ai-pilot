@@ -27,6 +27,9 @@ const App = () => (
             <Route path="goal-selection" element={null} />
             <Route path="budget" element={null} />
             <Route path="saving-recommendations" element={null} />
+            <Route path="analytics" element={null} />
+            <Route path="landing" element={null} />
+            <Route path="login" element={null} />
           </Route>
           {/* Fallback route */}
           <Route path="*" element={<NotFound />} />
