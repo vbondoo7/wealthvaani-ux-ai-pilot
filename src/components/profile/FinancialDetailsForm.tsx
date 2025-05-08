@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +25,8 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
       misc: 5000
     },
     savings: currentUser?.financialDetails?.savings || 3000,
-    investments: currentUser?.financialDetails?.investments || []
+    investments: currentUser?.financialDetails?.investments || [],
+    debts: currentUser?.financialDetails?.debts || [] // Added the required debts property
   });
   
   const [newInvestment, setNewInvestment] = useState({ type: '', amount: 0 });

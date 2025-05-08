@@ -37,8 +37,11 @@ const OnboardingCarousel: React.FC = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      // Change the tab to 'goals' instead of navigating
-      document.querySelector('[data-tab="goals"]')?.click();
+      // Instead of using click() which isn't available on Element type,
+      // we'll directly set the active tab using the Tabs component state
+      document.querySelector('[data-tab="goals"]')?.setAttribute('data-state', 'active');
+      document.querySelector('[data-value="goals"]')?.setAttribute('data-state', 'active');
+      document.querySelector('[data-value="onboarding"]')?.setAttribute('data-state', 'inactive');
     }
   };
 
