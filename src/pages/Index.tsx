@@ -47,14 +47,13 @@ const Index = () => {
     }
   }, [onboardingCompleted]);
   
-  // Update URL when screen changes
+  // Update URL when screen changes - fix for infinite loop
   useEffect(() => {
-    if (currentScreen !== 'dashboard' && location.pathname === '/') {
-      navigate(`/${currentScreen}`, { replace: true });
-    } else if (currentScreen === 'dashboard' && location.pathname !== '/') {
-      navigate('/', { replace: true });
-    } else if (location.pathname !== '/' && location.pathname !== `/${currentScreen}`) {
-      navigate(`/${currentScreen}`, { replace: true });
+    const path = location.pathname.replace('/', '');
+    const currentPath = currentScreen === 'dashboard' ? '' : currentScreen;
+    
+    if (path !== currentPath && !path.includes(currentPath)) {
+      navigate(`/${currentPath}`, { replace: true });
     }
   }, [currentScreen, navigate, location.pathname]);
   
@@ -63,7 +62,7 @@ const Index = () => {
       <Tabs defaultValue="onboarding" className="min-h-screen">
         <TabsList className="hidden">
           <TabsTrigger value="onboarding">Onboarding</TabsTrigger>
-          <TabsTrigger value="goals">Goals</TabsTrigger>
+          <TabsTrigger value="goals" data-tab="goals">Goals</TabsTrigger>
         </TabsList>
         
         <TabsContent value="onboarding" className="h-screen">

@@ -4,6 +4,7 @@ import { ChevronRight, Lightbulb, Wallet, Shield, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useNavigate } from 'react-router-dom';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const OnboardingCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -36,7 +37,8 @@ const OnboardingCarousel: React.FC = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      navigate('/goal-selection'); // Go to the goal selection screen
+      // Change the tab to 'goals' instead of navigating
+      document.querySelector('[data-tab="goals"]')?.click();
     }
   };
 
