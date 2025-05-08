@@ -23,17 +23,32 @@ const Logo: React.FC<LogoProps> = ({
     }
   };
   
+  const getLogoSize = () => {
+    switch (size) {
+      case 'sm':
+        return 'h-7 w-7';
+      case 'md':
+        return 'h-9 w-9';
+      case 'lg':
+        return 'h-12 w-12';
+      default:
+        return 'h-9 w-9';
+    }
+  };
+  
   const sizeClass = getSizeClass();
+  const logoSize = getLogoSize();
   
   return (
     <div className="flex items-center">
-      <div className="flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-wealthveda-indigo to-wealthveda-teal">
-        <span className="text-white font-bold">व</span>
+      <div className={`flex items-center justify-center ${logoSize} rounded-full bg-gradient-to-r from-royal-blue to-teal shadow-md overflow-hidden border border-royal-blue/20`}>
+        <span className="text-white font-bold hindi-text">व</span>
       </div>
       
       {variant === 'full' && (
-        <div className={`ml-2 ${sizeClass} font-bold`}>
-          Wealth<span className="text-wealthveda-indigo">वाणी</span>
+        <div className={`ml-2 ${sizeClass} font-bold flex items-center`}>
+          <span className="text-royal-blue">Wealth</span>
+          <span className="text-saffron-orange hindi-text">वाणी</span>
         </div>
       )}
     </div>

@@ -57,6 +57,13 @@ const config = {
         "wealthveda-indigo": "hsl(var(--wealthveda-indigo))",
         "wealthveda-teal": "hsl(var(--wealthveda-teal))",
         "wealthveda-saffron": "hsl(var(--wealthveda-saffron))",
+        // Brand colors directly available
+        "royal-blue": "#1A73E8",
+        "saffron-orange": "#FFA726",
+        "ivory-white": "#FDF6EC",
+        "mint-green": "#B2DFDB",
+        "teal": "#009688",
+        "charcoal": "#2D2D2D",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -72,10 +79,26 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "mandala-spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "mandala-spin": "mandala-spin 30s linear infinite",
+      },
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+        'hindi': ['Noto Sans Devanagari', 'sans-serif'],
+      },
+      backgroundImage: {
+        'gradient-warm': 'linear-gradient(135deg, #FFA726, #FF7043)',
+        'gradient-cool': 'linear-gradient(135deg, #1A73E8, #009688)',
+        'gradient-light': 'linear-gradient(135deg, #FDF6EC, #FFFFFF)',
+        'festive-diwali': 'url("/images/diwali-pattern.png")',
+        'festive-holi': 'url("/images/holi-pattern.png")',
       },
     },
   },

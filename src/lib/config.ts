@@ -11,7 +11,7 @@ export const predefinedUsers: User[] = [
     password: 'password123',
     profileCreated: true,
     personalDetails: {
-      fullName: 'Rahul Sharma',
+      name: 'Rahul Sharma',
       age: 32,
       occupation: 'Software Engineer',
       familySize: 3,
@@ -32,11 +32,11 @@ export const predefinedUsers: User[] = [
       },
       savings: 12000,
       investments: [
-        { type: 'Mutual Funds', amount: 5000 },
-        { type: 'PPF', amount: 3000 }
+        { type: 'Mutual Funds', amount: 5000, interestRate: 12, monthlyPayment: 5000 },
+        { type: 'PPF', amount: 3000, interestRate: 7.1, monthlyPayment: 3000 }
       ],
       debts: [
-        { type: 'Home Loan', amount: 30000 }
+        { type: 'Home Loan', amount: 30000, interestRate: 8.5, monthlyPayment: 30000, remainingTenure: 180 }
       ]
     },
     goals: [...sampleGoals],
@@ -51,7 +51,7 @@ export const predefinedUsers: User[] = [
     password: 'password123',
     profileCreated: true,
     personalDetails: {
-      fullName: 'Priya Patel',
+      name: 'Priya Patel',
       age: 28,
       occupation: 'Marketing Manager',
       familySize: 1,
@@ -72,11 +72,11 @@ export const predefinedUsers: User[] = [
       },
       savings: 10000,
       investments: [
-        { type: 'Stocks', amount: 8000 },
-        { type: 'Fixed Deposit', amount: 5000 }
+        { type: 'Stocks', amount: 8000, interestRate: 15, monthlyPayment: 8000 },
+        { type: 'Fixed Deposit', amount: 5000, interestRate: 6.5, monthlyPayment: 5000 }
       ],
       debts: [
-        { type: 'Personal Loan', amount: 12000 }
+        { type: 'Personal Loan', amount: 12000, interestRate: 12, monthlyPayment: 12000, remainingTenure: 24 }
       ]
     },
     goals: sampleGoals.slice(2, 5),
@@ -91,7 +91,7 @@ export const predefinedUsers: User[] = [
     password: 'password123',
     profileCreated: true,
     personalDetails: {
-      fullName: 'Aditya Singh',
+      name: 'Aditya Singh',
       age: 45,
       occupation: 'Business Owner',
       familySize: 4,
@@ -112,13 +112,13 @@ export const predefinedUsers: User[] = [
       },
       savings: 25000,
       investments: [
-        { type: 'Real Estate', amount: 40000 },
-        { type: 'Mutual Funds', amount: 15000 },
-        { type: 'Gold', amount: 10000 }
+        { type: 'Real Estate', amount: 40000, interestRate: 8, monthlyPayment: 0 },
+        { type: 'Mutual Funds', amount: 15000, interestRate: 12, monthlyPayment: 15000 },
+        { type: 'Gold', amount: 10000, interestRate: 7, monthlyPayment: 10000 }
       ],
       debts: [
-        { type: 'Business Loan', amount: 50000 },
-        { type: 'Car Loan', amount: 18000 }
+        { type: 'Business Loan', amount: 50000, interestRate: 10, monthlyPayment: 50000, remainingTenure: 60 },
+        { type: 'Car Loan', amount: 18000, interestRate: 9, monthlyPayment: 18000, remainingTenure: 36 }
       ]
     },
     goals: sampleGoals,

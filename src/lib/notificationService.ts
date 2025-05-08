@@ -38,7 +38,7 @@ const financialInsights = [
 ];
 
 // Initialize notification service with configurable interval
-export const initNotificationService = (intervalSeconds = 20) => {
+export const initNotificationService = (intervalSeconds = 15) => {
   let intervalId: number | null = null;
   
   const start = () => {
