@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import {
   PieChart, Pie, Cell 
 } from 'recharts';
 import { useToast } from '@/hooks/use-toast';
-import { Download, FilePdf, FileSpreadsheet } from "lucide-react";
+import { Download, FileText, FileSpreadsheet } from "lucide-react";
 import useUserStore from '@/lib/userStore';
 import {
   DropdownMenu,
@@ -111,7 +110,7 @@ const FinancialAnalytics: React.FC<FinancialAnalyticsProps> = ({ onAction }) => 
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => handleDownload('pdf')} className="flex items-center gap-2">
-              <FilePdf size={16} />
+              <FileText size={16} />
               PDF Report
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleDownload('xlsx')} className="flex items-center gap-2">
