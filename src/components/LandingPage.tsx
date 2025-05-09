@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, ChartBar, MessageCircle, Sparkles, Globe, Sun } from "lucide-react";
 import Logo from '@/components/logo/Logo';
@@ -11,12 +11,14 @@ const LandingPage: React.FC = () => {
   const { language, changeLanguage, t } = useLanguage();
   
   const handleLoginClick = () => {
-    console.log('Navigating to login');
-    navigate('/login', { state: { defaultTab: 'login' } });
+    console.log('Navigating to login page');
+    // Using navigate directly to the login route
+    navigate('/login');
   };
 
   const handleSignupClick = () => {
-    console.log('Navigating to signup');
+    console.log('Navigating to signup page');
+    // Navigate to login with state to open the signup tab
     navigate('/login', { state: { defaultTab: 'signup' } });
   };
   

@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import useUserStore from '@/lib/userStore';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { predefinedUsers } from '@/lib/config';
@@ -15,7 +15,6 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useUserStore();
-  const { toast } = useToast();
   const { language, t } = useLanguage();
   const navigate = useNavigate();
 
@@ -24,25 +23,20 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
     console.log('Login attempt with:', email);
     setIsLoading(true);
     
+    // Short timeout to simulate API call and show loading state
     setTimeout(() => {
       const success = login(email, password);
       setIsLoading(false);
       
       if (success) {
         console.log('Login successful');
-        toast({
-          title: language === 'en' 
-            ? "Login successful" 
+        toast.success(
+          language === 'en' 
+            ? "Login successful! Welcome back to Wealthवाणी!"
             : language === 'hi' 
-              ? "लॉगिन सफल" 
-              : "Login successful",
-          description: language === 'en'
-            ? "Welcome back to Wealthवाणी!"
-            : language === 'hi'
-              ? "वेल्थवाणी में आपका फिर से स्वागत है!"
-              : "Wealthवाणी mein aapka phir se swagat hai!",
-          variant: "default",
-        });
+              ? "लॉगिन सफल! वेल्थवाणी में आपका फिर से स्वागत है!"
+              : "Login successful! Wealthवाणी mein aapka phir se swagat hai!"
+        );
         
         // Navigate to onboarding for first time users or dashboard for returning users
         const user = useUserStore.getState().currentUser;
@@ -57,21 +51,15 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
         if (onSuccess) onSuccess();
       } else {
         console.log('Login failed');
-        toast({
-          title: language === 'en'
-            ? "Login failed"
-            : language === 'hi' 
-              ? "लॉगिन विफल"
-              : "Login failed",
-          description: language === 'en'
+        toast.error(
+          language === 'en'
             ? "Invalid email or password. Please try again."
-            : language === 'hi'
+            : language === 'hi' 
               ? "अमान्य ईमेल या पासवर्ड। कृपया पुन: प्रयास करें।"
-              : "Invalid email ya password. Please dobara try karein.",
-          variant: "destructive",
-        });
+              : "Invalid email ya password. Please dobara try karein."
+        );
       }
-    }, 1000);
+    }, 800);
   };
 
   return (
@@ -141,7 +129,6 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { register } = useUserStore();
-  const { toast } = useToast();
   const { language, t } = useLanguage();
   const navigate = useNavigate();
 
@@ -150,43 +137,32 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
     console.log('Signup attempt with:', { name, email });
     
     if (password !== confirmPassword) {
-      toast({
-        title: language === 'en'
-          ? "Passwords do not match"
+      toast.error(
+        language === 'en'
+          ? "Passwords do not match. Please ensure both passwords are the same."
           : language === 'hi'
-            ? "पासवर्ड मेल नहीं खाते"
-            : "Passwords match nahi karte",
-        description: language === 'en'
-          ? "Please ensure both passwords are the same."
-          : language === 'hi'
-            ? "कृपया सुनिश्चित करें कि दोनों पासवर्ड समान हैं।"
-            : "Please ensure dono passwords ek jaise hain.",
-        variant: "destructive",
-      });
+            ? "पासवर्ड मेल नहीं खाते। कृपया सुनिश्चित करें कि दोनों पासवर्ड समान हैं।"
+            : "Passwords match nahi karte. Please ensure dono passwords ek jaise hain."
+      );
       return;
     }
     
     setIsLoading(true);
     
+    // Short timeout to simulate API call and show loading state
     setTimeout(() => {
       const success = register(email, password, name);
       setIsLoading(false);
       
       if (success) {
         console.log('Registration successful');
-        toast({
-          title: language === 'en'
-            ? "Account created successfully"
+        toast.success(
+          language === 'en'
+            ? "Account created successfully! Welcome to Wealthवाणी!"
             : language === 'hi'
-              ? "खाता सफलतापूर्वक बनाया गया"
-              : "Account successfully create ho gaya",
-          description: language === 'en'
-            ? "Welcome to Wealthवाणी!"
-            : language === 'hi'
-              ? "वेल्थवाणी में आपका स्वागत है!"
-              : "Wealthवाणी mein aapka swagat hai!",
-          variant: "default",
-        });
+              ? "खाता सफलतापूर्वक बनाया गया! वेल्थवाणी में आपका स्वागत है!"
+              : "Account successfully create ho gaya! Wealthवाणी mein aapka swagat hai!"
+        );
         
         // Navigate to onboarding for new users
         console.log('Navigating to onboarding after signup');
@@ -195,21 +171,15 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
         if (onSuccess) onSuccess();
       } else {
         console.log('Registration failed');
-        toast({
-          title: language === 'en'
-            ? "Registration failed"
-            : language === 'hi'
-              ? "पंजीकरण विफल"
-              : "Registration failed",
-          description: language === 'en'
+        toast.error(
+          language === 'en'
             ? "An account with this email already exists."
             : language === 'hi'
               ? "इस ईमेल वाला खाता पहले से मौजूद है।"
-              : "Is email ka account pehle se maujood hai.",
-          variant: "destructive",
-        });
+              : "Is email ka account pehle se maujood hai."
+        );
       }
-    }, 1000);
+    }, 800);
   };
 
   return (
@@ -278,6 +248,7 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
 const AuthForms: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
   const location = useLocation();
   const { language, t } = useLanguage();
+  // Check for defaultTab from navigation state or URL params
   const defaultTab = location.state?.defaultTab === 'signup' ? 'signup' : 'login';
 
   return (

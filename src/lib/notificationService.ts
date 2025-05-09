@@ -61,30 +61,26 @@ class NotificationService {
       return;
     }
     
-    // Show notification using toast
-    toast(
-      <div className="flex flex-col gap-1">
-        <h4 className="font-medium">{this.getNudgeTitle(nudge)}</h4>
-        <p className="text-sm text-muted-foreground">{nudge.message}</p>
-      </div>,
-      {
-        duration: 8000,
-        action: {
-          label: "Save",
-          onClick: () => this.saveNudge(nudge)
-        },
-        cancel: {
-          label: "Dismiss",
-          onClick: () => {}
-        },
-        onDismiss: () => {
-          this.showingNotification = false;
-        },
-        onAutoClose: () => {
-          this.showingNotification = false;
-        }
-      }
-    );
+    // Show notification using toast - Note: we're creating JSX text content instead of JSX elements
+    toast({
+      title: this.getNudgeTitle(nudge),
+      description: nudge.message,
+      action: {
+        label: "Save",
+        onClick: () => this.saveNudge(nudge)
+      },
+      cancel: {
+        label: "Dismiss",
+        onClick: () => {}
+      },
+      onDismiss: () => {
+        this.showingNotification = false;
+      },
+      onAutoClose: () => {
+        this.showingNotification = false;
+      },
+      duration: 8000
+    });
   }
   
   // Get appropriate title based on nudge type

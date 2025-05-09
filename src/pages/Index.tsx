@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import OnboardingCarousel from '@/components/OnboardingCarousel';
 import GoalSelection from '@/components/GoalSelection';
 import Dashboard from '@/components/Dashboard';
@@ -10,7 +9,7 @@ import ChatInterface from '@/components/ChatInterface';
 import NotificationSettings from '@/components/NotificationSettings';
 import BudgetAndExpenses from '@/components/BudgetAndExpenses';
 import SavingRecommendations from '@/components/SavingRecommendations';
-import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate, Outlet } from 'react-router-dom';
 import AuthForms from '@/components/auth/AuthForms';
 import ProfileCreation from '@/components/profile/ProfileCreation';
 import UserProfile from '@/components/profile/UserProfile';
@@ -26,19 +25,16 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import {
   BarChart3,
   MessageCircle,
-  TrendingUp,
   Calendar,
-  Wallet,
   Bell,
   User,
-  CreditCard,
   BadgeIndianRupee,
   BellRing,
   BarChart,
   Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from '@/hooks/use-toast';
+import { toast } from "sonner";
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>('landing');
@@ -46,73 +42,64 @@ const Index = () => {
   const { language, changeLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   
-  console.log('Current auth state:', { isAuthenticated, currentUser, pathname: location.pathname });
+  console.log('Index component rendered', { isAuthenticated, currentUser, path: location.pathname });
   
   // Set current screen based on route path
   useEffect(() => {
     const path = location.pathname.replace('/', '');
-    if (path && path !== 'dashboard') {
+    if (path) {
+      console.log('Setting current screen from path:', path);
       setCurrentScreen(path);
     } else if (location.pathname === '/') {
-      setCurrentScreen(isAuthenticated ? 'dashboard' : 'landing');
+      const newScreen = isAuthenticated ? 'dashboard' : 'landing';
+      console.log('Setting current screen for root path:', newScreen);
+      setCurrentScreen(newScreen);
+      if (isAuthenticated) {
+        navigate('/dashboard');
+      } else {
+        navigate('/landing');
+      }
     }
-    
-    console.log('Updated currentScreen to:', path || (isAuthenticated ? 'dashboard' : 'landing'));
-  }, [location.pathname, isAuthenticated]);
-  
-  // Update URL when screen changes
-  useEffect(() => {
-    const path = location.pathname.replace('/', '');
-    const currentPath = currentScreen === 'dashboard' ? '' : currentScreen;
-    
-    if (path !== currentPath && !path.includes(currentPath)) {
-      console.log(`Navigating from ${path} to /${currentPath}`);
-      navigate(`/${currentPath}`, { replace: true });
-    }
-  }, [currentScreen, navigate, location.pathname]);
+  }, [location.pathname, isAuthenticated, navigate]);
   
   // Start notification service when user is authenticated
   useEffect(() => {
-    console.log('Notification service status check:', { isAuthenticated, profileCreated: currentUser?.profileCreated });
-    
     if (isAuthenticated && currentUser?.profileCreated) {
+      console.log('Starting notification service');
       notificationService.start();
-      console.log('Notification service started');
     } else {
+      console.log('Stopping notification service');
       notificationService.stop();
-      console.log('Notification service stopped');
     }
     
     return () => {
       notificationService.stop();
-      console.log('Notification service stopped on cleanup');
     };
   }, [isAuthenticated, currentUser]);
 
   const handleLogout = () => {
+    console.log('Logging out');
     logout();
-    toast({
-      title: language === 'en' ? "Logged out successfully" : 
-             language === 'hi' ? "सफलतापूर्वक लॉग आउट किया गया" : 
-             "Successfully logout ho gaye",
-      description: language === 'en' ? "You have been logged out of your account" :
-                  language === 'hi' ? "आपको आपके खाते से लॉग आउट कर दिया गया है" :
-                  "Aapko account se logout kar diya gaya hai",
-    });
+    toast.success(
+      language === 'en' 
+        ? "Logged out successfully" 
+        : language === 'hi' 
+          ? "सफलतापूर्वक लॉग आउट किया गया" 
+          : "Successfully logout ho gaye"
+    );
     setCurrentScreen('landing');
     navigate('/landing');
   };
   
   // Non-authenticated landing page
-  if (!isAuthenticated && currentScreen === 'landing') {
+  if (!isAuthenticated && (currentScreen === 'landing' || location.pathname === '/landing')) {
     console.log('Rendering LandingPage');
     return <LandingPage />;
   }
   
   // Authentication screen
-  if (!isAuthenticated) {
+  if (!isAuthenticated && (currentScreen === 'login' || location.pathname === '/login')) {
     console.log('Rendering AuthForms');
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-royal-blue/5 to-saffron-orange/5">
@@ -141,6 +128,12 @@ const Index = () => {
         </div>
       </div>
     );
+  }
+  
+  // Redirect to login if trying to access authenticated routes without being authenticated
+  if (!isAuthenticated && currentScreen !== 'landing' && currentScreen !== 'login') {
+    console.log('Not authenticated, redirecting to login');
+    return <Navigate to="/login" replace />;
   }
   
   // Profile creation state
@@ -238,7 +231,11 @@ const Index = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              onClick={() => setCurrentScreen('saved-nudges')}
+              onClick={() => {
+                console.log('Navigating to saved nudges');
+                setCurrentScreen('saved-nudges');
+                navigate('/saved-nudges');
+              }}
               className="relative"
             >
               <BellRing className="h-5 w-5" />
@@ -252,7 +249,11 @@ const Index = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={() => setCurrentScreen('profile')}
+                onClick={() => {
+                  console.log('Navigating to profile');
+                  setCurrentScreen('profile');
+                  navigate('/profile');
+                }}
               >
                 <User className="h-5 w-5" />
               </Button>
@@ -271,6 +272,7 @@ const Index = () => {
       
       <div className="pb-16">
         {renderScreen()}
+        <Outlet />
       </div>
       
       {/* Global Navigation Bar - Always visible on all screens */}
@@ -280,7 +282,7 @@ const Index = () => {
             variant="ghost" 
             className={`flex flex-col h-full items-center gap-1 ${currentScreen === 'dashboard' ? 'text-royal-blue' : ''}`}
             onClick={() => {
-              console.log('Nav: Setting screen to dashboard');
+              console.log('Navigating to dashboard');
               setCurrentScreen('dashboard');
               navigate('/dashboard');
             }}
@@ -295,7 +297,7 @@ const Index = () => {
               ['budget', 'transactions', 'analytics'].includes(currentScreen) ? 'text-royal-blue' : ''
             }`}
             onClick={() => {
-              console.log('Nav: Setting screen to analytics');
+              console.log('Navigating to analytics');
               setCurrentScreen('analytics');
               navigate('/analytics');
             }}
@@ -310,7 +312,7 @@ const Index = () => {
                 currentScreen === 'chat' ? 'bg-royal-blue hover:bg-royal-blue/90' : 'bg-saffron-orange hover:bg-saffron-orange/90'
               }`}
               onClick={() => {
-                console.log('Nav: Setting screen to chat');
+                console.log('Navigating to chat');
                 setCurrentScreen('chat');
                 navigate('/chat');
               }}
@@ -325,7 +327,7 @@ const Index = () => {
               ['banking', 'subscription'].includes(currentScreen) ? 'text-royal-blue' : ''
             }`}
             onClick={() => {
-              console.log('Nav: Setting screen to subscription');
+              console.log('Navigating to subscription');
               setCurrentScreen('subscription');
               navigate('/subscription');
             }}
@@ -340,7 +342,7 @@ const Index = () => {
               currentScreen === 'goals' ? 'text-royal-blue' : ''
             }`}
             onClick={() => {
-              console.log('Nav: Setting screen to goals');
+              console.log('Navigating to goals');
               setCurrentScreen('goals');
               navigate('/goals');
             }}

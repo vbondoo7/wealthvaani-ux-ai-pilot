@@ -26,7 +26,6 @@ const App = () => (
         <Sonner position="top-right" closeButton={true} />
         <BrowserRouter>
           <Routes>
-            {/* All routes go through Index component which handles the navigation */}
             <Route path="/" element={<Index />}>
               <Route path="dashboard" element={null} />
               <Route path="banking" element={null} />
@@ -40,6 +39,12 @@ const App = () => (
               <Route path="analytics" element={null} />
               <Route path="landing" element={null} />
               <Route path="login" element={null} />
+              <Route path="signup" element={null} /> {/* Added explicit signup route */}
+              <Route path="profile" element={null} />
+              <Route path="saved-nudges" element={null} />
+              <Route path="transactions" element={null} />
+              <Route path="subscription" element={null} />
+              <Route index element={<Navigate to="/landing" replace />} /> {/* Default redirect to landing */}
             </Route>
             {/* Fallback route */}
             <Route path="*" element={<NotFound />} />
