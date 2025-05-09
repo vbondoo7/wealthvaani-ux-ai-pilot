@@ -61,9 +61,8 @@ class NotificationService {
       return;
     }
     
-    // Show notification using toast - Note: we're creating JSX text content instead of JSX elements
-    toast({
-      title: this.getNudgeTitle(nudge),
+    // Show notification using toast - Use the correct Sonner toast API
+    toast(this.getNudgeTitle(nudge), {
       description: nudge.message,
       action: {
         label: "Save",
