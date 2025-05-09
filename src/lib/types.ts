@@ -23,6 +23,9 @@ export interface PersonalDetails {
   dependents: number;
   riskTolerance: 'low' | 'medium' | 'high';
   financialChallenges?: string[];
+  occupation?: string;
+  address?: string;
+  phoneNumber?: string;
 }
 
 export interface FinancialDetails {
@@ -112,3 +115,6 @@ export interface BudgetAnalysis {
   };
   budgetAlerts: string[];
 }
+
+// Language support
+export type LanguageOption = 'en' | 'hi' | 'hinglish';

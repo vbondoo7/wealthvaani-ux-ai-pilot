@@ -11,15 +11,21 @@ export const predefinedUsers: User[] = [
     password: 'password123',
     profileCreated: true,
     personalDetails: {
-      name: 'Rahul Sharma',
       age: 32,
       occupation: 'Software Engineer',
       familySize: 3,
       address: 'Koramangala, Bangalore',
-      phoneNumber: '+91 9876543210'
+      phoneNumber: '+91 9876543210',
+      maritalStatus: 'married',
+      dependents: 1,
+      riskTolerance: 'medium',
+      financialChallenges: ['Saving for retirement', 'Child education']
     },
     financialDetails: {
-      income: 85000,
+      totalIncome: 85000,
+      incomeSources: {
+        salary: 85000
+      },
       expenses: {
         housing: 20000,
         food: 10000,
@@ -32,12 +38,14 @@ export const predefinedUsers: User[] = [
       },
       savings: 12000,
       investments: [
-        { type: 'Mutual Funds', amount: 5000, interestRate: 12, monthlyPayment: 5000 },
-        { type: 'PPF', amount: 3000, interestRate: 7.1, monthlyPayment: 3000 }
+        { type: 'Mutual Funds', amount: 5000 },
+        { type: 'PPF', amount: 3000 }
       ],
       debts: [
         { type: 'Home Loan', amount: 30000, interestRate: 8.5, monthlyPayment: 30000, remainingTenure: 180 }
-      ]
+      ],
+      debtToIncomeRatio: 0.35,
+      savingsRate: 0.14
     },
     goals: [...sampleGoals],
     savedNudges: sampleNudges.slice(0, 3),
@@ -51,15 +59,21 @@ export const predefinedUsers: User[] = [
     password: 'password123',
     profileCreated: true,
     personalDetails: {
-      name: 'Priya Patel',
       age: 28,
       occupation: 'Marketing Manager',
       familySize: 1,
       address: 'Indiranagar, Bangalore',
-      phoneNumber: '+91 9988776655'
+      phoneNumber: '+91 9988776655',
+      maritalStatus: 'single',
+      dependents: 0,
+      riskTolerance: 'high',
+      financialChallenges: ['Building emergency fund', 'Starting investments']
     },
     financialDetails: {
-      income: 65000,
+      totalIncome: 65000,
+      incomeSources: {
+        salary: 65000
+      },
       expenses: {
         housing: 18000,
         food: 8000,
@@ -72,12 +86,14 @@ export const predefinedUsers: User[] = [
       },
       savings: 10000,
       investments: [
-        { type: 'Stocks', amount: 8000, interestRate: 15, monthlyPayment: 8000 },
-        { type: 'Fixed Deposit', amount: 5000, interestRate: 6.5, monthlyPayment: 5000 }
+        { type: 'Stocks', amount: 8000 },
+        { type: 'Fixed Deposit', amount: 5000 }
       ],
       debts: [
         { type: 'Personal Loan', amount: 12000, interestRate: 12, monthlyPayment: 12000, remainingTenure: 24 }
-      ]
+      ],
+      debtToIncomeRatio: 0.18,
+      savingsRate: 0.15
     },
     goals: sampleGoals.slice(2, 5),
     savedNudges: sampleNudges.slice(3, 5),
@@ -91,15 +107,21 @@ export const predefinedUsers: User[] = [
     password: 'password123',
     profileCreated: true,
     personalDetails: {
-      name: 'Aditya Singh',
       age: 45,
       occupation: 'Business Owner',
       familySize: 4,
       address: 'HSR Layout, Bangalore',
-      phoneNumber: '+91 9823456789'
+      phoneNumber: '+91 9823456789',
+      maritalStatus: 'married',
+      dependents: 2,
+      riskTolerance: 'medium',
+      financialChallenges: ['Business expansion', 'Kids education']
     },
     financialDetails: {
-      income: 150000,
+      totalIncome: 150000,
+      incomeSources: {
+        business: 150000
+      },
       expenses: {
         housing: 35000,
         food: 20000,
@@ -112,14 +134,16 @@ export const predefinedUsers: User[] = [
       },
       savings: 25000,
       investments: [
-        { type: 'Real Estate', amount: 40000, interestRate: 8, monthlyPayment: 0 },
-        { type: 'Mutual Funds', amount: 15000, interestRate: 12, monthlyPayment: 15000 },
-        { type: 'Gold', amount: 10000, interestRate: 7, monthlyPayment: 10000 }
+        { type: 'Real Estate', amount: 40000 },
+        { type: 'Mutual Funds', amount: 15000 },
+        { type: 'Gold', amount: 10000 }
       ],
       debts: [
         { type: 'Business Loan', amount: 50000, interestRate: 10, monthlyPayment: 50000, remainingTenure: 60 },
         { type: 'Car Loan', amount: 18000, interestRate: 9, monthlyPayment: 18000, remainingTenure: 36 }
-      ]
+      ],
+      debtToIncomeRatio: 0.45,
+      savingsRate: 0.17
     },
     goals: sampleGoals,
     savedNudges: sampleNudges.slice(0, 4),

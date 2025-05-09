@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import useUserStore from '@/lib/userStore';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { predefinedUsers } from '@/lib/config';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
   const [email, setEmail] = useState<string>('');
@@ -15,6 +16,8 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { login } = useUserStore();
   const { toast } = useToast();
+  const { language, t } = useLanguage();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,15 +29,40 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
       
       if (success) {
         toast({
-          title: "Login successful",
-          description: "Welcome back to Wealthवाणी!",
+          title: language === 'en' 
+            ? "Login successful" 
+            : language === 'hi' 
+              ? "लॉगिन सफल" 
+              : "Login successful",
+          description: language === 'en'
+            ? "Welcome back to Wealthवाणी!"
+            : language === 'hi'
+              ? "वेल्थवाणी में आपका फिर से स्वागत है!"
+              : "Wealthवाणी mein aapka phir se swagat hai!",
           variant: "default",
         });
-        onSuccess?.();
+        
+        // Navigate to onboarding for first time users or dashboard for returning users
+        const user = useUserStore.getState().currentUser;
+        if (user && !user.profileCreated) {
+          navigate('/onboarding');
+        } else {
+          navigate('/dashboard');
+        }
+        
+        if (onSuccess) onSuccess();
       } else {
         toast({
-          title: "Login failed",
-          description: "Invalid email or password. Please try again.",
+          title: language === 'en'
+            ? "Login failed"
+            : language === 'hi' 
+              ? "लॉगिन विफल"
+              : "Login failed",
+          description: language === 'en'
+            ? "Invalid email or password. Please try again."
+            : language === 'hi'
+              ? "अमान्य ईमेल या पासवर्ड। कृपया पुन: प्रयास करें।"
+              : "Invalid email ya password. Please dobara try karein.",
           variant: "destructive",
         });
       }
@@ -44,11 +72,11 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t('email')}</Label>
         <Input
           id="email"
           type="email"
-          placeholder="name@example.com"
+          placeholder={language === 'en' ? "name@example.com" : language === 'hi' ? "नाम@उदाहरण.com" : "name@example.com"}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -56,7 +84,7 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">{t('password')}</Label>
         <Input
           id="password"
           type="password"
@@ -68,13 +96,13 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
       </div>
       
       <div className="text-sm text-muted-foreground">
-        <p>Predefined accounts:</p>
+        <p>{language === 'en' ? "Predefined accounts:" : language === 'hi' ? "पूर्वनिर्धारित खाते:" : "Predefined accounts:"}</p>
         <ul className="list-disc pl-5 mt-1">
           {predefinedUsers.map((user) => (
             <li key={user.id}>
               <button 
                 type="button" 
-                className="text-wealthveda-indigo underline"
+                className="text-royal-blue underline"
                 onClick={() => {
                   setEmail(user.email);
                   setPassword(user.password);
@@ -89,10 +117,12 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
       
       <Button 
         type="submit" 
-        className="w-full bg-wealthveda-teal hover:bg-wealthveda-teal/90"
+        className="w-full bg-royal-blue hover:bg-royal-blue/90"
         disabled={isLoading}
       >
-        {isLoading ? "Logging in..." : "Login"}
+        {isLoading 
+          ? (language === 'en' ? "Logging in..." : language === 'hi' ? "लॉग इन हो रहा है..." : "Logging in...") 
+          : t('login')}
       </Button>
     </form>
   );
@@ -106,14 +136,24 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { register } = useUserStore();
   const { toast } = useToast();
+  const { language, t } = useLanguage();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
       toast({
-        title: "Passwords do not match",
-        description: "Please ensure both passwords are the same.",
+        title: language === 'en'
+          ? "Passwords do not match"
+          : language === 'hi'
+            ? "पासवर्ड मेल नहीं खाते"
+            : "Passwords match nahi karte",
+        description: language === 'en'
+          ? "Please ensure both passwords are the same."
+          : language === 'hi'
+            ? "कृपया सुनिश्चित करें कि दोनों पासवर्ड समान हैं।"
+            : "Please ensure dono passwords ek jaise hain.",
         variant: "destructive",
       });
       return;
@@ -127,15 +167,35 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
       
       if (success) {
         toast({
-          title: "Account created successfully",
-          description: "Welcome to Wealthवाणी!",
+          title: language === 'en'
+            ? "Account created successfully"
+            : language === 'hi'
+              ? "खाता सफलतापूर्वक बनाया गया"
+              : "Account successfully create ho gaya",
+          description: language === 'en'
+            ? "Welcome to Wealthवाणी!"
+            : language === 'hi'
+              ? "वेल्थवाणी में आपका स्वागत है!"
+              : "Wealthवाणी mein aapka swagat hai!",
           variant: "default",
         });
-        onSuccess?.();
+        
+        // Navigate to onboarding for new users
+        navigate('/onboarding');
+        
+        if (onSuccess) onSuccess();
       } else {
         toast({
-          title: "Registration failed",
-          description: "An account with this email already exists.",
+          title: language === 'en'
+            ? "Registration failed"
+            : language === 'hi'
+              ? "पंजीकरण विफल"
+              : "Registration failed",
+          description: language === 'en'
+            ? "An account with this email already exists."
+            : language === 'hi'
+              ? "इस ईमेल वाला खाता पहले से मौजूद है।"
+              : "Is email ka account pehle se maujood hai.",
           variant: "destructive",
         });
       }
@@ -145,10 +205,10 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="name">Full Name</Label>
+        <Label htmlFor="name">{t('full-name')}</Label>
         <Input
           id="name"
-          placeholder="John Doe"
+          placeholder={language === 'en' ? "John Doe" : language === 'hi' ? "राम कुमार" : "John Doe"}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -156,11 +216,11 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t('email')}</Label>
         <Input
           id="email"
           type="email"
-          placeholder="name@example.com"
+          placeholder={language === 'en' ? "name@example.com" : language === 'hi' ? "नाम@उदाहरण.com" : "name@example.com"}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -168,7 +228,7 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">{t('password')}</Label>
         <Input
           id="password"
           type="password"
@@ -181,7 +241,7 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirm Password</Label>
+        <Label htmlFor="confirmPassword">{t('confirm-password')}</Label>
         <Input
           id="confirmPassword"
           type="password"
@@ -194,10 +254,12 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
       
       <Button 
         type="submit" 
-        className="w-full bg-wealthveda-indigo hover:bg-wealthveda-indigo/90"
+        className="w-full bg-royal-blue hover:bg-royal-blue/90"
         disabled={isLoading}
       >
-        {isLoading ? "Creating Account..." : "Create Account"}
+        {isLoading 
+          ? (language === 'en' ? "Creating Account..." : language === 'hi' ? "खाता बना रहा है..." : "Account create ho raha hai...")
+          : t('create-account')}
       </Button>
     </form>
   );
@@ -205,13 +267,14 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
 
 const AuthForms: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
   const location = useLocation();
+  const { language, t } = useLanguage();
   const defaultTab = location.state?.defaultTab === 'signup' ? 'signup' : 'login';
 
   return (
     <Tabs defaultValue={defaultTab} className="w-full">
       <TabsList className="grid w-full grid-cols-2 mb-6">
-        <TabsTrigger value="login">Login</TabsTrigger>
-        <TabsTrigger value="signup">Sign Up</TabsTrigger>
+        <TabsTrigger value="login">{t('login')}</TabsTrigger>
+        <TabsTrigger value="signup">{t('signup')}</TabsTrigger>
       </TabsList>
       
       <TabsContent value="login">

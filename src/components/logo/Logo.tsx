@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -10,6 +11,8 @@ const Logo: React.FC<LogoProps> = ({
   size = 'md', 
   variant = 'full'
 }) => {
+  const { language } = useLanguage();
+  
   const getSizeClass = () => {
     switch (size) {
       case 'sm':
