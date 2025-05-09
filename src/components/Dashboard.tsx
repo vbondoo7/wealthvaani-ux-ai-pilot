@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { 
   BarChart3, 
   MessageCircle, 
@@ -8,29 +9,67 @@ import {
   ArrowUp,
   ArrowDown,
   Info,
-  Wallet
+  Wallet,
+  MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import useUserStore from '@/lib/userStore';
+import { format } from 'date-fns';
 
 import NudgeFeed from './NudgeFeed';
+import ChatBox from './ChatBox';
 
 interface DashboardProps {
   onChangeScreen: (screen: string) => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
+  const [showChatBox, setShowChatBox] = useState(false);
+  const { currentUser } = useUserStore();
+  
+  if (!currentUser) return null;
+  
+  // Calculate investment growth based on transactions
+  const investmentGrowth = currentUser.transactions
+    .filter(t => t.category === 'investment')
+    .reduce((total, t) => total + t.amount, 0);
+  
+  // Calculate monthly spending from transactions
+  const monthlySpending = currentUser.transactions
+    .filter(t => t.type === 'debit' && t.category !== 'investment')
+    .reduce((total, t) => total + t.amount, 0);
+  
+  // Get primary goal (first in the list)
+  const primaryGoal = currentUser.goals[0] || {
+    name: "No goals set",
+    cost: 0,
+    timelineYears: 0,
+    savedAmount: 0,
+    progress: 0
+  };
+  
+  const formatCurrency = (amount: number) => {
+    if (amount >= 100000) {
+      return `₹${(amount / 100000).toFixed(1)}L`;
+    } else if (amount >= 1000) {
+      return `₹${(amount / 1000).toFixed(0)}K`;
+    } else {
+      return `₹${amount}`;
+    }
+  };
+  
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur">
         <div className="wv-container py-4">
           <div className="flex-between">
             <div>
-              <h1 className="text-lg font-bold">Namaste, Rahul</h1>
-              <p className="text-sm text-muted-foreground">Let's manage your finances</p>
+              <h1 className="text-lg font-bold">Namaste, {currentUser.name.split(' ')[0]}</h1>
+              <p className="text-sm text-muted-foreground">{format(new Date(), 'EEEE, dd MMM yyyy')}</p>
             </div>
             <Button 
               size="icon" 
@@ -44,7 +83,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
         </div>
       </header>
 
-      <main className="flex-1 wv-container space-y-6">
+      <main className="flex-1 wv-container space-y-6 pb-20">
         {/* Financial Health Score */}
         <div className="wv-card bg-gradient-to-br from-wealthveda-teal/10 to-wealthveda-indigo/10">
           <div className="flex-between mb-3">
@@ -53,17 +92,28 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
           </div>
           
           <div className="flex-between mb-3">
-            <h3 className="text-xl font-bold">72<span className="text-sm font-normal text-muted-foreground">/100</span></h3>
+            <h3 className="text-xl font-bold">
+              {currentUser.subscription.plan === 'Basic' ? '65' : 
+               currentUser.subscription.plan === 'Pro' ? '72' : '86'}
+              <span className="text-sm font-normal text-muted-foreground">/100</span>
+            </h3>
             <span className="text-xs px-2 py-1 bg-wealthveda-teal/20 text-wealthveda-teal rounded-full flex items-center">
               <ArrowUp className="h-3 w-3 mr-1" />
-              +4 pts
+              {currentUser.subscription.plan === 'Basic' ? '+2' : 
+               currentUser.subscription.plan === 'Pro' ? '+4' : '+6'} pts
             </span>
           </div>
           
-          <Progress value={72} className="h-2 bg-muted" />
+          <Progress value={currentUser.subscription.plan === 'Basic' ? 65 : 
+                          currentUser.subscription.plan === 'Pro' ? 72 : 86} className="h-2 bg-muted" />
           
           <p className="text-xs mt-2 text-muted-foreground">
-            <span className="hindi-text">उत्तम!</span> Good progress, but room to improve
+            <span className="hindi-text">
+              {currentUser.subscription.plan === 'Basic' ? 'अच्छा!' : 
+               currentUser.subscription.plan === 'Pro' ? 'उत्तम!' : 'शानदार!'}
+            </span> 
+            {currentUser.subscription.plan === 'Basic' ? 'Good progress, but room to improve' : 
+             currentUser.subscription.plan === 'Pro' ? 'Good progress, but room to improve' : 'Excellent progress!'}
           </p>
         </div>
         
@@ -76,10 +126,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
               </div>
               <span className="text-sm font-medium">Investments</span>
             </div>
-            <div className="text-lg font-bold">₹1,84,500</div>
+            <div className="text-lg font-bold">{formatCurrency(investmentGrowth)}</div>
             <div className="text-xs text-wealthveda-teal flex items-center">
               <ArrowUp className="h-3 w-3 mr-1" />
-              +8.4% in 2024
+              {currentUser.subscription.plan === 'Basic' ? '+5.8%' : 
+               currentUser.subscription.plan === 'Pro' ? '+8.4%' : '+12.6%'} in 2024
             </div>
           </div>
           
@@ -90,10 +141,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
               </div>
               <span className="text-sm font-medium">This Month</span>
             </div>
-            <div className="text-lg font-bold">₹24,300</div>
+            <div className="text-lg font-bold">{formatCurrency(monthlySpending)}</div>
             <div className="text-xs text-destructive flex items-center">
               <ArrowDown className="h-3 w-3 mr-1" />
-              +12% vs Avg.
+              +{currentUser.subscription.plan === 'Basic' ? '18' : 
+                 currentUser.subscription.plan === 'Pro' ? '12' : '5'}% vs Avg.
             </div>
           </div>
         </div>
@@ -101,18 +153,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
         {/* Goal Progress */}
         <div className="wv-card">
           <div className="flex-between mb-3">
-            <h2 className="font-medium">Goal: Child's Education</h2>
+            <h2 className="font-medium">Goal: {primaryGoal.name.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}</h2>
             <span className="text-xs bg-wealthveda-indigo/10 text-wealthveda-indigo px-2 py-0.5 rounded">
-              2032 Target
+              {new Date().getFullYear() + primaryGoal.timelineYears} Target
             </span>
           </div>
           
           <div className="flex-between mb-1">
-            <span className="text-sm text-muted-foreground">Saved: ₹2.4L</span>
-            <span className="text-sm font-medium">Target: ₹18L</span>
+            <span className="text-sm text-muted-foreground">
+              Saved: {formatCurrency(primaryGoal.savedAmount || 0)}
+            </span>
+            <span className="text-sm font-medium">
+              Target: {formatCurrency(primaryGoal.cost)}
+            </span>
           </div>
           
-          <Progress value={13} className="h-2.5 bg-muted" />
+          <Progress value={primaryGoal.progress || 0} className="h-2.5 bg-muted" />
           
           <div className="mt-3 flex gap-2">
             <Button 
@@ -160,12 +216,31 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
             <div>
               <h3 className="font-medium text-sm mb-1">Did you know?</h3>
               <p className="text-xs text-muted-foreground">
-                Investing ₹5,000 monthly for 20 years at 12% returns can grow to ₹49 lakhs.
+                {currentUser.subscription.plan === 'Basic' 
+                  ? 'Investing ₹5,000 monthly for 20 years at 12% returns can grow to ₹49 lakhs.'
+                  : currentUser.subscription.plan === 'Pro'
+                  ? 'Income tax saving through ELSS funds provides both tax benefits and wealth growth.'
+                  : 'Diversifying investments across equity, debt, and gold can optimize your returns while minimizing risk.'}
               </p>
             </div>
           </div>
         </div>
       </main>
+      
+      {/* Floating Chat Button */}
+      {!showChatBox && (
+        <Button
+          className="fixed bottom-20 right-4 rounded-full h-12 w-12 shadow-lg bg-wealthveda-teal hover:bg-wealthveda-teal/90 z-40"
+          onClick={() => setShowChatBox(true)}
+        >
+          <MessageSquare className="h-5 w-5" />
+        </Button>
+      )}
+      
+      {/* Chat Box */}
+      {showChatBox && (
+        <ChatBox onClose={() => setShowChatBox(false)} />
+      )}
     </div>
   );
 };

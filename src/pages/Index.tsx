@@ -31,10 +31,15 @@ import {
   BadgeIndianRupee,
   BellRing,
   BarChart,
-  Globe
+  Globe,
+  Menu as MenuIcon,
+  Home
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import MainMenu from '@/components/menu/MainMenu';
+
+const MAX_IDLE_TIME = 5 * 60 * 1000; // 5 minutes
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<string>('landing');
@@ -42,6 +47,8 @@ const Index = () => {
   const { language, changeLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [lastActivityTime, setLastActivityTime] = useState(Date.now());
   
   console.log('Index component rendered', { isAuthenticated, currentUser, path: location.pathname });
   
@@ -62,6 +69,36 @@ const Index = () => {
       }
     }
   }, [location.pathname, isAuthenticated, navigate]);
+  
+  // Handle user activity tracking for session timeout
+  useEffect(() => {
+    const resetTimer = () => {
+      setLastActivityTime(Date.now());
+    };
+    
+    // Add event listeners for user activity
+    window.addEventListener('mousedown', resetTimer);
+    window.addEventListener('keydown', resetTimer);
+    window.addEventListener('touchstart', resetTimer);
+    
+    // Check for session timeout
+    const intervalId = setInterval(() => {
+      const now = Date.now();
+      if (isAuthenticated && now - lastActivityTime > MAX_IDLE_TIME) {
+        console.log('Session timed out due to inactivity');
+        handleLogout();
+        toast.info("Your session has expired due to inactivity");
+      }
+    }, 10000); // Check every 10 seconds
+    
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('mousedown', resetTimer);
+      window.removeEventListener('keydown', resetTimer);
+      window.removeEventListener('touchstart', resetTimer);
+      clearInterval(intervalId);
+    };
+  }, [isAuthenticated, lastActivityTime]);
   
   // Start notification service when user is authenticated
   useEffect(() => {
@@ -214,7 +251,23 @@ const Index = () => {
     <div className="min-h-screen bg-background pb-20">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b">
         <div className="container mx-auto p-4 flex justify-between items-center">
-          <Logo />
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setIsMenuOpen(true)}
+              className="md:hidden"
+            >
+              <MenuIcon className="h-5 w-5" />
+            </Button>
+            <div className="cursor-pointer" onClick={() => {
+              setCurrentScreen('dashboard');
+              navigate('/dashboard');
+            }}>
+              <Logo />
+            </div>
+          </div>
+          
           <div className="flex gap-2">
             <div className="flex items-center gap-2 mr-2">
               <Globe className="h-4 w-4 text-royal-blue" />
@@ -257,14 +310,6 @@ const Index = () => {
               >
                 <User className="h-5 w-5" />
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleLogout}
-                className="ml-1"
-              >
-                {language === 'en' ? 'Logout' : language === 'hi' ? 'लॉगआउट' : 'Logout'}
-              </Button>
             </div>
           </div>
         </div>
@@ -274,6 +319,9 @@ const Index = () => {
         {renderScreen()}
         <Outlet />
       </div>
+      
+      {/* Main Menu */}
+      <MainMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onChangeScreen={setCurrentScreen} />
       
       {/* Global Navigation Bar - Always visible on all screens */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border/60 h-16 px-4 shadow-md z-50">
@@ -287,7 +335,7 @@ const Index = () => {
               navigate('/dashboard');
             }}
           >
-            <BarChart3 className="h-5 w-5" />
+            <Home className="h-5 w-5" />
             <span className="text-xs">{t('dashboard')}</span>
           </Button>
           
@@ -324,16 +372,16 @@ const Index = () => {
           <Button 
             variant="ghost"
             className={`flex flex-col h-full items-center gap-1 ${
-              ['banking', 'subscription'].includes(currentScreen) ? 'text-royal-blue' : ''
+              ['banking', 'transactions'].includes(currentScreen) ? 'text-royal-blue' : ''
             }`}
             onClick={() => {
-              console.log('Navigating to subscription');
-              setCurrentScreen('subscription');
-              navigate('/subscription');
+              console.log('Navigating to banking');
+              setCurrentScreen('banking');
+              navigate('/banking');
             }}
           >
             <BadgeIndianRupee className="h-5 w-5" />
-            <span className="text-xs">{t('plans')}</span>
+            <span className="text-xs">{t('banking')}</span>
           </Button>
           
           <Button 
