@@ -10,26 +10,52 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const { language, changeLanguage, t } = useLanguage();
   
+  const handleLoginClick = () => {
+    console.log('Navigating to login');
+    navigate('/login', { state: { defaultTab: 'login' } });
+  };
+
+  const handleSignupClick = () => {
+    console.log('Navigating to signup');
+    navigate('/login', { state: { defaultTab: 'signup' } });
+  };
+  
   const features = [
     {
       icon: <ChartBar className="h-8 w-8 text-royal-blue" />,
       title: t("smart-planning"),
-      description: "AI-powered insights and personalized financial planning that grows with you."
+      description: language === 'en' 
+        ? "AI-powered insights and personalized financial planning that grows with you."
+        : language === 'hi'
+          ? "एआई-संचालित अंतर्दृष्टि और व्यक्तिगत वित्तीय योजना जो आपके साथ बढ़ती है।"
+          : "AI-powered insights aur personalized financial planning jo aapke saath badhti hai."
     },
     {
       icon: <Shield className="h-8 w-8 text-teal" />,
       title: t("secure-private"),
-      description: "Your financial data stays encrypted and private with robust security measures."
+      description: language === 'en'
+        ? "Your financial data stays encrypted and private with robust security measures."
+        : language === 'hi'
+          ? "आपका वित्तीय डेटा मजबूत सुरक्षा उपायों के साथ एन्क्रिप्टेड और निजी रहता है।"
+          : "Aapka financial data strong security measures ke saath encrypted aur private rehta hai."
     },
     {
       icon: <MessageCircle className="h-8 w-8 text-saffron-orange" />,
       title: t("financial-companion"),
-      description: "Chat with our AI assistant about budgets, investments, or financial queries in simple language."
+      description: language === 'en'
+        ? "Chat with our AI assistant about budgets, investments, or financial queries in simple language."
+        : language === 'hi'
+          ? "सरल भाषा में बजट, निवेश या वित्तीय प्रश्नों के बारे में हमारे एआई सहायक से चैट करें।"
+          : "Simple language mein budgets, investments, ya financial queries ke bare mein hamare AI assistant se chat karein."
     },
     {
       icon: <Sparkles className="h-8 w-8 text-royal-blue" />,
       title: t("proactive-insights"),
-      description: "Get proactive nudges and recommendations tailored to your spending patterns."
+      description: language === 'en'
+        ? "Get proactive nudges and recommendations tailored to your spending patterns."
+        : language === 'hi'
+          ? "अपने खर्च पैटर्न के अनुरूप सक्रिय सुझाव और सिफारिशें प्राप्त करें।"
+          : "Apne spending patterns ke hisaab se proactive nudges aur recommendations paayein."
     }
   ];
 
@@ -55,7 +81,7 @@ const LandingPage: React.FC = () => {
             <Button 
               variant="outline"
               className="text-royal-blue border-royal-blue hover:bg-royal-blue/10"
-              onClick={() => navigate('/login')}
+              onClick={handleLoginClick}
             >
               {t('login')}
             </Button>
@@ -88,7 +114,7 @@ const LandingPage: React.FC = () => {
               <Button 
                 size="lg" 
                 className="bg-royal-blue hover:bg-royal-blue/90 text-white text-lg font-medium"
-                onClick={() => navigate('/login')}
+                onClick={handleLoginClick}
               >
                 {t('get-started')}
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -97,7 +123,7 @@ const LandingPage: React.FC = () => {
                 variant="outline" 
                 size="lg"
                 className="text-lg border-royal-blue text-royal-blue hover:bg-royal-blue/10"
-                onClick={() => navigate('/login', { state: { defaultTab: 'signup' }})}
+                onClick={handleSignupClick}
               >
                 {t('create-account')}
               </Button>
@@ -187,7 +213,7 @@ const LandingPage: React.FC = () => {
             <Button 
               size="lg" 
               className="bg-saffron-orange hover:bg-saffron-orange/90 text-white font-medium"
-              onClick={() => navigate('/login')}
+              onClick={handleLoginClick}
             >
               {language === 'en'
                 ? "Start Your Financial Journey"

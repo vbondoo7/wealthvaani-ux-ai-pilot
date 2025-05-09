@@ -1,3 +1,4 @@
+
 import { create } from 'zustand';
 import { 
   User, Goal, Nudge, Transaction, PersonalDetails, FinancialDetails 
@@ -41,9 +42,11 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   register: (email, password, name) => {
     const { users } = get();
+    console.log('Registering new user:', { name, email });
     
     // Check if user already exists
     if (users.some(user => user.email === email)) {
+      console.log('User already exists with email:', email);
       return false;
     }
     
@@ -59,12 +62,15 @@ const useUserStore = create<UserStore>((set, get) => ({
       transactions: []
     };
     
+    console.log('Created new user:', newUser);
+    
     set(state => ({
       users: [...state.users, newUser],
       currentUser: newUser,
       isAuthenticated: true
     }));
     
+    console.log('Updated store with new user, auth state:', true);
     return true;
   },
   
@@ -72,33 +78,44 @@ const useUserStore = create<UserStore>((set, get) => ({
     const { users } = get();
     const user = users.find(u => u.email === email && u.password === password);
     
+    console.log('Login attempt for:', email, 'Found user:', !!user);
+    
     if (user) {
       set({
         currentUser: user,
         isAuthenticated: true
       });
+      console.log('Login successful, auth state:', true);
       return true;
     }
     
+    console.log('Login failed');
     return false;
   },
   
   logout: () => {
+    console.log('Logging out user');
     set({
       currentUser: null,
       isAuthenticated: false
     });
+    console.log('User logged out, auth state:', false);
   },
   
   updatePersonalDetails: (details) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot update personal details: No current user');
+        return state;
+      }
       
       const updatedUser = {
         ...state.currentUser,
         personalDetails: details,
         profileCreated: true
       };
+      
+      console.log('Updated personal details for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,
@@ -109,7 +126,10 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   updateFinancialDetails: (details) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot update financial details: No current user');
+        return state;
+      }
       
       // If this is the first time setting financial details, also add sample goals and transactions
       const isFirstUpdate = !state.currentUser.financialDetails;
@@ -121,6 +141,8 @@ const useUserStore = create<UserStore>((set, get) => ({
         goals: isFirstUpdate ? [...sampleGoals] : state.currentUser.goals,
         transactions: isFirstUpdate ? [...sampleTransactions] : state.currentUser.transactions
       };
+      
+      console.log('Updated financial details for user:', updatedUser.id, 'First update:', isFirstUpdate);
       
       return {
         currentUser: updatedUser,
@@ -138,12 +160,17 @@ const useUserStore = create<UserStore>((set, get) => ({
     };
     
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot add goal: No current user');
+        return state;
+      }
       
       const updatedUser = {
         ...state.currentUser,
         goals: [...state.currentUser.goals, newGoal]
       };
+      
+      console.log('Added new goal for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,
@@ -154,12 +181,17 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   updateGoal: (goal) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot update goal: No current user');
+        return state;
+      }
       
       const updatedUser = {
         ...state.currentUser,
         goals: state.currentUser.goals.map(g => g.id === goal.id ? goal : g)
       };
+      
+      console.log('Updated goal for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,
@@ -170,12 +202,17 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   deleteGoal: (goalId) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot delete goal: No current user');
+        return state;
+      }
       
       const updatedUser = {
         ...state.currentUser,
         goals: state.currentUser.goals.filter(g => g.id !== goalId)
       };
+      
+      console.log('Deleted goal for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,
@@ -186,7 +223,10 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   saveNudge: (nudge) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot save nudge: No current user');
+        return state;
+      }
       
       const updatedNudge = { ...nudge, saved: true };
       
@@ -194,6 +234,8 @@ const useUserStore = create<UserStore>((set, get) => ({
         ...state.currentUser,
         savedNudges: [...state.currentUser.savedNudges, updatedNudge]
       };
+      
+      console.log('Saved nudge for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,
@@ -204,12 +246,17 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   removeSavedNudge: (nudgeId) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot remove nudge: No current user');
+        return state;
+      }
       
       const updatedUser = {
         ...state.currentUser,
         savedNudges: state.currentUser.savedNudges.filter(n => n.id !== nudgeId)
       };
+      
+      console.log('Removed saved nudge for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,
@@ -220,7 +267,10 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   toggleAutoAction: (nudgeId, enabled) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot toggle auto action: No current user');
+        return state;
+      }
       
       const updatedUser = {
         ...state.currentUser,
@@ -228,6 +278,8 @@ const useUserStore = create<UserStore>((set, get) => ({
           n.id === nudgeId ? { ...n, autoActionEnabled: enabled } : n
         )
       };
+      
+      console.log('Toggled auto action for nudge for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,
@@ -238,12 +290,17 @@ const useUserStore = create<UserStore>((set, get) => ({
   
   upgradePlan: (plan) => {
     set(state => {
-      if (!state.currentUser) return state;
+      if (!state.currentUser) {
+        console.log('Cannot upgrade plan: No current user');
+        return state;
+      }
       
       const updatedUser = {
         ...state.currentUser,
         subscription: sampleSubscriptions[plan]
       };
+      
+      console.log('Upgraded plan for user:', updatedUser.id, 'to', plan);
       
       return {
         currentUser: updatedUser,

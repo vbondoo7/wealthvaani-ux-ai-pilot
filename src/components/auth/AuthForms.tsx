@@ -21,6 +21,7 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Login attempt with:', email);
     setIsLoading(true);
     
     setTimeout(() => {
@@ -28,6 +29,7 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
       setIsLoading(false);
       
       if (success) {
+        console.log('Login successful');
         toast({
           title: language === 'en' 
             ? "Login successful" 
@@ -45,13 +47,16 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
         // Navigate to onboarding for first time users or dashboard for returning users
         const user = useUserStore.getState().currentUser;
         if (user && !user.profileCreated) {
+          console.log('Navigating to onboarding for new user');
           navigate('/onboarding');
         } else {
+          console.log('Navigating to dashboard for returning user');
           navigate('/dashboard');
         }
         
         if (onSuccess) onSuccess();
       } else {
+        console.log('Login failed');
         toast({
           title: language === 'en'
             ? "Login failed"
@@ -104,6 +109,7 @@ export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) =
                 type="button" 
                 className="text-royal-blue underline"
                 onClick={() => {
+                  console.log('Selected predefined user:', user.name);
                   setEmail(user.email);
                   setPassword(user.password);
                 }}
@@ -141,6 +147,7 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Signup attempt with:', { name, email });
     
     if (password !== confirmPassword) {
       toast({
@@ -166,6 +173,7 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
       setIsLoading(false);
       
       if (success) {
+        console.log('Registration successful');
         toast({
           title: language === 'en'
             ? "Account created successfully"
@@ -181,10 +189,12 @@ export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) 
         });
         
         // Navigate to onboarding for new users
+        console.log('Navigating to onboarding after signup');
         navigate('/onboarding');
         
         if (onSuccess) onSuccess();
       } else {
+        console.log('Registration failed');
         toast({
           title: language === 'en'
             ? "Registration failed"

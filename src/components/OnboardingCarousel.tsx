@@ -4,7 +4,6 @@ import { ChevronRight, Lightbulb, Wallet, Shield, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useNavigate } from 'react-router-dom';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -67,7 +66,7 @@ const OnboardingCarousel: React.FC = () => {
                     "Chaliye apne financial goals set karein!",
       });
       
-      // Navigate to goals page with a slight delay
+      // Fix: Navigate to dashboard with a slight delay to ensure toast is visible
       setTimeout(() => {
         navigate('/dashboard');
       }, 500);
@@ -94,7 +93,7 @@ const OnboardingCarousel: React.FC = () => {
             <div 
               key={index} 
               className={`h-1.5 rounded-full ${index === currentSlide 
-                ? 'w-6 bg-primary' 
+                ? 'w-6 bg-royal-blue' 
                 : 'w-1.5 bg-muted'}`}
             />
           ))}
