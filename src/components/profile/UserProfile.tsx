@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -338,7 +337,7 @@ const UserProfile: React.FC = () => {
                       </div>
                     </div>
                     
-                    {user.personalDetails.financialChallenges && 
+                    {user.personalDetails?.financialChallenges && 
                      user.personalDetails.financialChallenges.length > 0 && (
                       <div className="space-y-2">
                         <label className="text-muted-foreground text-sm">Financial Challenges</label>

@@ -26,7 +26,9 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
     },
     savings: currentUser?.financialDetails?.savings || 3000,
     investments: currentUser?.financialDetails?.investments || [],
-    debts: currentUser?.financialDetails?.debts || [] // Added the required debts property
+    debts: currentUser?.financialDetails?.debts || [], 
+    debtToIncomeRatio: currentUser?.financialDetails?.debtToIncomeRatio || 0,
+    savingsRate: currentUser?.financialDetails?.savingsRate || 0
   });
   
   const [newInvestment, setNewInvestment] = useState({ type: '', amount: 0 });

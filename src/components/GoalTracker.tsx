@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -57,6 +56,8 @@ const GoalTracker: React.FC = () => {
       timelineYears: Number(goalYears),
       monthlySavings: Number(goalMonthlySavings),
       investment: goalInvestment,
+      progress: 0, // Adding the missing required property
+      savedAmount: 0 // Adding the missing required property
     };
     
     addGoal(newGoal);

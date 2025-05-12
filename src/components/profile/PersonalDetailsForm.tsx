@@ -21,6 +21,9 @@ const PersonalDetailsForm: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     dependents: currentUser?.personalDetails?.dependents || 0,
     riskTolerance: currentUser?.personalDetails?.riskTolerance || 'medium',
     financialChallenges: currentUser?.personalDetails?.financialChallenges || [],
+    occupation: currentUser?.personalDetails?.occupation || '',
+    phoneNumber: currentUser?.personalDetails?.phoneNumber || '',
+    address: currentUser?.personalDetails?.address || '',
   });
   
   const [challengeText, setChallengeText] = useState<string>('');

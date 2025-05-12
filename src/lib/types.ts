@@ -21,9 +21,10 @@ export interface PersonalDetails {
   maritalStatus: 'single' | 'married' | 'divorced' | 'widowed';
   dependents: number;
   riskTolerance: 'low' | 'medium' | 'high';
-  occupation: string;
-  phoneNumber: string;
-  address: string;
+  occupation?: string;
+  phoneNumber?: string;
+  address?: string;
+  financialChallenges?: string[];
 }
 
 export interface FinancialDetails {
@@ -134,3 +135,6 @@ export interface FamilyMember {
   income: number;
   expenses: number;
 }
+
+// Language type for the app
+export type LanguageOption = 'en' | 'hi' | 'hinglish';
