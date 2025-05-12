@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PersonalDetailsForm from './PersonalDetailsForm';
 import FinancialDetailsForm from './FinancialDetailsForm';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProfileCreationProps {
   onComplete: () => void;
@@ -10,6 +11,7 @@ interface ProfileCreationProps {
 
 const ProfileCreation: React.FC<ProfileCreationProps> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState<string>('personal');
+  const { t } = useLanguage();
   
   const handlePersonalComplete = () => {
     setCurrentStep('financial');
@@ -18,16 +20,16 @@ const ProfileCreation: React.FC<ProfileCreationProps> = ({ onComplete }) => {
   return (
     <div className="wv-container py-6">
       <div className="mb-6 space-y-2">
-        <h1 className="text-2xl font-bold text-center">Complete Your Profile</h1>
+        <h1 className="text-2xl font-bold text-center">{t('complete-profile')}</h1>
         <p className="text-muted-foreground text-center">
-          Help us personalize your financial journey with Wealthवाणी
+          {t('personalize-journey')}
         </p>
       </div>
       
-      <Tabs value={currentStep} className="w-full">
+      <Tabs value={currentStep} className="w-full" onValueChange={setCurrentStep}>
         <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="personal">Personal Details</TabsTrigger>
-          <TabsTrigger value="financial">Financial Details</TabsTrigger>
+          <TabsTrigger value="personal">{t('personal-details')}</TabsTrigger>
+          <TabsTrigger value="financial">{t('financial-details')}</TabsTrigger>
         </TabsList>
         
         <TabsContent value="personal" className="space-y-4">

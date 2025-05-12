@@ -45,13 +45,13 @@ const Logo: React.FC<LogoProps> = ({
   return (
     <div className="flex items-center">
       <div className={`flex items-center justify-center ${logoSize} rounded-full bg-gradient-to-r from-royal-blue to-teal shadow-md overflow-hidden border border-royal-blue/20`}>
-        <span className="text-white font-bold hindi-text">व</span>
+        <span className="text-white font-bold">W</span>
       </div>
       
       {variant === 'full' && (
         <div className={`ml-2 ${sizeClass} font-bold flex items-center`}>
-          <span className="text-royal-blue">Wealth</span>
-          <span className="text-saffron-orange hindi-text">वाणी</span>
+          <span className="text-royal-blue">W</span>
+          <span className="text-saffron-orange hindi-text">व</span>
         </div>
       )}
     </div>

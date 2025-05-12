@@ -213,7 +213,7 @@ const PersonalDetailsForm: React.FC<{ onNext: () => void }> = ({ onNext }) => {
       
       <Button 
         type="submit" 
-        className="w-full mt-6 bg-wealthveda-teal hover:bg-wealthveda-teal/90"
+        className="w-full mt-6 bg-royal-blue hover:bg-royal-blue/90"
         disabled={isLoading}
       >
         {isLoading ? "Saving..." : "Continue"}
