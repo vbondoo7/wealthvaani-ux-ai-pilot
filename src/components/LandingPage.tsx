@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, ChartBar, MessageCircle, Sparkles, Globe, Sun } from "lucide-react";
@@ -66,7 +65,7 @@ const LandingPage: React.FC = () => {
       {/* Navigation */}
       <nav className="py-4 px-6 bg-white/80 backdrop-blur-sm border-b sticky top-0 z-10">
         <div className="max-w-5xl mx-auto flex justify-between items-center">
-          <Logo size="md" />
+          <Logo size="md" variant="compact" />
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Globe className="h-4 w-4 text-royal-blue" />
@@ -232,7 +231,7 @@ const LandingPage: React.FC = () => {
       <footer className="py-10 px-6 border-t bg-white/80 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
-            <Logo />
+            <Logo variant="full" />
             <p className="mt-2 text-sm text-muted-foreground">
               {language === 'en'
                 ? "Your AI-powered financial planner"
