@@ -4,6 +4,7 @@ import { ArrowRight, Shield, ChartBar, MessageCircle, Sparkles, Globe, Sun } fro
 import Logo from '@/components/logo/Logo';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import RotatingText from '@/components/ui/RotatingText';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +21,15 @@ const LandingPage: React.FC = () => {
     // Navigate to login with state to open the signup tab
     navigate('/login', { state: { defaultTab: 'signup' } });
   };
+  
+  // Define the rotating phrases
+  const rotatingPhrases = [
+    "Digital Wealth Brain for Bharat's Middle-Class.",
+    "Empowering Every Indian Family with Personalised Financial Guidance",
+    "Built on a SMART AI That Plans. Advises. Cares. Like Family",
+    "Like a CA in Your Pocket — Smarter, Faster, Always Available",
+    "Simplifying Wealth — Personally, Proactively, Powerfully"
+  ];
   
   const features = [
     {
@@ -103,13 +113,7 @@ const LandingPage: React.FC = () => {
               <span className="text-royal-blue"> {language === 'en' ? "Proactive Wealth Companion" : language === 'hi' ? "सक्रिय धन साथी" : "Proactive Wealth Companion"}</span>
             </h1>
             
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-              {language === 'en' 
-                ? "Your personal CA empowering every Indian family to achieve financial freedom."
-                : language === 'hi'
-                  ? "आपका व्यक्तिगत सीए जो हर भारतीय परिवार को वित्तीय स्वतंत्रता प्राप्त करने में सशक्त बनाता है।"
-                  : "Aapka personal CA jo har Indian family ko financial freedom paane mein madad karta hai."}
-            </p>
+            <RotatingText phrases={rotatingPhrases} className="mb-8" />
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
