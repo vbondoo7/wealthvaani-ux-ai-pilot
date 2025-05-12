@@ -44,6 +44,11 @@ const App = () => (
               <Route path="saved-nudges" element={null} />
               <Route path="transactions" element={null} />
               <Route path="subscription" element={null} />
+              <Route path="advisor" element={null} />
+              <Route path="festival-planning" element={null} />
+              <Route path="investment-intelligence" element={null} />
+              <Route path="family-management" element={null} />
+              <Route path="learning-center" element={null} />
               <Route index element={<Navigate to="/landing" replace />} />
             </Route>
             {/* Fallback route */}

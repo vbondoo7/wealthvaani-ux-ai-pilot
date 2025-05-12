@@ -1,23 +1,34 @@
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
-  Menu,
-  X,
-  User,
-  Info,
-  PhoneCall,
-  HelpCircle,
-  Package,
-  LogOut,
-  ArrowUp,
-  Book,
-} from "lucide-react";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import useUserStore from '@/lib/userStore';
-import { useToast } from '@/hooks/use-toast';
+import { Badge } from "@/components/ui/badge";
+import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Logo from '@/components/logo/Logo';
+import useUserStore from '@/lib/userStore';
+import {
+  Home,
+  BarChart,
+  Calendar,
+  Users,
+  User,
+  Settings,
+  LogOut,
+  BadgeIndianRupee,
+  CreditCard,
+  Gift,
+  MessageCircle,
+  BookOpen,
+  PhoneCall
+} from "lucide-react";
 
 interface MainMenuProps {
   isOpen: boolean;
@@ -27,182 +38,198 @@ interface MainMenuProps {
 
 const MainMenu: React.FC<MainMenuProps> = ({ isOpen, onClose, onChangeScreen }) => {
   const { currentUser, logout } = useUserStore();
-  const { toast } = useToast();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   
-  if (!currentUser) return null;
+  const isPremiumUser = currentUser?.subscription.plan === 'Premium';
+  const isProUser = currentUser?.subscription.plan === 'Pro';
   
+  const handleNavigation = (screen: string) => {
+    onChangeScreen(screen);
+    navigate(`/${screen}`);
+    onClose();
+  };
+
   const handleLogout = () => {
     logout();
-    toast({
-      title: "Logged out successfully",
-      description: "See you soon!",
-    });
     navigate('/landing');
+    onClose();
   };
-  
-  const openFinancialLearnings = () => {
-    window.open('https://www.youtube.com/watch?v=2Aosql_3vBY&list=PLvJNSf-7NfrNxtRMOGbQ_mlMwHfq56x-S', '_blank');
-  };
-  
+
   return (
-    <div 
-      className={`fixed inset-0 z-50 ${isOpen ? 'block' : 'hidden'}`}
-    >
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/40"
-        onClick={onClose}
-      />
-      
-      {/* Menu */}
-      <div 
-        className={`absolute top-0 left-0 h-full w-3/4 max-w-[320px] bg-white shadow-xl transform transition-transform duration-300 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        <div className="p-4 flex items-center justify-between">
-          <Logo />
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent side="left" className="w-80">
+        <SheetHeader className="text-left">
+          <SheetTitle>
+            <Logo />
+          </SheetTitle>
+        </SheetHeader>
         
-        <div className="p-4 bg-muted/50">
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-wealthveda-indigo/10 flex items-center justify-center">
-              <span className="text-wealthveda-indigo font-bold text-lg">
-                {currentUser.name.charAt(0)}
-              </span>
-            </div>
-            <div>
-              <h3 className="font-medium">{currentUser.name}</h3>
-              <p className="text-xs text-muted-foreground">{currentUser.email}</p>
-            </div>
-          </div>
-          
-          <div className="mt-3 flex items-center gap-2 px-3 py-1.5 bg-wealthveda-indigo/10 rounded-full">
-            <div className="w-3 h-3 rounded-full bg-wealthveda-indigo" />
-            <span className="text-xs font-medium text-wealthveda-indigo">
-              {currentUser.subscription.plan} Plan
-            </span>
-          </div>
-        </div>
-        
-        <div className="p-4 space-y-1">
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-left"
-            onClick={() => {
-              onChangeScreen('profile');
-              onClose();
-            }}
-          >
-            <User size={18} />
-            Profile Settings
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-left"
-            onClick={() => {
-              onChangeScreen('analytics');
-              onClose();
-            }}
-          >
-            <Info size={18} />
-            Key Details & Reports
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-left"
-            onClick={openFinancialLearnings}
-          >
-            <Book size={18} />
-            Financial Learning
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-left"
-            onClick={() => {
-              toast({
-                title: "Contact Support",
-                description: "You can reach us at support@wealthvani.com or call 1800-123-4567",
-              });
-              onClose();
-            }}
-          >
-            <PhoneCall size={18} />
-            Contact Support
-          </Button>
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-left"
-            onClick={() => {
-              toast({
-                title: "Help Center",
-                description: "Our support team will get back to you within 24 hours",
-              });
-              onClose();
-            }}
-          >
-            <HelpCircle size={18} />
-            Help & FAQs
-          </Button>
-        </div>
-        
-        <Separator />
-        
-        <div className="p-4 space-y-4">
-          <h3 className="font-medium text-sm px-3">Your Subscription</h3>
-          
-          <div className="bg-muted/30 rounded-lg p-3 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-medium">{currentUser.subscription.plan} Plan</span>
-              <span className="text-xs bg-wealthveda-indigo/10 text-wealthveda-indigo px-2 py-0.5 rounded">
-                {currentUser.subscription.plan === 'Basic' ? 'Free' : `₹${currentUser.subscription.pricePerMonth}/month`}
-              </span>
-            </div>
-            
-            <div className="space-y-1 text-sm">
-              {currentUser.subscription.features.slice(0, 3).map((feature, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-wealthveda-indigo" />
-                  <span className="text-muted-foreground">{feature.replace(/_/g, ' ')}</span>
-                </div>
-              ))}
-            </div>
-            
-            {currentUser.subscription.plan !== 'Premium' && (
+        <div className="flex flex-col justify-between h-[calc(100%-64px)]">
+          <div className="py-4">
+            {/* Primary Navigation */}
+            <div className="space-y-1">
               <Button 
-                className="w-full bg-wealthveda-teal hover:bg-wealthveda-teal/90 gap-2"
-                onClick={() => {
-                  onChangeScreen('subscription');
-                  onClose();
-                }}
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('dashboard')}
               >
-                <ArrowUp size={16} />
-                Upgrade Plan
+                <Home className="mr-2 h-4 w-4" />
+                {t('dashboard')}
               </Button>
-            )}
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('goals')}
+              >
+                <Calendar className="mr-2 h-4 w-4" />
+                {t('goals')}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('banking')}
+              >
+                <BadgeIndianRupee className="mr-2 h-4 w-4" />
+                {t('banking')}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('budget')}
+              >
+                <CreditCard className="mr-2 h-4 w-4" />
+                {t('budget')}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('analytics')}
+              >
+                <BarChart className="mr-2 h-4 w-4" />
+                {t('analytics')}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('chat')}
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                {t('chat')}
+              </Button>
+            </div>
+            
+            <Separator className="my-4" />
+            
+            {/* New Features */}
+            <div className="space-y-1">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('advisor')}
+              >
+                <PhoneCall className="mr-2 h-4 w-4" />
+                Talk to Advisor
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('festival-planning')}
+              >
+                <Gift className="mr-2 h-4 w-4" />
+                Festival Planning
+                {(isProUser || isPremiumUser) && (
+                  <Badge variant="outline" className="ml-auto">Pro</Badge>
+                )}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('investment-intelligence')}
+              >
+                <BarChart className="mr-2 h-4 w-4" />
+                Investment Intelligence
+                {(isProUser || isPremiumUser) && (
+                  <Badge variant="outline" className="ml-auto">Pro</Badge>
+                )}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('family-management')}
+              >
+                <Users className="mr-2 h-4 w-4" />
+                Family Management
+                {isPremiumUser && (
+                  <Badge variant="outline" className="ml-auto">Premium</Badge>
+                )}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('learning-center')}
+              >
+                <BookOpen className="mr-2 h-4 w-4" />
+                Learning Center
+              </Button>
+            </div>
+            
+            <Separator className="my-4" />
+            
+            {/* Account & Settings */}
+            <div className="space-y-1">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('profile')}
+              >
+                <User className="mr-2 h-4 w-4" />
+                {t('profile')}
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('subscription')}
+              >
+                <Badge className="mr-2 h-4 w-4" />
+                Subscription Plan
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start" 
+                onClick={() => handleNavigation('notifications')}
+              >
+                <Settings className="mr-2 h-4 w-4" />
+                {t('settings')}
+              </Button>
+            </div>
+          </div>
+          
+          {/* Logout */}
+          <div className="pt-2 pb-4">
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50" 
+              onClick={handleLogout}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              {t('logout')}
+            </Button>
           </div>
         </div>
-        
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <Button 
-            variant="outline" 
-            className="w-full"
-            onClick={handleLogout}
-          >
-            <LogOut size={18} className="mr-2" />
-            Sign Out
-          </Button>
-        </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 

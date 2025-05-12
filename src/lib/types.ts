@@ -1,55 +1,85 @@
 
+// User related types
 export interface User {
   id: string;
   name: string;
   email: string;
-  password: string; // In a real app, this would never be stored in plain text
-  phone?: string;
-  location?: string;
-  occupation?: string;
+  password: string;
   profileCreated: boolean;
   personalDetails?: PersonalDetails;
   financialDetails?: FinancialDetails;
   goals: Goal[];
   savedNudges: Nudge[];
-  subscription: Subscription;
   transactions: Transaction[];
+  subscription: Subscription;
+  familyMembers?: FamilyMember[];
 }
 
 export interface PersonalDetails {
   age: number;
   familySize: number;
-  maritalStatus: string;
+  maritalStatus: 'single' | 'married' | 'divorced' | 'widowed';
   dependents: number;
   riskTolerance: 'low' | 'medium' | 'high';
-  financialChallenges?: string[];
-  occupation?: string;
-  address?: string;
-  phoneNumber?: string;
+  occupation: string;
+  phoneNumber: string;
+  address: string;
 }
 
 export interface FinancialDetails {
   totalIncome: number;
-  incomeSources: {
-    [key: string]: number;
-  };
-  expenses: {
-    [key: string]: number;
-  };
+  incomeSources: Record<string, number>;
+  expenses: Record<string, number>;
   savings: number;
-  investments: {
-    type: string;
-    amount: number;
-  }[];
-  debts: {
-    type: string;
-    amount: number;
-    interestRate: number;
-    monthlyPayment: number;
-    remainingTenure?: number;
-  }[];
-  debtToIncomeRatio?: number;
-  savingsRate?: number;
+  investments: Investment[];
+  debts: Debt[];
+  debtToIncomeRatio: number;
+  savingsRate: number;
+  festivalPlanning?: Record<string, FestivalPlan>;
+  seasonalPlanning?: Record<string, SeasonalPlan>;
+  investmentIntelligence?: InvestmentIntelligence;
+}
+
+export interface Investment {
+  type: string;
+  amount: number;
+}
+
+export interface Debt {
+  type: string;
+  amount: number;
+  interestRate: number;
+  monthlyPayment: number;
+  remainingTenure: number;
+}
+
+export interface FestivalPlan {
+  budget: number;
+  saved: number;
+}
+
+export interface SeasonalPlan {
+  budget: number;
+  saved: number;
+  purpose: string;
+}
+
+export interface InvestmentIntelligence {
+  riskScore: number;
+  diversificationScore: number;
+  recommendedAssetAllocation: Record<string, number>;
+  upcomingIPOs?: UpcomingIPO[];
+  portfolioPerformance: {
+    lastMonth: number;
+    lastQuarter: number;
+    lastYear: number;
+  };
+}
+
+export interface UpcomingIPO {
+  name: string;
+  expectedDate: string;
+  interestRegistered: boolean;
 }
 
 export interface Goal {
@@ -59,20 +89,30 @@ export interface Goal {
   timelineYears: number;
   monthlySavings: number;
   investment: string;
-  progress?: number;
-  savedAmount?: number;
+  progress: number;
+  savedAmount: number;
 }
 
 export interface Nudge {
   id: string;
-  goalId?: string;
+  goalId: string;
   message: string;
   priority: 'low' | 'medium' | 'high';
   schedule: string;
-  type: 'reminder' | 'opportunity' | 'risk' | 'tip';
-  action?: string;
+  type: 'reminder' | 'tip' | 'opportunity' | 'risk';
+  action: string;
   saved: boolean;
   autoActionEnabled: boolean;
+}
+
+export interface Transaction {
+  id: string;
+  date: string;
+  amount: number;
+  type: 'credit' | 'debit';
+  category: string;
+  description: string;
+  account: string;
 }
 
 export interface Subscription {
@@ -87,34 +127,10 @@ export interface Subscription {
   }[];
 }
 
-export interface Transaction {
-  id: string;
-  date: string;
-  amount: number;
-  type: 'debit' | 'credit';
-  category: string;
-  description: string;
-  account: 'savings' | 'current' | 'investment';
+export interface FamilyMember {
+  name: string;
+  relationship: string;
+  age: number;
+  income: number;
+  expenses: number;
 }
-
-export interface BudgetAnalysis {
-  surplusDeficit: number;
-  debtToIncomeRatio: number;
-  expenseBreakdown: {
-    [key: string]: number;
-  };
-  recommendations: {
-    action: string;
-    amount: number;
-    impact: string;
-  }[];
-  risks: string[];
-  validation: string;
-  categoryLimits: {
-    [key: string]: number;
-  };
-  budgetAlerts: string[];
-}
-
-// Language support
-export type LanguageOption = 'en' | 'hi' | 'hinglish';

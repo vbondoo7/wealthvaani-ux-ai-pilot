@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 import { 
-  User, Goal, Nudge, Transaction, PersonalDetails, FinancialDetails 
+  User, Goal, Nudge, Transaction, PersonalDetails, FinancialDetails, FestivalPlan, SeasonalPlan, FamilyMember
 } from './types';
 import { sampleGoals, sampleNudges, sampleTransactions, generateId, sampleSubscriptions } from './mockData';
 import { predefinedUsers } from './config';
@@ -32,6 +32,13 @@ interface UserStore {
   
   // Subscription
   upgradePlan: (plan: 'Pro' | 'Premium') => void;
+  
+  // Festival and Season Planning
+  updateFestivalPlan: (festival: string, plan: FestivalPlan) => void;
+  updateSeasonalPlan: (season: string, plan: SeasonalPlan) => void;
+  
+  // Family Management
+  updateFamilyMembers: (members: FamilyMember[]) => void;
 }
 
 const useUserStore = create<UserStore>((set, get) => ({
@@ -301,6 +308,85 @@ const useUserStore = create<UserStore>((set, get) => ({
       };
       
       console.log('Upgraded plan for user:', updatedUser.id, 'to', plan);
+      
+      return {
+        currentUser: updatedUser,
+        users: state.users.map(u => u.id === updatedUser.id ? updatedUser : u)
+      };
+    });
+  },
+  
+  updateFestivalPlan: (festival, plan) => {
+    set(state => {
+      if (!state.currentUser || !state.currentUser.financialDetails) {
+        console.log('Cannot update festival plan: No current user or financial details');
+        return state;
+      }
+      
+      const currentFestivalPlans = state.currentUser.financialDetails.festivalPlanning || {};
+      
+      const updatedUser = {
+        ...state.currentUser,
+        financialDetails: {
+          ...state.currentUser.financialDetails,
+          festivalPlanning: {
+            ...currentFestivalPlans,
+            [festival]: plan
+          }
+        }
+      };
+      
+      console.log('Updated festival plan for user:', updatedUser.id, 'Festival:', festival);
+      
+      return {
+        currentUser: updatedUser,
+        users: state.users.map(u => u.id === updatedUser.id ? updatedUser : u)
+      };
+    });
+  },
+  
+  updateSeasonalPlan: (season, plan) => {
+    set(state => {
+      if (!state.currentUser || !state.currentUser.financialDetails) {
+        console.log('Cannot update seasonal plan: No current user or financial details');
+        return state;
+      }
+      
+      const currentSeasonalPlans = state.currentUser.financialDetails.seasonalPlanning || {};
+      
+      const updatedUser = {
+        ...state.currentUser,
+        financialDetails: {
+          ...state.currentUser.financialDetails,
+          seasonalPlanning: {
+            ...currentSeasonalPlans,
+            [season]: plan
+          }
+        }
+      };
+      
+      console.log('Updated seasonal plan for user:', updatedUser.id, 'Season:', season);
+      
+      return {
+        currentUser: updatedUser,
+        users: state.users.map(u => u.id === updatedUser.id ? updatedUser : u)
+      };
+    });
+  },
+  
+  updateFamilyMembers: (members) => {
+    set(state => {
+      if (!state.currentUser) {
+        console.log('Cannot update family members: No current user');
+        return state;
+      }
+      
+      const updatedUser = {
+        ...state.currentUser,
+        familyMembers: members
+      };
+      
+      console.log('Updated family members for user:', updatedUser.id);
       
       return {
         currentUser: updatedUser,

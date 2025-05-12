@@ -17,6 +17,11 @@ import SavedNudges from '@/components/nudges/SavedNudges';
 import Transactions from '@/components/transactions/Transactions';
 import SubscriptionPlans from '@/components/subscription/SubscriptionPlans';
 import FinancialAnalytics from '@/components/analytics/FinancialAnalytics';
+import TalkToAdvisor from '@/components/advisor/TalkToAdvisor';
+import FestivalPlanning from '@/components/festivals/FestivalPlanning';
+import InvestmentIntelligence from '@/components/investment/InvestmentIntelligence';
+import FamilyManagement from '@/components/family/FamilyManagement';
+import LearningCenter from '@/components/LearningCenter';
 import LandingPage from '@/components/LandingPage';
 import useUserStore from '@/lib/userStore';
 import Logo from '@/components/logo/Logo';
@@ -242,6 +247,16 @@ const Index = () => {
         return <SubscriptionPlans />;
       case 'analytics':
         return <FinancialAnalytics onAction={setCurrentScreen} />;
+      case 'advisor':
+        return <TalkToAdvisor />;
+      case 'festival-planning':
+        return <FestivalPlanning />;
+      case 'investment-intelligence':
+        return <InvestmentIntelligence />;
+      case 'family-management':
+        return <FamilyManagement />;
+      case 'learning-center':
+        return <LearningCenter />;
       default:
         return <Dashboard onChangeScreen={setCurrentScreen} />;
     }
