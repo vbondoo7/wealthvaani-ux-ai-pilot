@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,38 +9,91 @@ import { toast } from "sonner";
 import { BlogPost, LanguageOption } from '@/lib/types';
 import { blogPosts } from '@/lib/blogData';
 import { generateId } from '@/lib/mockData';
+import { getAuthenticatedAdmin } from '@/lib/adminService';
+import { Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const BlogAdminPanel: React.FC = () => {
   const { language, t } = useLanguage();
+  const navigate = useNavigate();
   const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [admin, setAdmin] = useState(getAuthenticatedAdmin());
   
-  // Create empty blog template
+  // Redirect if not admin
+  useEffect(() => {
+    if (!admin) {
+      navigate('/blog');
+      toast.error("Admin access required");
+    }
+  }, [admin, navigate]);
+  
+  // Create empty blog template with proper typing
   const createEmptyBlog = (): BlogPost => {
-    const languageOptions: LanguageOption[] = ['en', 'hi', 'hinglish', 'bn', 'ta', 'te', 'pa', 'gu', 'ml'];
-    
-    const emptyMultiLangField = (defaultText = '') => {
-      const result: Record<LanguageOption, string> = {} as Record<LanguageOption, string>;
-      languageOptions.forEach(lang => {
-        result[lang] = defaultText;
-      });
-      return result;
-    };
-    
     return {
       id: blogPosts.length + 1,
       slug: `new-blog-${Date.now()}`,
-      title: emptyMultiLangField('New Blog Title'),
-      excerpt: emptyMultiLangField('This is a new blog post.'),
-      content: emptyMultiLangField('<p>Start writing your blog content here...</p>'),
+      title: {
+        en: 'New Blog Title',
+        hi: 'नया ब्लॉग शीर्षक',
+        hinglish: 'New Blog Title',
+        bn: 'নতুন ব্লগ শিরোনাম',
+        ta: 'புதிய வலைப்பதிவு தலைப்பு',
+        te: 'కొత్త బ్లాగ్ శీర్షిక',
+        pa: 'ਨਵਾਂ ਬਲੌਗ ਸਿਰਲੇਖ',
+        gu: 'નવું બ્લોગ શીર્ષક',
+        ml: 'പുതിയ ബ്ലോഗ് ശീർഷകം'
+      },
+      excerpt: {
+        en: 'This is a new blog post.',
+        hi: 'यह एक नया ब्लॉग पोस्ट है।',
+        hinglish: 'Yeh ek naya blog post hai.',
+        bn: 'এটি একটি নতুন ব্লগ পোস্ট।',
+        ta: 'இது ஒரு புதிய வலைப்பதிவு.',
+        te: 'ఇది ఒక కొత్త బ్లాగ్ పోస్ట్.',
+        pa: 'ਇਹ ਇੱਕ ਨਵੀਂ ਬਲੌਗ ਪੋਸਟ ਹੈ।',
+        gu: 'આ એક નવી બ્લોગ પોસ્ટ છે.',
+        ml: 'ഇത് ഒരു പുതിയ ബ്ലോഗ് പോസ്റ്റ് ആണ്.'
+      },
+      content: {
+        en: '<p>Start writing your blog content here...</p>',
+        hi: '<p>अपनी ब्लॉग सामग्री यहां लिखना शुरू करें...</p>',
+        hinglish: '<p>Apni blog content yahan likhna shuru karen...</p>',
+        bn: '<p>এখানে আপনার ব্লগের বিষয়বস্তু লেখা শুরু করুন...</p>',
+        ta: '<p>உங்கள் வலைப்பதிவு உள்ளடக்கத்தை இங்கே எழுதத் தொடங்கவும்...</p>',
+        te: '<p>మీ బ్లాగ్ కంటెంట్‌ను ఇక్కడ రాయడం ప్రారంభించండి...</p>',
+        pa: '<p>ਆਪਣੀ ਬਲੌਗ ਸਮੱਗਰੀ ਇੱਥੇ ਲਿਖਣਾ ਸ਼ੁਰੂ ਕਰੋ...</p>',
+        gu: '<p>તમારી બ્લોગ સામગ્રી અહીં લખવાનું શરૂ કરો...</p>',
+        ml: '<p>നിങ്ങളുടെ ബ്ലോഗ് ഉള്ളടക്കം ഇവിടെ എഴുതി തുടങ്ങൂ...</p>'
+      },
       author: 'Admin',
       date: new Date().toISOString().split('T')[0],
       readTime: 5,
       featuredImage: '/placeholder.svg',
-      imageAlt: emptyMultiLangField('Featured image'),
+      imageAlt: {
+        en: 'Featured image',
+        hi: 'फीचर्ड इमेज',
+        hinglish: 'Featured image',
+        bn: 'বৈশিষ্ট্যযুক্ত ছবি',
+        ta: 'சிறப்பு படம்',
+        te: 'ఫీచర్డ్ ఇమేజ్',
+        pa: 'ਫੀਚਰਡ ਚਿੱਤਰ',
+        gu: 'ફીચર્ડ ઇમેજ',
+        ml: 'ഫീച്ചർഡ് ചിത്രം'
+      },
       categories: ['Uncategorized'],
       keywords: ['wealthvani'],
-      metaDescription: emptyMultiLangField('A new blog post by Wealthवाणी.')
+      metaDescription: {
+        en: 'A new blog post by Wealthवाणी.',
+        hi: 'Wealthवाणी द्वारा एक नई ब्लॉग पोस्ट।',
+        hinglish: 'Wealthवाणी dwara ek naya blog post.',
+        bn: 'Wealthवाणी দ্বারা একটি নতুন ব্লগ পোস্ট।',
+        ta: 'Wealthवाणी இன் புதிய வலைப்பதிவு.',
+        te: 'Wealthवाणी ద్వారా కొత్త బ్లాగ్ పోస్ట్.',
+        pa: 'Wealthवाणी ਦੁਆਰਾ ਇੱਕ ਨਵੀਂ ਬਲੌਗ ਪੋਸਟ।',
+        gu: 'Wealthवाणी દ્વારા એક નવી બ્લોગ પોસ્ટ.',
+        ml: 'Wealthवाणी നൽകുന്ന ഒരു പുതിയ ബ്ലോഗ് പോസ്റ്റ്.'
+      }
     };
   };
   
@@ -114,43 +167,64 @@ const BlogAdminPanel: React.FC = () => {
     if (isCreatingNew) {
       setNewBlog(prev => {
         const updatedBlog = { ...prev };
+        
         if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
-          const currentField = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
-          (updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>) = {
-            ...currentField,
+          const currentFieldValue = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
+          
+          // Create new object with updated language value
+          const updatedFieldValue = {
+            ...currentFieldValue,
             [editLanguage]: value
           };
+          
+          // Update the field in the blog
+          updatedBlog[field as keyof BlogPost] = updatedFieldValue as any;
         } else if (field === 'categories') {
           updatedBlog.categories = value.split(',').map(cat => cat.trim());
         } else if (field === 'slug') {
           updatedBlog.slug = value;
         }
+        
         return updatedBlog;
       });
     } else if (selectedBlog) {
       setSelectedBlog(prev => {
         if (!prev) return null;
+        
         const updatedBlog = { ...prev };
+        
         if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
-          const currentField = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
-          (updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>) = {
-            ...currentField,
+          const currentFieldValue = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
+          
+          // Create new object with updated language value
+          const updatedFieldValue = {
+            ...currentFieldValue,
             [editLanguage]: value
           };
+          
+          // Update the field in the blog
+          updatedBlog[field as keyof BlogPost] = updatedFieldValue as any;
         } else if (field === 'categories') {
           updatedBlog.categories = value.split(',').map(cat => cat.trim());
         } else if (field === 'slug') {
           updatedBlog.slug = value;
         }
+        
         return updatedBlog;
       });
     }
   };
   
+  // If not admin, don't render the component
+  if (!admin) {
+    return null;
+  }
+  
   return (
     <div className="min-h-screen bg-ivory-white p-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">
+        <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Users className="h-6 w-6 text-royal-blue" />
           {t('admin-dashboard')} - {t('manage-blogs')}
         </h1>
         
@@ -207,12 +281,6 @@ const BlogAdminPanel: React.FC = () => {
                 <option value="en">English</option>
                 <option value="hi">हिंदी (Hindi)</option>
                 <option value="hinglish">Hinglish</option>
-                <option value="bn">বাংলা (Bengali)</option>
-                <option value="ta">தமிழ் (Tamil)</option>
-                <option value="te">తెలుగు (Telugu)</option>
-                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="gu">ગુજરાતી (Gujarati)</option>
-                <option value="ml">മലയാളം (Malayalam)</option>
               </select>
             </div>
             

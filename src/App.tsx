@@ -11,6 +11,9 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import BlogSection from "./components/blog/BlogSection";
 import BlogPost from "./components/blog/BlogPost";
 import BlogAdminPanel from "./components/blog/BlogAdminPanel";
+import BlogDetails from "./components/blog/BlogDetails";
+import { Terms, Careers } from "./pages/Footer";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -59,8 +62,13 @@ const App = () => (
             {/* Marketing Landing Page and Blog */}
             <Route path="/marketing" element={<Marketing />} />
             <Route path="/blog" element={<BlogSection />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/blog/:slug" element={<BlogDetails />} />
             <Route path="/blog/admin" element={<BlogAdminPanel />} />
+            
+            {/* Footer Pages */}
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/pricing" element={<Pricing />} />
             
             {/* Fallback route */}
             <Route path="*" element={<NotFound />} />

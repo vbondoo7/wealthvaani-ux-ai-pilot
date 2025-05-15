@@ -3,7 +3,7 @@ import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Logo from '@/components/logo/Logo';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Building2, Calendar, MapPin } from 'lucide-react';
+import { ArrowRight, Building2, Calendar, MapPin, Briefcase } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Careers: React.FC = () => {
@@ -84,7 +84,9 @@ const Careers: React.FC = () => {
       {/* Navigation */}
       <nav className="py-4 px-6 bg-white/80 backdrop-blur-sm border-b sticky top-0 z-10">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <Logo size="md" variant="full" onClick={() => navigate('/')} className="cursor-pointer" />
+          <div className="cursor-pointer" onClick={() => navigate('/')}>
+            <Logo size="md" variant="full" />
+          </div>
           <Button 
             variant="outline"
             className="text-royal-blue border-royal-blue hover:bg-royal-blue/10"
@@ -98,7 +100,8 @@ const Careers: React.FC = () => {
       {/* Hero Section */}
       <section className="py-16 px-6 bg-gradient-to-r from-royal-blue to-saffron-orange text-white">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 flex items-center justify-center gap-2">
+            <Briefcase className="h-8 w-8" />
             {language === 'en' ? "Join Our Team" : 
              language === 'hi' ? "हमारी टीम से जुड़ें" :
              "Hamari Team Se Judein"}
@@ -114,7 +117,7 @@ const Careers: React.FC = () => {
       {/* Open Positions */}
       <section className="py-16 px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center text-charcoal">
+          <h2 className="text-3xl font-bold mb-12 text-center">
             {language === 'en' ? "Open Positions" : 
              language === 'hi' ? "खुली पोजीशन" :
              "Open Positions"}

@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { LanguageOption } from '@/lib/types';
 
@@ -6,6 +5,7 @@ type LanguageContextType = {
   language: LanguageOption;
   changeLanguage: (lang: LanguageOption) => void;
   t: (key: string) => string;
+  availableLanguages: LanguageOption[];
 };
 
 // Simple translations for demonstration
@@ -46,7 +46,10 @@ const translations = {
     'blog-title': 'Blog Title',
     'blog-content': 'Blog Content',
     'save-changes': 'Save Changes',
-    'cancel': 'Cancel'
+    'cancel': 'Cancel',
+    'pricing': 'Pricing',
+    'careers': 'Careers',
+    'terms': 'Terms & Conditions'
   },
   hi: {
     'home': 'होम',
@@ -176,12 +179,16 @@ export const LanguageContext = createContext<LanguageContextType>({
   language: 'en',
   changeLanguage: () => {},
   t: () => '',
+  availableLanguages: ['en', 'hi', 'hinglish'],
 });
 
 export const useLanguage = () => useContext(LanguageContext);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<LanguageOption>('en');
+  
+  // Primary languages we support for UI and content
+  const availableLanguages: LanguageOption[] = ['en', 'hi', 'hinglish'];
 
   // Load language from localStorage on mount
   useEffect(() => {
@@ -203,7 +210,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <LanguageContext.Provider value={{ language, changeLanguage, t }}>
+    <LanguageContext.Provider value={{ language, changeLanguage, t, availableLanguages }}>
       {children}
     </LanguageContext.Provider>
   );

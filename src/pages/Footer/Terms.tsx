@@ -3,6 +3,7 @@ import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Logo from '@/components/logo/Logo';
 import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 const Terms: React.FC = () => {
@@ -14,7 +15,9 @@ const Terms: React.FC = () => {
       {/* Navigation */}
       <nav className="py-4 px-6 bg-white/80 backdrop-blur-sm border-b sticky top-0 z-10">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <Logo size="md" variant="full" onClick={() => navigate('/')} className="cursor-pointer" />
+          <div className="cursor-pointer" onClick={() => navigate('/')}>
+            <Logo size="md" variant="full" />
+          </div>
           <Button 
             variant="outline"
             className="text-royal-blue border-royal-blue hover:bg-royal-blue/10"
@@ -26,8 +29,11 @@ const Terms: React.FC = () => {
       </nav>
       
       <div className="max-w-4xl mx-auto p-6 py-12">
-        <h1 className="text-3xl font-bold mb-8">
-          {t('terms')}
+        <h1 className="text-3xl font-bold mb-8 flex items-center gap-2">
+          <FileText className="h-6 w-6 text-royal-blue" />
+          {language === 'en' ? "Terms & Conditions" : 
+           language === 'hi' ? "नियम और शर्तें" :
+           "Terms & Conditions"}
         </h1>
         
         <div className="wealth-card mb-8">
