@@ -56,7 +56,13 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
           ? "Read More" 
           : language === 'hi' 
             ? "और पढ़ें" 
-            : "Read More"}
+            : language === 'hinglish'
+              ? "Aur Padhein"
+              : language === 'bn'
+                ? "আরো পড়ুন"
+                : language === 'ta'
+                  ? "மேலும் படிக்க"
+                  : "మరింత చదవండి"}
         <ArrowRight className="ml-1 h-4 w-4" />
       </Button>
     </div>

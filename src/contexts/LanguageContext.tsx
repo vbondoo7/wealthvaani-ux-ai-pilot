@@ -37,7 +37,16 @@ const translations = {
     'smart-planning': 'Smart Financial Planning',
     'secure-private': 'Secure & Private',
     'financial-companion': 'Financial AI Companion',
-    'proactive-insights': 'Proactive Insights'
+    'proactive-insights': 'Proactive Insights',
+    'admin-dashboard': 'Admin Dashboard',
+    'manage-blogs': 'Manage Blogs',
+    'add-blog': 'Add Blog',
+    'edit-blog': 'Edit Blog',
+    'delete-blog': 'Delete Blog',
+    'blog-title': 'Blog Title',
+    'blog-content': 'Blog Content',
+    'save-changes': 'Save Changes',
+    'cancel': 'Cancel'
   },
   hi: {
     'home': 'होम',
@@ -66,7 +75,16 @@ const translations = {
     'smart-planning': 'स्मार्ट वित्तीय योजना',
     'secure-private': 'सुरक्षित और निजी',
     'financial-companion': 'वित्तीय AI साथी',
-    'proactive-insights': 'सक्रिय अंतर्दृष्टि'
+    'proactive-insights': 'सक्रिय अंतर्दृष्टि',
+    'admin-dashboard': 'व्यवस्थापक डैशबोर्ड',
+    'manage-blogs': 'ब्लॉग प्रबंधित करें',
+    'add-blog': 'ब्लॉग जोड़ें',
+    'edit-blog': 'ब्लॉग संपादित करें',
+    'delete-blog': 'ब्लॉग हटाएं',
+    'blog-title': 'ब्लॉग शीर्षक',
+    'blog-content': 'ब्लॉग सामग्री',
+    'save-changes': 'परिवर्तन सहेजें',
+    'cancel': 'रद्द करें'
   },
   hinglish: {
     'home': 'Home',
@@ -95,7 +113,62 @@ const translations = {
     'smart-planning': 'Smart Financial Planning',
     'secure-private': 'Secure & Private',
     'financial-companion': 'Financial AI Companion',
-    'proactive-insights': 'Proactive Insights'
+    'proactive-insights': 'Proactive Insights',
+    'admin-dashboard': 'Admin Dashboard',
+    'manage-blogs': 'Blogs Manage Karein',
+    'add-blog': 'Blog Add Karein',
+    'edit-blog': 'Blog Edit Karein',
+    'delete-blog': 'Blog Delete Karein',
+    'blog-title': 'Blog Title',
+    'blog-content': 'Blog Content',
+    'save-changes': 'Changes Save Karein',
+    'cancel': 'Cancel'
+  },
+  bn: { // Bengali
+    'home': 'হোম',
+    'dashboard': 'ড্যাশবোর্ড',
+    'analytics': 'বিশ্লেষণ',
+    'goals': 'লক্ষ্য',
+    'plans': 'পরিকল্পনা',
+    'welcome': 'স্বাগতম',
+    'login': 'লগইন',
+    'signup': 'সাইন আপ',
+    'create-account': 'অ্যাকাউন্ট তৈরি করুন',
+    'get-started': 'শুরু করুন',
+    'email': 'ইমেল',
+    'password': 'পাসওয়ার্ড',
+    'blog-title': 'ব্লগ শিরোনাম',
+    'blog-content': 'ব্লগ সামগ্রী',
+    'save-changes': 'পরিবর্তনগুলি সংরক্ষণ করুন',
+    'cancel': 'বাতিল'
+  },
+  ta: { // Tamil
+    'home': 'முகப்பு',
+    'dashboard': 'டாஷ்போர்டு',
+    'analytics': 'பகுப்பாய்வு',
+    'goals': 'இலக்குகள்',
+    'plans': 'திட்டங்கள்',
+    'welcome': 'வரவேற்கிறோம்',
+    'login': 'உள்நுழைய',
+    'signup': 'பதிவு செய்ய',
+    'blog-title': 'வலைப்பதிவு தலைப்பு',
+    'blog-content': 'வலைப்பதிவு உள்ளடக்கம்',
+    'save-changes': 'மாற்றங்களை சேமி',
+    'cancel': 'ரத்து செய்'
+  },
+  te: { // Telugu
+    'home': 'హోమ్',
+    'dashboard': 'డాష్‌బోర్డ్',
+    'analytics': 'విశ్లేషణలు',
+    'goals': 'లక్ష్యాలు',
+    'plans': 'ప్రణాళికలు',
+    'welcome': 'స్వాగతం',
+    'login': 'లాగిన్',
+    'signup': 'సైన్ అప్',
+    'blog-title': 'బ్లాగ్ శీర్షిక',
+    'blog-content': 'బ్లాగ్ విషయం',
+    'save-changes': 'మార్పులను సేవ్ చేయండి',
+    'cancel': 'రద్దు'
   }
 };
 
@@ -113,7 +186,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Load language from localStorage on mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('wealthvani-language');
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'hi' || savedLanguage === 'hinglish')) {
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'hi' || savedLanguage === 'hinglish' || 
+        savedLanguage === 'bn' || savedLanguage === 'ta' || savedLanguage === 'te')) {
       setLanguage(savedLanguage as LanguageOption);
     }
   }, []);
@@ -125,7 +199,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const t = (key: string): string => {
     const currentTranslations = translations[language];
-    return currentTranslations[key as keyof typeof currentTranslations] || key;
+    return currentTranslations?.[key as keyof typeof currentTranslations] || key;
   };
 
   return (

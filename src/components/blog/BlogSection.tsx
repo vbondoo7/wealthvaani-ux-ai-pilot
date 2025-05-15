@@ -2,19 +2,23 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Facebook, Linkedin, Instagram } from "lucide-react";
+import { ArrowLeft, Facebook, Linkedin, Instagram, Edit } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { blogPosts } from '@/lib/blogData';
 import BlogCard from './BlogCard';
 import BlogSearch from './BlogSearch';
 import BlogCategories from './BlogCategories';
 import { cn } from '@/lib/utils';
+import useUserStore from '@/lib/userStore';
+import BlogAdminPanel from './BlogAdminPanel';
 
 const BlogSection: React.FC = () => {
   const { language } = useLanguage();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const { currentUser } = useUserStore();
+  const [isAdminMode, setIsAdminMode] = useState(false);
   
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory ? post.categories.includes(selectedCategory) : true;
@@ -31,6 +35,11 @@ const BlogSection: React.FC = () => {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
+
+  // If in admin mode and user is admin, show admin panel
+  if (isAdminMode && currentUser?.isAdmin) {
+    return <BlogAdminPanel />;
+  }
   
   return (
     <div className="min-h-screen bg-ivory-white">
@@ -51,6 +60,20 @@ const BlogSection: React.FC = () => {
           </Button>
           
           <div className="flex items-center gap-4">
+            {currentUser?.isAdmin && (
+              <Button 
+                variant="outline"
+                className="flex items-center gap-2 mr-2"
+                onClick={() => setIsAdminMode(!isAdminMode)}
+              >
+                <Edit className="h-4 w-4" />
+                {language === 'en' 
+                  ? "Manage Blogs" 
+                  : language === 'hi' 
+                    ? "ब्लॉग प्रबंधित करें" 
+                    : "Blogs Manage Karein"}
+              </Button>
+            )}
             <div className="flex gap-2">
               <a href="#" className="p-1.5 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
                 <Instagram className="h-4 w-4 text-royal-blue" />
@@ -83,6 +106,72 @@ const BlogSection: React.FC = () => {
                 ? "बेहतर वित्तीय निर्णय लेने में आपकी मदद करने के लिए अंतर्दृष्टि, युक्तियाँ और मार्गदर्शन।"
                 : "Behtar financial decisions lene mein aapki help karne ke liye insights, tips aur guidance."}
           </p>
+          
+          {/* Language Selector */}
+          <div className="mt-6">
+            <div className="inline-flex rounded-md shadow-sm" role="group">
+              <button
+                type="button"
+                className={`px-4 py-2 text-sm font-medium ${language === 'en' ? 'bg-royal-blue text-white' : 'bg-white text-gray-700 hover:bg-gray-50'} border border-gray-200 rounded-l-lg`}
+                onClick={() => {
+                  const { changeLanguage } = useLanguage();
+                  changeLanguage('en');
+                }}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                className={`px-4 py-2 text-sm font-medium ${language === 'hi' ? 'bg-royal-blue text-white' : 'bg-white text-gray-700 hover:bg-gray-50'} border border-gray-200`}
+                onClick={() => {
+                  const { changeLanguage } = useLanguage();
+                  changeLanguage('hi');
+                }}
+              >
+                हिंदी
+              </button>
+              <button
+                type="button"
+                className={`px-4 py-2 text-sm font-medium ${language === 'hinglish' ? 'bg-royal-blue text-white' : 'bg-white text-gray-700 hover:bg-gray-50'} border border-gray-200`}
+                onClick={() => {
+                  const { changeLanguage } = useLanguage();
+                  changeLanguage('hinglish');
+                }}
+              >
+                Hinglish
+              </button>
+              <button
+                type="button"
+                className={`px-4 py-2 text-sm font-medium ${language === 'bn' ? 'bg-royal-blue text-white' : 'bg-white text-gray-700 hover:bg-gray-50'} border border-gray-200`}
+                onClick={() => {
+                  const { changeLanguage } = useLanguage();
+                  changeLanguage('bn');
+                }}
+              >
+                বাংলা
+              </button>
+              <button
+                type="button"
+                className={`px-4 py-2 text-sm font-medium ${language === 'ta' ? 'bg-royal-blue text-white' : 'bg-white text-gray-700 hover:bg-gray-50'} border border-gray-200`}
+                onClick={() => {
+                  const { changeLanguage } = useLanguage();
+                  changeLanguage('ta');
+                }}
+              >
+                தமிழ்
+              </button>
+              <button
+                type="button"
+                className={`px-4 py-2 text-sm font-medium ${language === 'te' ? 'bg-royal-blue text-white' : 'bg-white text-gray-700 hover:bg-gray-50'} border border-gray-200 rounded-r-lg`}
+                onClick={() => {
+                  const { changeLanguage } = useLanguage();
+                  changeLanguage('te');
+                }}
+              >
+                తెలుగు
+              </button>
+            </div>
+          </div>
           
           {/* Search */}
           <div className="mt-8 max-w-md mx-auto">

@@ -41,9 +41,23 @@ interface UserStore {
   updateFamilyMembers: (members: FamilyMember[]) => void;
 }
 
+// Add admin user
+const adminUser: User = {
+  id: 'admin-001',
+  name: 'Admin',
+  email: 'admin@wealthvani.com',
+  password: 'Vishal#123',
+  profileCreated: true,
+  isAdmin: true,
+  goals: [],
+  savedNudges: [],
+  transactions: [],
+  subscription: sampleSubscriptions.Premium
+};
+
 const useUserStore = create<UserStore>((set, get) => ({
   // Initialize with predefined users
-  users: [...predefinedUsers],
+  users: [...predefinedUsers, adminUser],
   currentUser: null,
   isAuthenticated: false,
   

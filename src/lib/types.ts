@@ -1,3 +1,4 @@
+
 // User related types
 export interface User {
   id: string;
@@ -12,6 +13,7 @@ export interface User {
   transactions: Transaction[];
   subscription: Subscription;
   familyMembers?: FamilyMember[];
+  isAdmin?: boolean;
 }
 
 export interface PersonalDetails {
@@ -136,7 +138,7 @@ export interface FamilyMember {
 }
 
 // Language type for the app
-export type LanguageOption = 'en' | 'hi' | 'hinglish';
+export type LanguageOption = 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te';
 
 export interface BlogPost {
   id: number;

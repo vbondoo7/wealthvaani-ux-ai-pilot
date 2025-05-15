@@ -10,6 +10,7 @@ import Marketing from "./pages/Marketing";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import BlogSection from "./components/blog/BlogSection";
 import BlogPost from "./components/blog/BlogPost";
+import BlogAdminPanel from "./components/blog/BlogAdminPanel";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,10 +56,11 @@ const App = () => (
               <Route index element={<Navigate to="/landing" replace />} />
             </Route>
             
-            {/* New Marketing Landing Page and Blog */}
+            {/* Marketing Landing Page and Blog */}
             <Route path="/marketing" element={<Marketing />} />
             <Route path="/blog" element={<BlogSection />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/blog/admin" element={<BlogAdminPanel />} />
             
             {/* Fallback route */}
             <Route path="*" element={<NotFound />} />
