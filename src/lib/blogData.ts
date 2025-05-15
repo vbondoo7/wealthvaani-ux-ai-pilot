@@ -4,513 +4,132 @@ import { BlogPost } from './types';
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
-    slug: 'why-indians-struggle-with-personal-finance',
+    slug: "why-indians-struggle-with-personal-finance",
     title: {
-      en: 'Why Most Indians Struggle with Personal Finance (And What You Can Do About It)',
-      hi: 'अधिकांश भारतीय व्यक्तिगत वित्त के साथ क्यों संघर्ष करते हैं (और आप इसके बारे में क्या कर सकते हैं)',
-      hinglish: 'Why Most Indians Struggle with Personal Finance (Aur Aap Iske Baare Mein Kya Kar Sakte Hain)',
-      bn: 'অধিকাংশ ভারতীয় ব্যক্তিগত অর্থনীতি নিয়ে কেন সংগ্রাম করে (এবং আপনি এ সম্পর্কে কী করতে পারেন)',
-      ta: 'பெரும்பாலான இந்தியர்கள் தனிப்பட்ட நிதி குறித்து ஏன் போராடுகிறார்கள் (மற்றும் நீங்கள் இதைப் பற்றி என்ன செய்யலாம்)',
-      te: 'చాలా మంది భారతీయులు వ్యక్తిగత ఆర్థిక విషయాలతో ఎందుకు పోరాడుతున్నారు (మరియు మీరు దీని గురించి ఏమి చేయవచ్చు)'
+      en: "Why Most Indians Struggle with Personal Finance",
+      hi: "अधिकांश भारतीय व्यक्तिगत वित्त के साथ क्यों संघर्ष करते हैं",
+      hinglish: "Kyu Most Indians Personal Finance Ke Saath Struggle Karte Hain",
+      bn: "কেন অধিকাংশ ভারতীয় ব্যক্তিগত অর্থ নিয়ে সংগ্রাম করে",
+      ta: "பெரும்பாலான இந்தியர்கள் தனிப்பட்ட நிதி பற்றி ஏன் போராடுகிறார்கள்",
+      te: "చాలా మంది భారతీయులు వ్యక్తిగత ఆర్థిక విషయాలతో ఎందుకు పోరాడుతున్నారు",
+      pa: "ਕਿਉਂ ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਨਿੱਜੀ ਵਿੱਤ ਨਾਲ ਸੰਘਰਸ਼ ਕਰਦੇ ਹਨ",
+      gu: "શા માટે મોટાભાગના ભારતીયો વ્યક્તિગત નાણાં સાથે સંઘર્ષ કરે છે",
+      ml: "മിക്ക ഇന്ത്യക്കാരും വ്യക്തിഗത ധനകാര്യത്തിൽ എന്തുകൊണ്ട് പോരാടുന്നു"
     },
     excerpt: {
-      en: 'Despite earning more than ever before, most Indian households struggle with basic financial planning. Discover why this happens and how Wealthवाणी can help.',
-      hi: 'पहले से कहीं अधिक कमाई करने के बावजूद, अधिकांश भारतीय परिवार बुनियादी वित्तीय नियोजन के साथ संघर्ष करते हैं। जानें कि यह क्यों होता है और Wealthवाणी कैसे मदद कर सकता है।',
-      hinglish: 'Pehle se kahin zyada kamai karne ke bawajood, adhiktar Indian families basic financial planning ke saath struggle karte hain. Janiye kyun aur Wealthवाणी kaise madad kar sakta hai.',
-      bn: 'আগের তুলনায় অনেক বেশি উপার্জন করা সত্ত্বেও, বেশিরভাগ ভারতীয় পরিবার মৌলিক আর্থিক পরিকল্পনার সাথে সংগ্রাম করে। জানুন কেন এটি হয় এবং Wealthवाणी কীভাবে সাহায্য করতে পারে।',
-      ta: 'முன்பை விட அதிகமாக சம்பாதித்த போதிலும், பெரும்பாலான இந்திய குடும்பங்கள் அடிப்படை நிதித் திட்டமிடலில் போராடுகின்றன. இது ஏன் நடக்கிறது மற்றும் Wealthवाणी எவ்வாறு உதவ முடியும் என்பதைக் கண்டறியுங்கள்.',
-      te: 'గతం కంటే ఎక్కువ సంపాదిస్తున్నప్పటికీ, చాలా భారతీయ కుటుంబాలు ప్రాథమిక ఆర్థిక ప్రణాళికతో పోరాడుతున్నాయి. ఇది ఎందుకు జరుగుతుంది మరియు Wealthवाणी ఎలా సహాయపడగలదో తెలుసుకోండి.'
+      en: "Most Indians are emotionally driven when it comes to money — but the truth is, despite earning more than ever before, most Indian households struggle with basic financial planning.",
+      hi: "अधिकांश भारतीय पैसे के मामले में भावनात्मक रूप से प्रेरित होते हैं — लेकिन सच्चाई यह है कि पहले से कहीं अधिक कमाई करने के बावजूद, अधिकांश भारतीय परिवार बुनियादी वित्तीय योजना के साथ संघर्ष करते हैं।",
+      hinglish: "Most Indians emotionally driven hote hain jab money ki baat aati hai — lekin sach ye hai ki, pehle se kahin zyada kamane ke bawajood, most Indian households basic financial planning ke saath struggle karte hain.",
+      bn: "অর্থের ব্যাপারে বেশিরভাগ ভারতীয়রাই আবেগতাড়িত হয় — কিন্তু সত্য হল, আগের তুলনায় বেশি উপার্জন করা সত্ত্বেও, বেশিরভাগ ভারতীয় পরিবার মৌলিক আর্থিক পরিকল্পনার সাথে সংগ্রাম করে।",
+      ta: "பெரும்பாலான இந்தியர்கள் பணம் விஷயத்தில் உணர்ச்சி வசப்படுகிறார்கள் — ஆனால் உண்மை என்னவென்றால், முன்பை விட அதிகமாக வருமானம் ஈட்டினாலும், பெரும்பாலான இந்திய குடும்பங்கள் அடிப்படை நிதித் திட்டமிடலில் போராடுகின்றன.",
+      te: "చాలా మంది భారతీయులు డబ్బు విషయంలో భావోద్వేగంగా ఉంటారు — కానీ నిజం ఏమిటంటే, ఇంతకుముందు కంటే ఎక్కువ సంపాదిస్తున్నప్పటికీ, చాలా భారతీయ కుటుంబాలు ప్రాథమిక ఆర్థిక ప్రణాళికతో పోరాడుతున్నాయి.",
+      pa: "ਜਦੋਂ ਪੈਸੇ ਦੀ ਗੱਲ ਆਉਂਦੀ ਹੈ, ਤਾਂ ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਭਾਵਨਾਤਮਕ ਤੌਰ 'ਤੇ ਪ੍ਰੇਰਿਤ ਹੁੰਦੇ ਹਨ — ਪਰ ਸੱਚਾਈ ਇਹ ਹੈ ਕਿ ਪਹਿਲਾਂ ਨਾਲੋਂ ਕਿਤੇ ਜ਼ਿਆਦਾ ਕਮਾਈ ਕਰਨ ਦੇ ਬਾਵਜੂਦ, ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਪਰਿਵਾਰ ਬੁਨਿਆਦੀ ਵਿੱਤੀ ਯੋਜਨਾਬੰਦੀ ਨਾਲ ਸੰਘਰਸ਼ ਕਰਦੇ ਹਨ।",
+      gu: "મોટાભાગના ભારતીયો જ્યારે નાણાંની વાત આવે છે ત્યારે લાગણીથી પ્રેરિત હોય છે — પરંતુ સત્ય એ છે કે, અગાઉ કરતાં વધુ કમાણી કરવા છતાં, મોટાભાગના ભારતીય પરિવારો મૂળભૂત નાણાકીય આયોજન સાથે સંઘર્ષ કરે છે.",
+      ml: "മിക്ക ഇന്ത്യക്കാരും പണത്തിന്റെ കാര്യത്തിൽ വൈകാരികമായി പ്രേരിതരാണ് - പക്ഷേ സത്യമെന്താണെന്നാൽ, മുമ്പത്തേക്കാൾ കൂടുതൽ വരുമാനം ലഭിക്കുന്നുണ്ടെങ്കിലും, മിക്ക ഇന്ത്യൻ കുടുംബങ്ങളും അടിസ്ഥാന സാമ്പത്തിക ആസൂത്രണത്തിൽ പോരാടുന്നു."
     },
     content: {
-      en: `<h2>Introduction</h2>
-      <p>"Paisa to sab kamate hain… par sambhalte kitne log hain?" Most Indians are emotionally driven when it comes to money — but the truth is, despite earning more than ever before, most Indian households struggle with basic financial planning.</p>
-      <p>From the urban millennial living paycheck-to-paycheck, to the middle-aged parent worried about kids' education and aging parents, to retired elders confused by bank schemes — financial confusion is everywhere.</p>
-      <p>But why?</p>
-      
-      <h2>The Root of the Problem: Culture, Complexity & Confusion</h2>
-      <h3>1. Talking about money is taboo</h3>
-      <p>In many Indian families, money matters are never discussed openly. Children grow up not knowing how much their family earns or saves. The result? We enter adulthood with zero financial literacy.</p>
-      
-      <h3>2. Financial products are confusing</h3>
-      <p>Mutual funds, ULIPs, SIPs, ELSS, FD, NPS, PPF, crypto… the average Indian is bombarded with options but lacks clarity and confidence. Most end up doing what a friend or relative suggests — often without understanding the risk or relevance.</p>
-      
-      <h3>3. No structured financial education</h3>
-      <p>Schools don't teach us about budgeting, taxes, or EMIs. Colleges teach engineering or arts — but not how to save, invest, or plan for retirement. By the time we learn, it's often too late.</p>
-      
-      <h3>4. Family responsibilities > personal goals</h3>
-      <p>In India, joint families and social obligations mean you're not just managing your money — you're responsible for parents, siblings, kids, even weddings and emergencies.</p>
-      <p>"I want to save, but what if Papa falls ill?" "I want to invest, but I also need to plan for my sister's marriage."</p>
-      
-      <h2>A Day in the Life: Real Stories</h2>
-      <ul>
-        <li>Rohit, 30, earns ₹70,000/month in Bangalore but ends the month with ₹1,500 in savings. He doesn't track where his money goes.</li>
-        <li>Sunita, 42, is a homemaker who manages her household with ₹25,000/month. She keeps ₹10,000 in a tin box because she doesn't trust digital apps.</li>
-        <li>Ali, 50, has 3 insurance policies, 2 mutual funds, and 1 loan. But he doesn't know if he can retire by 60. He says, "I just followed what my LIC agent said."</li>
-      </ul>
-      
-      <h2>So… What's the Solution?</h2>
-      <p>Introducing Wealthवाणी — your AI-powered Indian wealth companion.</p>
-      <p>What is it? A culturally aware, mobile-first personal finance assistant that helps you:</p>
-      <ul>
-        <li>✅ Understand your cash flow</li>
-        <li>✅ Set & achieve financial goals (house, retirement, kids' education)</li>
-        <li>✅ Get smart nudges based on your income & lifestyle</li>
-        <li>✅ Improve your credit, plan investments & avoid debt traps</li>
-      </ul>
-      <p>Designed for Indian families, with the cultural context that global apps often miss.</p>
-      
-      <h2>How We Help (Even If You're Not a Finance Expert)</h2>
-      <table>
-        <tr>
-          <th>Problem</th>
-          <th>Wealthवाणी Feature</th>
-        </tr>
-        <tr>
-          <td>I don't know where my money goes</td>
-          <td>Budget analyzer & expense tracker</td>
-        </tr>
-        <tr>
-          <td>I want to buy a home but don't know if I can afford</td>
-          <td>Goal-based planning & affordability calculator</td>
-        </tr>
-        <tr>
-          <td>I want to save, but I keep forgetting</td>
-          <td>Smart nudges & auto-suggestions</td>
-        </tr>
-        <tr>
-          <td>I don't know which plan to choose</td>
-          <td>Personalized, unbiased recommendations</td>
-        </tr>
-        <tr>
-          <td>I don't trust paid advisors</td>
-          <td>We're not selling. We're guiding — using AI</td>
-        </tr>
-      </table>
-      
-      <h2>Why You Should Care (Now)</h2>
-      <p>"The earlier you start managing your money, the more freedom you create later."</p>
-      <p>Whether you're 22 or 42, managing your money isn't about how much you earn — it's about what you do with what you have. And you don't need to be a CA or MBA to do it.</p>
-      <p>You just need a smart guide who understands your life — and walks with you.</p>
-      
-      <h2>Call to Action</h2>
-      <p>Get started for FREE in just 60 seconds. Let Wealthवाणी analyze your finances and give you your first personalized advice — no jargon, no selling, just smart insights.</p>
-      <p><a href="#" class="text-royal-blue hover:underline">Try it now</a></p>
-      
-      <h2>Bonus Tip: Want to be financially wiser than 90% of Indians?</h2>
-      <p>Subscribe to our blog, and follow us on Instagram & LinkedIn for weekly tips, mythbusters, and real-life stories that'll transform your money mindset.</p>`,
-      
-      hi: `<h2>परिचय</h2>
-      <p>"पैसा तो सब कमाते हैं... पर संभलते कितने लोग हैं?" अधिकांश भारतीय पैसे के मामले में भावनात्मक रूप से प्रेरित होते हैं — लेकिन सच्चाई यह है कि, पहले से कहीं अधिक कमाई करने के बावजूद, अधिकांश भारतीय परिवार बुनियादी वित्तीय नियोजन के साथ संघर्ष करते हैं।</p>
-      <p>पेचेक-से-पेचेक जीने वाले शहरी मिलेनियल से लेकर, बच्चों की शिक्षा और बुजुर्ग माता-पिता की चिंता में डूबे मध्य आयु वर्ग के अभिभावक तक, बैंक योजनाओं से भ्रमित सेवानिवृत्त बुजुर्गों तक — वित्तीय भ्रम हर जगह है।</p>
-      <p>लेकिन क्यों?</p>
-      
-      <h2>समस्या की जड़: संस्कृति, जटिलता और भ्रम</h2>
-      <h3>1. पैसे के बारे में बात करना वर्जित है</h3>
-      <p>कई भारतीय परिवारों में, पैसे के मामलों पर कभी खुलकर चर्चा नहीं की जाती। बच्चे यह नहीं जानते कि उनका परिवार कितना कमाता है या बचाता है। परिणाम? हम शून्य वित्तीय साक्षरता के साथ वयस्कता में प्रवेश करते हैं।</p>
-      
-      <h3>2. वित्तीय उत्पाद भ्रमित करने वाले हैं</h3>
-      <p>म्यूचुअल फंड, यूलिप, एसआईपी, ईएलएसएस, एफडी, एनपीएस, पीपीएफ, क्रिप्टो... औसत भारतीय विकल्पों से बमबारी किया जाता है लेकिन स्पष्टता और आत्मविश्वास की कमी होती है। अधिकांश वही करते हैं जो कोई मित्र या रिश्तेदार सुझाव देता है — अक्सर जोखिम या प्रासंगिकता को समझे बिना।</p>
-      
-      <h3>3. कोई संरचित वित्तीय शिक्षा नहीं</h3>
-      <p>स्कूल हमें बजट बनाने, करों या ईएमआई के बारे में नहीं सिखाते। कॉलेज इंजीनियरिंग या कला सिखाते हैं — लेकिन यह नहीं कि कैसे बचत करें, निवेश करें, या सेवानिवृत्ति की योजना बनाएं। जब तक हम सीखते हैं, अक्सर बहुत देर हो चुकी होती है।</p>
-      
-      <h3>4. पारिवारिक जिम्मेदारियां > व्यक्तिगत लक्ष्य</h3>
-      <p>भारत में, संयुक्त परिवार और सामाजिक दायित्वों का मतलब है कि आप केवल अपने पैसे का प्रबंधन नहीं कर रहे हैं — आप माता-पिता, भाई-बहनों, बच्चों, यहां तक कि शादियों और आपातकाल के लिए भी जिम्मेदार हैं।</p>
-      <p>"मैं बचत करना चाहता हूं, लेकिन अगर पापा बीमार हो गए तो?" "मैं निवेश करना चाहता हूं, लेकिन मुझे अपनी बहन की शादी की योजना भी बनानी है।"</p>
-      
-      <h2>जीवन में एक दिन: वास्तविक कहानियां</h2>
-      <ul>
-        <li>रोहित, 30, बैंगलोर में ₹70,000/महीना कमाता है लेकिन महीने के अंत में ₹1,500 की बचत के साथ समाप्त होता है। वह ट्रैक नहीं करता कि उसका पैसा कहां जाता है।</li>
-        <li>सुनीता, 42, एक गृहिणी है जो ₹25,000/महीना के साथ अपने घर का प्रबंधन करती है। वह ₹10,000 एक टिन बॉक्स में रखती है क्योंकि वह डिजिटल ऐप्स पर भरोसा नहीं करती।</li>
-        <li>अली, 50, के पास 3 बीमा पॉलिसियां, 2 म्यूचुअल फंड और 1 ऋण है। लेकिन वह नहीं जानता कि क्या वह 60 तक सेवानिवृत्त हो सकता है। वह कहता है, "मैंने बस वही किया जो मेरे एलआईसी एजेंट ने कहा था।"</li>
-      </ul>
-      
-      <h2>तो... क्या है समाधान?</h2>
-      <p>पेश है Wealthवाणी — आपका एआई-संचालित भारतीय धन साथी।</p>
-      <p>यह क्या है? एक सांस्कृतिक रूप से जागरूक, मोबाइल-फर्स्ट व्यक्तिगत वित्त सहायक जो आपकी मदद करता है:</p>
-      <ul>
-        <li>✅ अपने नकदी प्रवाह को समझें</li>
-        <li>✅ वित्तीय लक्ष्य निर्धारित करें और प्राप्त करें (घर, सेवानिवृत्ति, बच्चों की शिक्षा)</li>
-        <li>✅ अपनी आय और जीवनशैली के आधार पर स्मार्ट नजस प्राप्त करें</li>
-        <li>✅ अपना क्रेडिट सुधारें, निवेश की योजना बनाएं और ऋण जाल से बचें</li>
-      </ul>
-      <p>भारतीय परिवारों के लिए डिज़ाइन किया गया, सांस्कृतिक संदर्भ के साथ जो वैश्विक ऐप्स अक्सर याद करते हैं।</p>
-      
-      <h2>हम कैसे मदद करते हैं (भले ही आप वित्त विशेषज्ञ न हों)</h2>
-      <table>
-        <tr>
-          <th>समस्या</th>
-          <th>Wealthवाणी विशेषता</th>
-        </tr>
-        <tr>
-          <td>मुझे नहीं पता मेरा पैसा कहां जाता है</td>
-          <td>बजट विश्लेषक और व्यय ट्रैकर</td>
-        </tr>
-        <tr>
-          <td>मैं एक घर खरीदना चाहता हूं लेकिन नहीं जानता कि क्या मैं उसे खर्च कर सकता हूं</td>
-          <td>लक्ष्य-आधारित योजना और वहनीयता कैलकुलेटर</td>
-        </tr>
-        <tr>
-          <td>मैं बचत करना चाहता हूं, लेकिन मैं भूल जाता हूं</td>
-          <td>स्मार्ट नजस और ऑटो-सुझाव</td>
-        </tr>
-        <tr>
-          <td>मुझे नहीं पता कौन सी योजना चुनें</td>
-          <td>व्यक्तिगत, निष्पक्ष सिफारिशें</td>
-        </tr>
-        <tr>
-          <td>मैं भुगतान किए गए सलाहकारों पर भरोसा नहीं करता</td>
-          <td>हम बेच नहीं रहे हैं। हम मार्गदर्शन कर रहे हैं — एआई का उपयोग करके</td>
-        </tr>
-      </table>
-      
-      <h2>आपको क्यों परवाह करनी चाहिए (अभी)</h2>
-      <p>"जितनी जल्दी आप अपने पैसे का प्रबंधन करना शुरू करेंगे, उतनी ही अधिक स्वतंत्रता आप बाद में बनाएंगे।"</p>
-      <p>चाहे आप 22 हों या 42, अपने पैसे का प्रबंधन करना इस बारे में नहीं है कि आप कितना कमाते हैं — यह इस बारे में है कि आप अपने पास जो है उसके साथ क्या करते हैं। और आपको इसे करने के लिए सीए या एमबीए होने की जरूरत नहीं है।</p>
-      <p>आपको बस एक स्मार्ट गाइड की जरूरत है जो आपके जीवन को समझता है — और आपके साथ चलता है।</p>
-      
-      <h2>कॉल टू एक्शन</h2>
-      <p>मात्र 60 सेकंड में मुफ्त में शुरू करें। Wealthवाणी को अपने वित्त का विश्लेषण करने और आपको अपनी पहली व्यक्तिगत सलाह देने दें — कोई जार्गन नहीं, कोई बिक्री नहीं, केवल स्मार्ट अंतर्दृष्टि।</p>
-      <p><a href="#" class="text-royal-blue hover:underline">अभी प्रयास करें</a></p>
-      
-      <h2>बोनस टिप: 90% भारतीयों से वित्तीय रूप से बुद्धिमान बनना चाहते हैं?</h2>
-      <p>हमारे ब्लॉग की सदस्यता लें, और साप्ताहिक युक्तियों, मिथ बस्टर्स और वास्तविक जीवन की कहानियों के लिए Instagram और LinkedIn पर हमें फॉलो करें जो आपकी मनी माइंडसेट को बदल देंगी।</p>`,
-      
-      hinglish: `<h2>Introduction</h2>
-      <p>"Paisa to sab kamate hain… par sambhalte kitne log hain?" Most Indians are emotionally driven when it comes to money — but the truth is, pehle se kahin zyada kamai karne ke bawajood, adhiktar Indian households basic financial planning ke saath struggle karte hain.</p>
-      <p>Urban millennial jo paycheck-to-paycheck jeete hain, se lekar middle-aged parent jo bacchon ki education aur aging parents ki chinta mein hain, to retired elders jo bank schemes se confused hain — financial confusion har jagah hai.</p>
-      <p>Par kyun?</p>
-      
-      <h2>Samasyaa ki Jad: Culture, Complexity aur Confusion</h2>
-      <h3>1. Paise ke baare mein baat karna taboo hai</h3>
-      <p>Kai Indian families mein, money matters kabhi openly discuss nahin kiye jaate. Children bade hote hain ye jaane bina ki unka family kitna kamata hai ya bachata hai. Result? Hum zero financial literacy ke saath adulthood mein enter karte hain.</p>
-      
-      <h3>2. Financial products confusing hain</h3>
-      <p>Mutual funds, ULIPs, SIPs, ELSS, FD, NPS, PPF, crypto… average Indian ko options se bombard kiya jata hai but clarity aur confidence ki kami hoti hai. Most log wahi karte hain jo koi friend ya relative suggest karta hai — aksar risk ya relevance ko samjhe bina.</p>
-      
-      <h3>3. Koi structured financial education nahin</h3>
-      <p>Schools humein budgeting, taxes, ya EMIs ke baare mein nahin sikhate. Colleges engineering ya arts sikhate hain — lekin ye nahin ki kaise bachaya jaye, invest kiya jaye, ya retirement ki planning ki jaye. Jab tak hum seekhte hain, aksar bahut der ho chuki hoti hai.</p>
-      
-      <h3>4. Family responsibilities > personal goals</h3>
-      <p>India mein, joint families aur social obligations ka matlab hai ki aap sirf apne paise ka management nahin kar rahe — aap parents, siblings, bachche, yahan tak ki weddings aur emergencies ke liye bhi responsible hain.</p>
-      <p>"Main bachana chahta hoon, but what if Papa bimar ho gaye?" "Main invest karna chahta hoon, but mujhe apni sister ki shaadi ki planning bhi karni hai."</p>
-      
-      <h2>A Day in the Life: Real Stories</h2>
-      <ul>
-        <li>Rohit, 30, Bangalore mein ₹70,000/month kamata hai par month end mein ₹1,500 ki savings ke saath khatam hota hai. Woh track nahin karta ki uska paisa kahan jata hai.</li>
-        <li>Sunita, 42, ek homemaker hai jo ₹25,000/month ke saath apne household ka management karti hai. Woh ₹10,000 ek tin box mein rakhti hai kyunki woh digital apps par trust nahin karti.</li>
-        <li>Ali, 50, ke paas 3 insurance policies, 2 mutual funds, aur 1 loan hai. Lekin woh nahin janta ki kya woh 60 tak retire ho sakta hai. Woh kehta hai, "Maine bas wahi kiya jo mere LIC agent ne kaha tha."</li>
-      </ul>
-      
-      <h2>To… Kya Hai Solution?</h2>
-      <p>Introducing Wealthवाणी — your AI-powered Indian wealth companion.</p>
-      <p>Yeh kya hai? Ek culturally aware, mobile-first personal finance assistant jo aapki madad karta hai:</p>
-      <ul>
-        <li>✅ Apne cash flow ko samjho</li>
-        <li>✅ Financial goals set karo aur achieve karo (ghar, retirement, bachcho ki education)</li>
-        <li>✅ Get smart nudges based on your income & lifestyle</li>
-        <li>✅ Apna credit improve karo, investments plan karo aur debt traps se bacho</li>
-      </ul>
-      <p>Indian families ke liye design kiya gaya, with cultural context jo global apps aksar miss kar dete hain.</p>
-      
-      <h2>Hum Kaise Help Karte Hain (Even If You're Not a Finance Expert)</h2>
-      <table>
-        <tr>
-          <th>Problem</th>
-          <th>Wealthवाणी Feature</th>
-        </tr>
-        <tr>
-          <td>Mujhe nahi pata mera paisa kahan jata hai</td>
-          <td>Budget analyzer & expense tracker</td>
-        </tr>
-        <tr>
-          <td>Main ek ghar kharidna chahta hoon par nahi janta ki kya main afford kar sakta hoon</td>
-          <td>Goal-based planning & affordability calculator</td>
-        </tr>
-        <tr>
-          <td>Main bachana chahta hoon, par main bhool jata hoon</td>
-          <td>Smart nudges & auto-suggestions</td>
-        </tr>
-        <tr>
-          <td>Mujhe nahi pata kaun sa plan choose karoon</td>
-          <td>Personalized, unbiased recommendations</td>
-        </tr>
-        <tr>
-          <td>Main paid advisors par trust nahin karta</td>
-          <td>Hum bech nahin rahe. Hum guide kar rahe hain — AI ka use karke</td>
-        </tr>
-      </table>
-      
-      <h2>Aapko Kyun Care Karna Chahiye (Now)</h2>
-      <p>"Jitni jaldi aap apne paise ka management shuru karenge, utni hi freedom aap baad mein create karenge."</p>
-      <p>Whether you're 22 or 42, apne paise ka management is baare mein nahin hai ki aap kitna kamate hain — yeh is baare mein hai ki aap apne paas jo hai uske saath kya karte hain. Aur aapko ise karne ke liye CA ya MBA hone ki zaroorat nahin hai.</p>
-      <p>Aapko bas ek smart guide ki zaroorat hai jo aapki life ko samjhe — aur aapke saath chale.</p>
-      
-      <h2>Call to Action</h2>
-      <p>FREE mein sirf 60 seconds mein start karein. Wealthवाणी ko apne finances analyze karne dein aur apni pehli personalized advice paayein — no jargon, no selling, sirf smart insights.</p>
-      <p><a href="#" class="text-royal-blue hover:underline">Abhi try karein</a></p>
-      
-      <h2>Bonus Tip: 90% Indians se financially wiser banana chahte hain?</h2>
-      <p>Hamare blog ko subscribe karein, aur weekly tips, mythbusters, aur real-life stories ke liye Instagram & LinkedIn par humein follow karein jo aapki money mindset ko transform kar denge.</p>`,
-      
-      bn: `<h2>ভূমিকা</h2>
-      <p>"পয়সা তো সবাই কামায়... কিন্তু কতজন সামলাতে পারে?" অধিকাংশ ভারতীয়রা অর্থ বিষয়ে আবেগতাড়িত হয় — কিন্তু সত্য হল, আগের চেয়ে অনেক বেশি উপার্জন করা সত্ত্বেও, অধিকাংশ ভারতীয় পরিবার মৌলিক আর্থিক পরিকল্পনার সাথে সংগ্রাম করে।</p>
-      <p>শহুরে মিলেনিয়াল যারা পেচেক-থেকে-পেচেক বাঁচে, থেকে মধ্যবয়সী পিতামাতা যারা সন্তানদের শিক্ষা এবং বয়স্ক পিতামাতার জন্য চিন্তিত, অবসরপ্রাপ্ত বয়স্করা ব্যাংক স্কিম নিয়ে বিভ্রান্ত — আর্থিক বিভ্রান্তি সর্বত্র।</p>
-      <p>কিন্তু কেন?</p>
-      
-      <h2>সমস্যার মূল: সংস্কৃতি, জটিলতা ও বিভ্রান্তি</h2>
-      <h3>১. অর্থ নিয়ে কথা বলা টাবু</h3>
-      <p>অনেক ভারতীয় পরিবারে, অর্থ বিষয়ক বিষয়গুলি কখনও খোলাখুলিভাবে আলোচনা করা হয় না। শিশুরা বড় হয় না জেনে যে তাদের পরিবার কত আয় বা সঞ্চয় করে। ফলাফল? আমরা শূন্য আর্থিক সাক্ষরতা নিয়ে প্রাপ্তবয়স্কতায় প্রবেশ করি।</p>
-      
-      <h3>২. আর্থিক পণ্যগুলি বিভ্রান্তিকর</h3>
-      <p>মিউচুয়াল ফান্ড, ইউলিপ, এসআইপি, ইএলএসএস, এফডি, এনপিএস, পিপিএফ, ক্রিপ্টো... গড় ভারতীয়কে বিকল্পগুলি দিয়ে বোমাবর্ষণ করা হয় তবে স্পষ্টতা এবং আত্মবিশ্বাসের অভাব রয়েছে। অধিকাংশই তাই করে যা কোনও বন্ধু বা আত্মীয় পরামর্শ দেয় — প্রায়ই ঝুঁকি বা প্রাসঙ্গিকতা বোঝার আগে।</p>
-      
-      <h3>৩. কোন কাঠামোগত আর্থিক শিক্ষা নেই</h3>
-      <p>স্কুলগুলি আমাদের বাজেট, কর বা ইএমআই সম্পর্কে শেখায় না। কলেজগুলি ইঞ্জিনিয়ারিং বা শিল্পকলা শেখায় — তবে কীভাবে সঞ্চয় করতে হয়, বিনিয়োগ করতে হয় বা অবসরের পরিকল্পনা করতে হয় তা নয়। আমরা যখন শিখি, তখন প্রায়ই অনেক দেরি হয়ে যায়।</p>
-      
-      <h3>৪. পারিবারিক দায়িত্ব > ব্যক্তিগত লক্ষ্য</h3>
-      <p>ভারতে, যৌথ পরিবার এবং সামাজিক বাধ্যবাধকতা মানে আপনি শুধু আপনার অর্থ পরিচালনা করছেন না — আপনি পিতামাতা, ভাইবোন, বাচ্চাদের, এমনকি বিবাহ এবং জরুরি অবস্থার জন্যও দায়ী।</p>
-      <p>"আমি সঞ্চয় করতে চাই, কিন্তু যদি বাবা অসুস্থ হয়ে পড়েন?" "আমি বিনিয়োগ করতে চাই, কিন্তু আমাকে আমার বোনের বিয়ের পরিকল্পনাও করতে হবে।"</p>
-      
-      <h2>জীবনের একটি দিন: প্রকৃত গল্প</h2>
-      <ul>
-        <li>রোহিত, ৩০, ব্যাঙ্গালোরে ₹৭০,০০০/মাসে আয় করে কিন্তু মাসের শেষে ₹১,৫০০ সঞ্চয় নিয়ে শেষ করে। সে ট্র্যাক করে না যে তার অর্থ কোথায় যায়।</li>
-        <li>সুনীতা, ৪২, একজন গৃহিণী যিনি ₹২৫,০০০/মাসের সাথে তার পরিবার পরিচালনা করেন। তিনি ₹১০,০০০ একটি টিনের বাক্সে রাখেন কারণ তিনি ডিজিটাল অ্যাপ বিশ্বাস করেন না।</li>
-        <li>আলী, ৫০, ৩টি বীমা পলিসি, ২টি মিউচুয়াল ফান্ড এবং ১টি ঋণ আছে। কিন্তু সে জানে না সে ৬০ বছর বয়সে অবসর নিতে পারবে কি না। সে বলে, "আমি শুধু তাই করেছি যা আমার এলআইসি এজেন্ট বলেছে।"</li>
-      </ul>
-      
-      <h2>তাহলে... সমাধান কী?</h2>
-      <p>পরিচয় করিয়ে দিচ্ছি Wealthवाणी — আপনার এআই চালিত ভারতীয় সম্পদ সঙ্গী।</p>
-      <p>এটা কী? একটি সাংস্কৃতিকভাবে সচেতন, মোবাইল-প্রথম ব্যক্তিগত অর্থ সহকারী যা আপনাকে সাহায্য করে:</p>
-      <ul>
-        <li>✅ আপনার ক্যাশ ফ্লো বুঝুন</li>
-        <li>✅ আর্থিক লক্ষ্য নির্ধারণ করুন এবং অর্জন করুন (বাড়ি, অবসর, সন্তানদের শিক্ষা)</li>
-        <li>✅ আপনার আয় এবং জীবনযাত্রার উপর ভিত্তি করে স্মার্ট প্রণোদনা পান</li>
-        <li>✅ আপনার ক্রেডিট উন্নত করুন, বিনিয়োগ পরিকল্পনা করুন এবং ঋণ ফাঁদ এড়িয়ে চলুন</li>
-      </ul>
-      <p>ভারতীয় পরিবারের জন্য ডিজাইন করা, সাংস্কৃতিক প্রেক্ষাপটের সাথে যা বিশ্বব্যাপী অ্যাপ প্রায়ই মিস করে।</p>
-      
-      <h2>আমরা কীভাবে সাহায্য করি (আপনি অর্থনীতি বিশেষজ্ঞ না হলেও)</h2>
-      <table>
-        <tr>
-          <th>সমস্যা</th>
-          <th>Wealthवाणी বৈশিষ্ট্য</th>
-        </tr>
-        <tr>
-          <td>আমি জানি না আমার পয়সা কোথায় যায়</td>
-          <td>বাজেট বিশ্লেষক এবং ব্যয় ট্র্যাকার</td>
-        </tr>
-        <tr>
-          <td>আমি একটি বাড়ি কিনতে চাই কিন্তু জানি না আমি সামর্থ্য করতে পারি</td>
-          <td>লক্ষ্য-ভিত্তিক পরিকল্পনা এবং সাশ্রয়ী ক্যালকুলেটর</td>
-        </tr>
-        <tr>
-          <td>আমি সঞ্চয় করতে চাই, কিন্তু আমি ভুলে যাই</td>
-          <td>স্মার্ট প্রণোদনা এবং স্বয়ংক্রিয়-পরামর্শ</td>
-        </tr>
-        <tr>
-          <td>আমি জানি না কোন প্ল্যান বেছে নেব</td>
-          <td>ব্যক্তিগতকৃত, নিরপেক্ষ সুপারিশ</td>
-        </tr>
-        <tr>
-          <td>আমি পেইড উপদেষ্টাদের বিশ্বাস করি না</td>
-          <td>আমরা বিক্রি করছি না। আমরা গাইড করছি — এআই ব্যবহার করে</td>
-        </tr>
-      </table>
-      
-      <h2>আপনার যত্ন নেওয়া উচিত কেন (এখন)</h2>
-      <p>"যত তাড়াতাড়ি আপনি আপনার অর্থ পরিচালনা শুরু করবেন, পরবর্তীতে আপনি তত বেশি স্বাধীনতা তৈরি করবেন।"</p>
-      <p>আপনি ২২ বা ৪২ যাই হোন না কেন, আপনার অর্থ পরিচালনা করা আপনি কত উপার্জন করেন তা নিয়ে নয় — এটি আপনার কাছে যা আছে তার সাথে আপনি কী করেন তা নিয়ে। এবং আপনার এটি করার জন্য সিএ বা এমবিএ হওয়ার দরকার নেই।</p>
-      <p>আপনার শুধু একটি স্মার্ট গাইড দরকার যিনি আপনার জীবন বোঝেন — এবং আপনার সাথে হাঁটেন।</p>
-      
-      <h2>কল টু অ্যাকশন</h2>
-      <p>মাত্র ৬০ সেকেন্ডে বিনামূল্যে শুরু করুন। Wealthवाणी কে আপনার অর্থ বিশ্লেষণ করতে দিন এবং আপনার প্রথম ব্যক্তিগত পরামর্শ পান — কোন জারগন নেই, কোন বিক্রয় নেই, শুধু স্মার্ট অন্তর্দৃষ্টি।</p>
-      <p><a href="#" class="text-royal-blue hover:underline">এখনই চেষ্টা করুন</a></p>
-      
-      <h2>বোনাস টিপ: ৯০% ভারতীয়দের চেয়ে আর্থিকভাবে বুদ্ধিমান হতে চান?</h2>
-      <p>আমাদের ব্লগে সাবস্ক্রাইব করুন এবং সাপ্তাহিক টিপস, মিথবাস্টার এবং প্রকৃত জীবনের গল্পের জন্য ইনস্টাগ্রাম এবং লিঙ্কডইনে আমাদের অনুসরণ করুন যা আপনার মানি মাইন্ডসেট পরিবর্তন করবে।</p>`,
-      
-      ta: `<h2>அறிமுகம்</h2>
-      <p>"பணத்தை எல்லோரும் சம்பாதிக்கிறார்கள்... ஆனால் எத்தனை பேர் நிர்வகிக்கிறார்கள்?" பணம் விஷயத்தில் பெரும்பாலான இந்தியர்கள் உணர்ச்சிவசப்படுகிறார்கள் — ஆனால் உண்மை என்னவென்றால், முன்பை விட அதிகமாக சம்பாதித்தாலும், பெரும்பாலான இந்தியக் குடும்பங்கள் அடிப்படை நிதித் திட்டமிடலில் போராடுகின்றன.</p>
-      <p>பணப்புழக்கத்திற்குப் பணப்புழக்கம் வாழும் நகர்ப்புற ஆயிரம் ஆண்டுகளில் இருந்து, குழந்தைகளின் கல்வி மற்றும் வயதான பெற்றோர்களைப் பற்றி கவலைப்படும் நடுத்தர வயது பெற்றோர் வரை, வங்கித் திட்டங்களால் குழப்பமடைந்த ஓய்வு பெற்ற மூத்தவர்கள் வரை — நிதிக் குழப்பம் எல்லா இடங்களிலும் உள்ளது.</p>
-      <p>ஆனால் ஏன்?</p>
-      
-      <h2>பிரச்சினையின் வேர்: கலாச்சாரம், சிக்கல் & குழப்பம்</h2>
-      <h3>1. பணத்தைப் பற்றிப் பேசுவது தடை செய்யப்பட்டுள்ளது</h3>
-      <p>பல இந்தியக் குடும்பங்களில், பணம் சம்பந்தமான விஷயங்கள் ஒருபோதும் வெளிப்படையாக விவாதிக்கப்படுவதில்லை. குடும்பம் எவ்வளவு சம்பாதிக்கிறது அல்லது சேமிக்கிறது என்பதைத் தெரிந்து கொள்ளாமல் குழந்தைகள் வளர்கிறார்கள். விளைவு? நாங்கள் பூஜ்ஜிய நிதி எழுத்தறிவுடன் வயது வந்தோர் நிலைக்குள் நுழைகிறோம்.</p>
-      
-      <h3>2. நிதி தயாரிப்புகள் குழப்பமாக உள்ளன</h3>
-      <p>மியூச்சுவல் ஃபண்டுகள், ULIPகள், SIPகள், ELSS, FD, NPS, PPF, கிரிப்டோ... சராசரி இந்தியர் விருப்பங்களால் குண்டு வீசப்படுகிறார் ஆனால் தெளிவு மற்றும் நம்பிக்கை இல்லை. பெரும்பாலோர் ஒரு நண்பர் அல்லது உறவினர் பரிந்துரைப்பதைச் செய்கிறார்கள் — பெரும்பாலும் ஆபத்து அல்லது பொருத்தத்தைப் புரிந்து கொள்ளாமல்.</p>
-      
-      <h3>3. கட்டமைக்கப்பட்ட நிதிக் கல்வி இல்லை</h3>
-      <p>பள்ளிகள் பட்ஜெட், வரிகள் அல்லது EMIகள் பற்றி நமக்குக் கற்பிக்கவில்லை. கல்லூரிகள் பொறியியல் அல்லது கலைகளைக் கற்பிக்கின்றன — ஆனால் எப்படி சேமிப்பது, முதலீடு செய்வது அல்லது ஓய்வூதியத்திற்கு திட்டமிடுவது போன்றவை இல்லை. நாம் கற்றுக் கொள்ளும் நேரத்தில், பெரும்பாலும் மிக தாமதமாகிவிடுகிறது.</p>
-      
-      <h3>4. குடும்பப் பொறுப்புகள் > தனிப்பட்ட இலக்குகள்</h3>
-      <p>இந்தியாவில், கூட்டுக் குடும்பங்கள் மற்றும் சமூகக் கடமைகள் என்றால் நீங்கள் உங்கள் பணத்தை மட்டும் நிர்வகிக்கவில்லை — நீங்கள் பெற்றோர், சகோதர சகோதரிகள், குழந்தைகள், இன்னும் திருமணங்கள் மற்றும் அவசரகாலங்களுக்கும் பொறுப்பாளி.</p>
-      <p>"நான் சேமிக்க விரும்புகிறேன், ஆனால் அப்பா உடல்நிலை சரியில்லை என்றால் என்ன செய்வது?" "நான் முதலீடு செய்ய விரும்புகிறேன், ஆனால் என் சகோதரியின் திருமணத்திற்கும் திட்டமிட வேண்டும்."</p>
-      
-      <h2>வாழ்க்கையில் ஒரு நாள்: உண்மையான கதைகள்</h2>
-      <ul>
-        <li>ரோஹித், 30, பெங்களூரில் ₹70,000/மாதம் சம்பாதிக்கிறார் ஆனால் மாதத்தின் இறுதியில் ₹1,500 சேமிப்புடன் முடிவடைகிறார். அவர் தனது பணம் எங்கு செல்கிறது என்பதைக் கண்காணிக்கவில்லை.</li>
-        <li>சுனிதா, 42, ₹25,000/மாதத்துடன் தனது குடும்பத்தை நிர்வகிக்கும் ஒரு குடும்பத் தலைவி. அவர் ₹10,000ஐ ஒரு டின் பெட்டியில் வைத்திருக்கிறார் ஏனெனில் அவர் டிஜிட்டல் ஆப்ஸை நம்பவில்லை.</li>
-        <li>அலி, 50, 3 காப்பீட்டுக் கொள்கைகள், 2 மியூச்சுவல் ஃபண்டுகள் மற்றும் 1 கடன் வைத்திருக்கிறார். ஆனால் அவர் 60 வயதில் ஓய்வு பெற முடியுமா என்று தெரியவில்லை. அவர் கூறுகிறார், "என்னுடைய LIC முகவர் சொன்னதையே நான் செய்தேன்."</li>
-      </ul>
-      
-      <h2>அப்படியானால்... தீர்வு என்ன?</h2>
-      <p>Wealthवाणीயை அறிமுகப்படுத்துகிறோம் — உங்கள் AI-சக்தியூட்டப்பட்ட இந்திய செல்வ துணை.</p>
-      <p>அது என்ன? கலாச்சார ரீதியாக விழிப்புணர்வு கொண்ட, மொபைல்-முதல் தனிப்பட்ட நிதி உதவியாளர் உங்களுக்கு உதவுகிறது:</p>
-      <ul>
-        <li>✅ உங்கள் பண ஓட்டத்தைப் புரிந்து கொள்ளுங்கள்</li>
-        <li>✅ நிதி இலக்குகளை அமைத்து அடையுங்கள் (வீடு, ஓய்வூதியம், குழந்தைகளின் கல்வி)</li>
-        <li>✅ உங்கள் வருமானம் & வாழ்க்கை முறையின் அடிப்படையில் ஸ்மார்ட் தூண்டுதல்களைப் பெறுங்கள்</li>
-        <li>✅ உங்கள் கடனை மேம்படுத்துங்கள், முதலீடுகளைத் திட்டமிடுங்கள் & கடன் பொறிகளைத் தவிர்க்கவும்</li>
-      </ul>
-      <p>இந்தியக் குடும்பங்களுக்காக வடிவமைக்கப்பட்டது, உலகளாவிய பயன்பாடுகள் பெரும்பாலும் தவறவிடும் கலாச்சார சூழலுடன்.</p>
-      
-      <h2>நாங்கள் எப்படி உதவுகிறோம் (நீங்கள் நிதி நிபுணராக இல்லாவிட்டாலும்)</h2>
-      <table>
-        <tr>
-          <th>பிரச்சனை</th>
-          <th>Wealthवाणी அம்சம்</th>
-        </tr>
-        <tr>
-          <td>என் பணம் எங்கே போகிறது என்று எனக்குத் தெரியவில்லை</td>
-          <td>பட்ஜெட் பகுப்பாய்வாளர் & செலவு கண்காணிப்பாளர்</td>
-        </tr>
-        <tr>
-          <td>நான் ஒரு வீட்டை வாங்க விரும்புகிறேன் ஆனால் நான் வாங்க முடியுமா என்று தெரியவில்லை</td>
-          <td>இலக்கு அடிப்படையிலான திட்டமிடல் & வாங்கும் திறன் கணிப்பான்</td>
-        </tr>
-        <tr>
-          <td>நான் சேமிக்க விரும்புகிறேன், ஆனால் நான் மறந்துவிடுகிறேன்</td>
-          <td>ஸ்மார்ட் தூண்டுதல்கள் & தானியங்கி-பரிந்துரைகள்</td>
-        </tr>
-        <tr>
-          <td>எந்த திட்டத்தைத் தேர்ந்தெடுக்க வேண்டும் என்று எனக்குத் தெரியவில்லை</td>
-          <td>தனிப்பயனாக்கப்பட்ட, பக்கச்சார்பற்ற பரிந்துரைகள்</td>
-        </tr>
-        <tr>
-          <td>பணம் கொடுத்து ஆலோசகர்களை நான் நம்பவில்லை</td>
-          <td>நாங்கள் விற்கவில்லை. நாங்கள் வழிகாட்டுகிறோம் — AIயைப் பயன்படுத்தி</td>
-        </tr>
-      </table>
-      
-      <h2>நீங்கள் ஏன் கவலைப்பட வேண்டும் (இப்போது)</h2>
-      <p>"நீங்கள் எவ்வளவு விரைவாக உங்கள் பணத்தை நிர்வகிக்கத் தொடங்குகிறீர்களோ, அவ்வளவு சுதந்திரத்தை நீங்கள் பிற்பாடு உருவாக்குகிறீர்கள்."</p>
-      <p>நீங்கள் 22 அல்லது 42 வயதாக இருந்தாலும், உங்கள் பணத்தை நிர்வகிப்பது நீங்கள் எவ்வளவு சம்பாதிக்கிறீர்கள் என்பதைப் பற்றியது அல்ல — இது உங்களிடம் இருப்பதை நீங்கள் என்ன செய்கிறீர்கள் என்பதைப் பற்றியது. மேலும் அதைச் செய்ய உங்களுக்கு CA அல்லது MBA ஆக இருக்க வேண்டிய அவசியமில்லை.</p>
-      <p>உங்கள் வாழ்க்கையைப் புரிந்து கொள்ளும் ஒரு ஸ்மார்ட் வழிகாட்டி மட்டுமே உங்களுக்குத் தேவை — மேலும் உங்களுடன் நடப்பவர்.</p>
-      
-      <h2>செயல்பாட்டிற்கான அழைப்பு</h2>
-      <p>வெறும் 60 விநாடிகளில் இலவசமாகத் தொடங்குங்கள். Wealthवाणी உங்கள் நிதியை ஆய்வு செய்து உங்களுக்கு முதல் தனிப்பயனாக்கப்பட்ட ஆலோசனையை வழங்கட்டும் — குறியீடுகள் இல்லை, விற்பனை இல்லை, ஸ்மார்ட் நுண்ணறிவுகள் மட்டுமே.</p>
-      <p><a href="#" class="text-royal-blue hover:underline">இப்போது முயற்சிக்கவும்</a></p>
-      
-      <h2>போனஸ் குறிப்பு: 90% இந்தியர்களை விட நிதி ரீதியாக புத்திசாலியாக இருக்க விரும்புகிறீர்களா?</h2>
-      <p>எங்கள் வலைப்பதிவிற்கு சந்தா செலுத்துங்கள், மேலும் உங்கள் பண மனநிலையை மாற்றும் வாராந்திர குறிப்புகள், மித்புஸ்டர்ஸ் மற்றும் உண்மையான வாழ்க்கைக் கதைகளுக்காக இன்ஸ்டாகிராம் மற்றும் லிங்க்ட்இன்இல் எங்களைப் பின்தொடருங்கள்.</p>`,
-      
-      te: `<h2>పరిచయం</h2>
-      <p>"డబ్బు అందరూ సంపాదిస్తారు... కానీ ఎంతమంది నిర్వహించగలరు?" డబ్బు విషయానికి వచ్చేసరికి చాలా మంది భారతీయులు భావోద్వేగంగా ఉంటారు — కానీ నిజం ఏమిటంటే, గతం కంటే ఎక్కువ సంపాదిస్తున్నప్పటికీ, చాలా భారతీయ కుటుంబాలు ప్రాథమిక ఆర్థిక ప్రణాళికలో పోరాడుతున్నాయి.</p>
-      <p>పేచెక్-నుంచి-పేచెక్ జీవించే నగర సహస్రాబ్ది నుండి, పిల్లల విద్య మరియు వృద్ధాప్యంలో ఉన్న తల్లిదండ్రుల గురించి ఆందోళన చెందే మధ్య వయస్సు తల్లిదండ్రుల వరకు, బ్యాంకు పథకాలతో గందరగోళంలో ఉన్న పదవీ విరమణ పొందిన పెద్దలు — ఆర్థిక గందరగోళం అంతటా ఉంది.</p>
-      <p>కానీ ఎందుకు?</p>
-      
-      <h2>సమస్య మూలం: సంస్కృతి, సంక్లిష్టత & గందరగోళం</h2>
-      <h3>1. డబ్బు గురించి మాట్లాడటం మాట వరసకే</h3>
-      <p>చాలా భారతీయ కుటుంబాలలో, ధన విషయాలు ఎప్పుడూ బహిరంగంగా చర్చించబడవు. పిల్లలు వారి కుటుంబం ఎంత సంపాదిస్తుంది లేదా ఆదా చేస్తుంది అని తెలియకుండానే పెరుగుతారు. ఫలితం? మేము సున్నా ఆర్థిక అక్షరాస్యతతో వయోజన స్థితికి చేరుకుంటాము.</p>
-      
-      <h3>2. ఆర్థిక ఉత్పత్తులు గందరగోళంగా ఉన్నాయి</h3>
-      <p>మ్యూచువల్ ఫండ్స్, యూలిప్లు, సిప్లు, ఇఎల్ఎస్ఎస్, ఎఫ్డి, ఎన్పిఎస్, పిపిఎఫ్, క్రిప్టో... సగటు భారతీయుడు ఎంపికలతో బాంబులు వేయబడతాడు కానీ స్పష్టత మరియు విశ్వాసం లేదు. చాలా మంది ఏదో ఒక స్నేహితుడు లేదా బంధువు సూచించినట్లు చేస్తారు — తరచుగా రిస్క్ లేదా ప్రాముఖ్యతను అర్థం చేసుకోకుండానే.</p>
-      
-      <h3>3. నిర్మాణాత్మక ఆర్థిక విద్య లేదు</h3>
-      <p>పాఠశాలలు మనకు బడ్జెటింగ్, పన్నులు లేదా EMIల గురించి బోధించవు. కళాశాలలు ఇంజనీరింగ్ లేదా కళలను బోధిస్తాయి — కానీ ఎలా ఆదా చేయాలి, పెట్టుబడి పెట్టాలి లేదా రిటైర్మెంట్ కోసం ప్రణాళిక చేయాలి అనేది కాదు. మనం నేర్చుకునే సరికి, తరచుగా చాలా ఆలస్యం అవుతుంది.</p>
-      
-      <h3>4. కుటుంబ బాధ్యతలు > వ్యక్తిగత లక్ష్యాలు</h3>
-      <p>భారతదేశంలో, ఉమ్మడి కుటుంబాలు మరియు సామాజిక బాధ్యతలు అంటే మీరు మీ డబ్బును మాత్రమే నిర్వహించడం లేదు — మీరు తల్లిదండ్రులు, సోదరీసోదరులు, పిల్లలు, అలాగే పెళ్లిళ్లు మరియు అత్యవసర పరిస్థితులకు కూడా బాధ్యత వహిస్తారు.</p>
-      <p>"నేను ఆదా చేయాలనుకుంటున్నాను, కానీ నాన్న అనారోగ్యానికి గురైతే ఏమవుతుంది?" "నేను పెట్టుబడి పెట్టాలనుకుంటున్నాను, కానీ నా చెల్లి పెళ్లికి కూడా ప్రణాళిక వేయాలి."</p>
-      
-      <h2>జీవితంలో ఒక రోజు: నిజమైన కథలు</h2>
-      <ul>
-        <li>రోహిత్, 30, బెంగళూరులో నెలకు ₹70,000 సంపాదిస్తాడు కానీ నెల చివరిలో ₹1,500 పొదుపుతో ముగుస్తాడు. అతను తన డబ్బు ఎక్కడికి వెళుతుందో ట్రాక్ చేయడు.</li>
-        <li>సునీత, 42, నెలకు ₹25,000తో తన కుటుంబాన్ని నిర్వహించే గృహిణి. ఆమె ₹10,000ని ఒక టిన్ బాక్స్లో ఉంచుతుంది ఎందుకంటే ఆమె డిజిటల్ యాప్లను నమ్మదు.</li>
-        <li>అలీ, 50, వద్ద 3 బీమా పాలసీలు, 2 మ్యూచువల్ ఫండ్స్ మరియు 1 లోను ఉన్నాయి. కానీ అతను 60 ఏళ్ల వయసులో రిటైర్ కావచ్చో లేదో అతనికి తెలియదు. "నేను కేవలం నా LIC ఏజెంట్ చెప్పినట్లు చేసాను" అని అంటాడు.</li>
-      </ul>
-      
-      <h2>అయితే... పరిష్కారం ఏమిటి?</h2>
-      <p>Wealthवाणीని పరిచయం చేస్తున్నాము — మీ AI-శక్తిని పొందిన భారతీయ సంపద సహచరుడు.</p>
-      <p>అది ఏమిటి? సాంస్కృతికంగా అవగాహన కలిగిన, మొబైల్-ఫస్ట్ వ్యక్తిగత ఆర్థిక సహాయకుడు మీకు సహాయం చేస్తుంది:</p>
-      <ul>
-        <li>✅ మీ నగదు ప్రవాహాన్ని అర్థం చేసుకోండి</li>
-        <li>✅ ఆర్థిక లక్ష్యాలను నిర్దేశించుకోండి & సాధించండి (ఇల్లు, పదవీ విరమణ, పిల్లల విద్య)</li>
-        <li>✅ మీ ఆదాయం & జీవనశైలి ఆధారంగా స్మార్ట్ పోకడలను పొందండి</li>
-        <li>✅ మీ క్రెడిట్ మెరుగుపరచండి, పెట్టుబడులు ప్రణాళిక చేయండి & అప్పుల బాదలు నుండి దూరంగా ఉండండి</li>
-      </ul>
-      <p>భారతీయ కుటుంబాల కోసం రూపొందించబడింది, ప్రపంచవ్యాప్త యాప్లు తరచుగా మిస్ అయ్యే సాంస్కృతిక సందర్భంతో.</p>
-      
-      <h2>మేము ఎలా సహాయం చేస్తాము (మీరు ఆర్థిక నిపుణులు కాకపోయినా)</h2>
-      <table>
-        <tr>
-          <th>సమస్య</th>
-          <th>Wealthवाणी ఫీచర్</th>
-        </tr>
-        <tr>
-          <td>నా డబ్బు ఎక్కడికి వెళుతుందో నాకు తెలియదు</td>
-          <td>బడ్జెట్ విశ్లేషకుడు & ఖర్చు ట్రాకర్</td>
-        </tr>
-        <tr>
-          <td>నేను ఒక ఇల్లు కొనాలనుకుంటున్నాను కానీ నేను తట్టుకోగలనో లేదో తెలియదు</td>
-          <td>లక్ష్య-ఆధారిత ప్రణాళిక & భరించదగిన కాలిక్యులేటర్</td>
-        </tr>
-        <tr>
-          <td>నేను పొదుపు చేయాలనుకుంటున్నాను, కానీ నేను మరచిపోతాను</td>
-          <td>స్మార్ట్ పోకడలు & ఆటో-సూచనలు</td>
-        </tr>
-        <tr>
-          <td>ఏ ప్లాన్ ఎంచుకోవాలో నాకు తెలియదు</td>
-          <td>వ్యక్తిగతీకరించిన, నిష్పాక్షిక సిఫార్సులు</td>
-        </tr>
-        <tr>
-          <td>నేను చెల్లించే సలహాదారులను నమ్మను</td>
-          <td>మేము అమ్మడం లేదు. మేము మార్గదర్శనం చేస్తున్నాము — AIని ఉపయోగించి</td>
-        </tr>
-      </table>
-      
-      <h2>మీరు ఎందుకు శ్రద్ధ వహించాలి (ఇప్పుడు)</h2>
-      <p>"మీరు డబ్బును ఎంత త్వరగా నిర్వహించడం ప్రారంభిస్తే, అంత ఎక్కువ స్వేచ్ఛను తర్వాత సృష్టిస్తారు."</p>
-      <p>మీరు 22 ఏళ్లో లేదా 42 ఏళ్లో ఉన్నా, మీ డబ్బును నిర్వహించడం మీరు ఎంత సంపాదిస్తారు అనే దాని గురించి కాదు — ఇది మీరు కలిగి ఉన్న దానితో ఏమి చేస్తారు అనే దాని గురించి. మరియు మీరు దీన్ని చేయడానికి CA లేదా MBA అయి ఉండాల్సిన అవసరం లేదు.</p>
-      <p>మీ జీవితాన్ని అర్థం చేసుకునే స్మార్ట్ గైడ్ మాత్రమే మీకు అవసరం — మరియు మీతో నడుస్తుంది.</p>
-      
-      <h2>కాల్ టు యాక్షన్</h2>
-      <p>కేవలం 60 సెకన్లలో ఉచితంగా ప్రారంభించండి. Wealthवाणी మీ ఆర్థిక స్థితిని విశ్లేషించి, మీకు మొదటి వ్యక్తిగత సలహా ఇవ్వనివ్వండి — జార్గన్ లేదు, అమ్మకం లేదు, కేవలం స్మార్ట్ అంతర్దృష్టులు.</p>
-      <p><a href="#" class="text-royal-blue hover:underline">ఇప్పుడే ప్రయత్నించండి</a></p>
-      
-      <h2>బోనస్ చిట్కా: 90% భారతీయుల కంటే ఆర్థికంగా తెలివైనవారు కావాలనుకుంటున్నారా?</h2>
-      <p>మా బ్లాగ్కు సబ్స్క్రైబ్ చేసుకోండి, మరియు వారపు చిట్కాలు, మిత్బస్టర్స్ మరియు మీ మనీ మైండ్సెట్ని మార్చే నిజ జీవిత కథల కోసం ఇన్స్టాగ్రామ్ & లింక్డ్ఇన్లో మాకు అనుసరించండి.</p>`
+      en: "<p>Most Indians are emotionally driven when it comes to money — but despite earning more than ever before, most Indian households struggle with basic financial planning.</p><p>Here are the key challenges:</p><ul><li>Lack of financial education in our curriculum</li><li>Cultural taboo around discussing money</li><li>Traditional focus on saving rather than investing</li><li>Emotional rather than analytical approach to financial decisions</li></ul>",
+      hi: "<p>अधिकांश भारतीय पैसे के मामले में भावनात्मक रूप से प्रेरित होते हैं — लेकिन पहले से कहीं ज्यादा कमाई करने के बावजूद, अधिकांश भारतीय परिवार बुनियादी वित्तीय योजना के साथ संघर्ष करते हैं।</p><p>यहां मुख्य चुनौतियां हैं:</p><ul><li>हमारे पाठ्यक्रम में वित्तीय शिक्षा का अभाव</li><li>पैसे की चर्चा के चारों ओर सांस्कृतिक टैबू</li><li>निवेश के बजाय बचत पर पारंपरिक फोकस</li><li>वित्तीय निर्णयों के लिए विश्लेषणात्मक के बजाय भावनात्मक दृष्टिकोण</li></ul>",
+      hinglish: "<p>Most Indians emotionally driven hote hain jab money ki baat aati hai — lekin pehle se kahin zyada kamane ke bawajood, most Indian households basic financial planning ke saath struggle karte hain.</p><p>Yahan main challenges hain:</p><ul><li>Hamare curriculum mein financial education ki kami</li><li>Money discuss karne ke around cultural taboo</li><li>Investing ke bajay saving par traditional focus</li><li>Financial decisions ke liye analytical approach ke bajay emotional approach</li></ul>",
+      bn: "<p>অর্থের ব্যাপারে বেশিরভাগ ভারতীয়রাই আবেগতাড়িত হয় — কিন্তু আগের তুলনায় বেশি উপার্জন করা সত্ত্বেও, বেশিরভাগ ভারতীয় পরিবার মৌলিক আর্থিক পরিকল্পনার সাথে সংগ্রাম করে।</p><p>এখানে মূল চ্যালেঞ্জগুলি:</p><ul><li>আমাদের পাঠ্যক্রমে আর্থিক শিক্ষার অভাব</li><li>অর্থ নিয়ে আলোচনার সাংস্কৃতিক নিষেধাজ্ঞা</li><li>বিনিয়োগের পরিবর্তে সঞ্চয়ের উপর ঐতিহ্যগত মনোযোগ</li><li>আর্থিক সিদ্ধান্তের জন্য বিশ্লেষণাত্মক পদ্ধতির পরিবর্তে আবেগীয় পদ্ধতি</li></ul>",
+      ta: "<p>பெரும்பாலான இந்தியர்கள் பணம் விஷயத்தில் உணர்ச்சி வசப்படுகிறார்கள் — ஆனால் முன்பை விட அதிகமாக வருமானம் ஈட்டினாலும், பெரும்பாலான இந்திய குடும்பங்கள் அடிப்படை நிதித் திட்டமிடலில் போராடுகின்றன.</p><p>இங்கே முக்கிய சவால்கள்:</p><ul><li>நமது பாடத்திட்டத்தில் நிதிக் கல்வி இல்லாதது</li><li>பணம் பற்றி விவாதிப்பதைச் சுற்றி கலாச்சார தடை</li><li>முதலீடு செய்வதற்குப் பதிலாக சேமிப்பதில் பாரம்பரிய கவனம்</li><li>நிதி முடிவுகளுக்கு பகுப்பாய்வு அணுகுமுறைக்குப் பதிலாக உணர்ச்சிபூர்வமான அணுகுமுறை</li></ul>",
+      te: "<p>చాలా మంది భారతీయులు డబ్బు విషయంలో భావోద్వేగంగా ఉంటారు — కానీ ఇంతకుముందు కంటే ఎక్కువ సంపాదిస్తున్నప్పటికీ, చాలా భారతీయ కుటుంబాలు ప్రాథమిక ఆర్థిక ప్రణాళికతో పోరాడుతున్నాయి.</p><p>ఇక్కడ ప్రధాన సవాళ్లు:</p><ul><li>మన పాఠ్యప్రణాళికలో ఆర్థిక విద్య లేకపోవడం</li><li>డబ్బు గురించి చర్చించడం చుట్టూ సాంస్కృతిక నిషేధం</li><li>పెట్టుబడి పెట్టడం కంటే పొదుపు పై సాంప్రదాయ దృష్టి</li><li>ఆర్థిక నిర్ణయాలకు విశ్లేషణాత్మక విధానం కంటే భావోద్వేగ విధానం</li></ul>",
+      pa: "<p>ਜਦੋਂ ਪੈਸੇ ਦੀ ਗੱਲ ਆਉਂਦੀ ਹੈ, ਤਾਂ ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਭਾਵਨਾਤਮਕ ਤੌਰ 'ਤੇ ਪ੍ਰੇਰਿਤ ਹੁੰਦੇ ਹਨ — ਪਰ ਪਹਿਲਾਂ ਨਾਲੋਂ ਕਿਤੇ ਜ਼ਿਆਦਾ ਕਮਾਈ ਕਰਨ ਦੇ ਬਾਵਜੂਦ, ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਪਰਿਵਾਰ ਬੁਨਿਆਦੀ ਵਿੱਤੀ ਯੋਜਨਾਬੰਦੀ ਨਾਲ ਸੰਘਰਸ਼ ਕਰਦੇ ਹਨ।</p><p>ਇੱਥੇ ਮੁੱਖ ਚੁਣੌਤੀਆਂ ਹਨ:</p><ul><li>ਸਾਡੇ ਪਾਠਕ੍ਰਮ ਵਿੱਚ ਵਿੱਤੀ ਸਿੱਖਿਆ ਦੀ ਘਾਟ</li><li>ਪੈਸੇ ਬਾਰੇ ਚਰਚਾ ਕਰਨ ਦੇ ਆਲੇ-ਦੁਆਲੇ ਸੱਭਿਆਚਾਰਕ ਟੈਬੂ</li><li>ਨਿਵੇਸ਼ ਦੀ ਬਜਾਏ ਬਚਾਉਣ 'ਤੇ ਰਵਾਇਤੀ ਧਿਆਨ</li><li>ਵਿੱਤੀ ਫੈਸਲਿਆਂ ਲਈ ਵਿਸ਼ਲੇਸ਼ਣਾਤਮਕ ਦੀ ਬਜਾਏ ਭਾਵਨਾਤਮਕ ਪਹੁੰਚ</li></ul>",
+      gu: "<p>મોટાભાગના ભારતીયો જ્યારે નાણાંની વાત આવે છે ત્યારે લાગણીથી પ્રેરિત હોય છે — પરંતુ અગાઉ કરતાં વધુ કમાણી કરવા છતાં, મોટાભાગના ભારતીય પરિવારો મૂળભૂત નાણાકીય આયોજન સાથે સંઘર્ષ કરે છે.</p><p>અહીં મુખ્ય પડકારો છે:</p><ul><li>આપણા અભ્યાસક્રમમાં નાણાકીય શિક્ષણનો અભાવ</li><li>નાણાં વિશે ચર્ચા કરવા આસપાસની સાંસ્કૃતિક ટેબૂ</li><li>રોકાણ કરવાને બદલે બચત પર પરંપરાગત ધ્યાન</li><li>નાણાકીય નિર્ણયો માટે વિશ્લેષણાત્મક અભિગમને બદલે લાગણીશીલ અભિગમ</li></ul>",
+      ml: "<p>മിക്ക ഇന്ത്യക്കാരും പണത്തിന്റെ കാര്യത്തിൽ വൈകാരികമായി പ്രേരിതരാണ് — പക്ഷേ മുമ്പത്തേക്കാൾ കൂടുതൽ വരുമാനം ലഭിക്കുന്നുണ്ടെങ്കിലും, മിക്ക ഇന്ത്യൻ കുടുംബങ്ങളും അടിസ്ഥാന സാമ്പത്തിക ആസൂത്രണത്തിൽ പോരാടുന്നു.</p><p>ഇതാണ് പ്രധാന വെല്ലുവിളികൾ:</p><ul><li>നമ്മുടെ പാഠ്യപദ്ധതിയിൽ സാമ്പത്തിക വിദ്യാഭ്യാസത്തിന്റെ അഭാവം</li><li>പണത്തെക്കുറിച്ച് ചർച്ച ചെയ്യുന്നതിനെ ചുറ്റിപ്പറ്റിയുള്ള സാംസ്‌കാരിക ടാബു</li><li>നിക്ഷേപിക്കുന്നതിനു പകരം സേവിംഗിനുള്ള പാരമ്പര്യ ശ്രദ്ധ</li><li>സാമ്പത്തിക തീരുമാനങ്ങൾക്കുള്ള വിശകലനാത്മക സമീപനത്തിനു പകരം വൈകാരിക സമീപനം</li></ul>"
     },
-    author: 'Team Wealthवाणी',
-    date: '2025-05-10',
-    readTime: 8,
-    featuredImage: '/placeholder.svg',
+    author: "Vishal Sharma",
+    date: "2024-05-10",
+    readTime: 6,
+    featuredImage: "/placeholder.svg",
     imageAlt: {
-      en: 'Person confused by financial documents',
-      hi: 'वित्तीय दस्तावेजों से भ्रमित व्यक्ति',
-      hinglish: 'Financial documents se confused person',
-      bn: 'আর্থিক নথি দ্বারা বিভ্রান্ত ব্যক্তি',
-      ta: 'நிதி ஆவணங்களால் குழப்பமடைந்த நபர்',
-      te: 'ఆర్థిక పత్రాలతో గందరగోళంలో ఉన్న వ్యక్తి'
+      en: "Indian family discussing finances",
+      hi: "वित्त पर चर्चा करता भारतीय परिवार",
+      hinglish: "Finance discuss karta hua Indian family",
+      bn: "আর্থিক বিষয় নিয়ে আলোচনারত ভারতীয় পরিবার",
+      ta: "நிதி பற்றி விவாதிக்கும் இந்திய குடும்பம்",
+      te: "ఆర్థిక విషయాలు చర్చించే భారతీయ కుటుంబం",
+      pa: "ਵਿੱਤ ਬਾਰੇ ਚਰਚਾ ਕਰਦਾ ਭਾਰਤੀ ਪਰਿਵਾਰ",
+      gu: "નાણાંની ચર્ચા કરતું ભારતીય પરિવાર",
+      ml: "സാമ്പത്തിക കാര്യങ്ങൾ ചർച്ച ചെയ്യുന്ന ഇന്ത്യൻ കുടുംബം"
     },
-    categories: ['Personal Finance', 'Financial Literacy'],
-    keywords: [
-      'Indian personal finance', 
-      'financial literacy India', 
-      'money management India', 
-      'AI finance India', 
-      'budgeting Indian families'
-    ],
+    categories: ["Personal Finance", "Financial Literacy", "Indian Families"],
+    keywords: ["personal finance", "financial literacy", "indian families", "money management", "financial education"],
     metaDescription: {
-      en: 'Learn why Indian families struggle with money and how Wealthवाणी makes personal finance simple.',
-      hi: 'जानें कि भारतीय परिवार पैसे के साथ क्यों संघर्ष करते हैं और Wealthवाणी व्यक्तिगत वित्त को कैसे सरल बनाता है।',
-      hinglish: 'Janiye kyun Indian families paise ke management mein struggle karte hain aur Wealthवाणी personal finance ko kaise simple banata hai.',
-      bn: 'জানুন কেন ভারতীয় পরিবারগুলি অর্থের সাথে সংগ্রাম করে এবং Wealthवाणी কিভাবে ব্যক্তিগত অর্থ সহজ করে।',
-      ta: 'இந்திய குடும்பங்கள் ஏன் பணத்துடன் போராடுகின்றன மற்றும் Wealthवाणी தனிப்பட்ட நிதியை எவ்வாறு எளிதாக்குகிறது என்பதை அறியவும்.',
-      te: 'భారతీయ కుటుంబాలు డబ్బుతో ఎందుకు పోరాడుతున్నాయి మరియు Wealthवाणी వ్యక్తిగత ఆర్థిక విషయాలను ఎలా సులభం చేస్తుంది తెలుసుకోండి.'
+      en: "Understand why most Indian families struggle with personal finance despite rising incomes, and discover ways to improve your financial knowledge.",
+      hi: "समझें कि बढ़ती आय के बावजूद अधिकांश भारतीय परिवार व्यक्तिगत वित्त के साथ क्यों संघर्ष करते हैं, और अपने वित्तीय ज्ञान को बेहतर बनाने के तरीके जानें।",
+      hinglish: "Samajhiye ki badhti income ke bawajood adhiktar Indian families personal finance ke saath struggle kyu karte hain, aur discover karein apne financial knowledge ko improve karne ke tareeke.",
+      bn: "বুঝুন কেন উচ্চ আয় সত্ত্বেও বেশিরভাগ ভারতীয় পরিবার ব্যক্তিগত অর্থ নিয়ে সংগ্রাম করে, এবং আপনার আর্থিক জ্ঞান উন্নত করার উপায় আবিষ্কার করুন।",
+      ta: "அதிகரித்து வரும் வருமானம் இருந்தபோதிலும் பெரும்பாலான இந்திய குடும்பங்கள் தனிப்பட்ட நிதியுடன் ஏன் போராடுகின்றன என்பதைப் புரிந்துகொள்ளுங்கள், மேலும் உங்கள் நிதி அறிவை மேம்படுத்தும் வழிகளைக் கண்டறியுங்கள்.",
+      te: "పెరుగుతున్న ఆదాయం ఉన్నప్పటికీ చాలా మంది భారతీయ కుటుంబాలు వ్యక్తిగత ఆర్థిక విషయాలతో ఎందుకు పోరాడుతున్నాయో అర్థం చేసుకోండి మరియు మీ ఆర్థిక అవగాహన మెరుగుపరచుకోవడానికి మార్గాలను కనుగొనండి.",
+      pa: "ਸਮਝੋ ਕਿ ਵਧਦੀ ਆਮਦਨੀ ਦੇ ਬਾਵਜੂਦ ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਪਰਿਵਾਰ ਨਿੱਜੀ ਵਿੱਤ ਨਾਲ ਕਿਉਂ ਸੰਘਰਸ਼ ਕਰਦੇ ਹਨ, ਅਤੇ ਆਪਣੇ ਵਿੱਤੀ ਗਿਆਨ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਦੇ ਤਰੀਕੇ ਲੱਭੋ।",
+      gu: "સમજો કે વધતી આવક છતાં મોટાભાગના ભારતીય પરિવારો વ્યક્તિગત નાણાં સાથે કેમ સંઘર્ષ કરે છે, અને તમારા નાણાકીય જ્ઞાનને સુધારવાના માર્ગો શોધો.",
+      ml: "വർധിച്ചുവരുന്ന വരുമാനം ഉണ്ടായിട്ടും കൂടി എന്തുകൊണ്ടാണ് മിക്ക ഇന്ത്യൻ കുടുംബങ്ങളും വ്യക്തിപരമായ ധനകാര്യങ്ങളിൽ പോരാടുന്നതെന്ന് മനസ്സിലാക്കുകയും നിങ്ങളുടെ സാമ്പത്തിക അറിവ് മെച്ചപ്പെടുത്താനുള്ള മാർഗങ്ങൾ കണ്ടെത്തുകയും ചെയ്യുക."
+    }
+  },
+  {
+    id: 2,
+    slug: "festival-budgeting-made-easy",
+    title: {
+      en: "Festival Budgeting Made Easy",
+      hi: "त्योहार बजट आसान बनाया",
+      hinglish: "Festival Budgeting Easy Kaise Banaye",
+      bn: "উৎসবের বাজেট সহজ করা",
+      ta: "திருவிழா பட்ஜெட் எளிதாக்கப்பட்டது",
+      te: "పండుగ బడ్జెట్ సులభం చేయబడింది",
+      pa: "ਤਿਉਹਾਰ ਦਾ ਬਜਟ ਆਸਾਨ ਬਣਾਇਆ",
+      gu: "તહેવારનું બજેટ સરળ બનાવ્યું",
+      ml: "ഉത്സവ ബജറ്റ് എളുപ്പമാക്കി"
+    },
+    excerpt: {
+      en: "Festival season doesn't have to break your bank. Learn how to celebrate with joy while keeping your finances on track with our practical tips.",
+      hi: "त्योहार का मौसम आपके बैंक को तोड़ने वाला नहीं होना चाहिए। हमारे व्यावहारिक सुझावों के साथ अपने वित्त को ट्रैक पर रखते हुए खुशी के साथ उत्सव मनाना सीखें।",
+      hinglish: "Festival season aapke bank ko todne wala nahin hona chahiye. Humare practical tips ke saath apne finances ko track par rakhte hue khushi ke saath celebrate karna seekhen.",
+      bn: "উৎসবের মৌসুমে আপনার ব্যাংক ভাঙতে হবে না। আমাদের ব্যবহারিক টিপস দিয়ে আপনার অর্থ ট্র্যাক রেখে আনন্দের সাথে উদযাপন করতে শিখুন।",
+      ta: "திருவிழா காலம் உங்கள் வங்கியை உடைக்கக்கூடாது. எங்கள் நடைமுறை குறிப்புகளுடன் உங்கள் நிதிகளை சரியான பாதையில் வைத்திருக்கும் அதே வேளையில் மகிழ்ச்சியுடன் கொண்டாட கற்றுக்கொள்ளுங்கள்.",
+      te: "పండుగ సీజన్ మీ బ్యాంకును బ్రేక్ చేయాల్సిన అవసరం లేదు. మా ఆచరణాత్మక చిట్కాలతో మీ ఆర్థిక అంశాలను ట్రాక్ చేయడంతో పాటు ఆనందంగా జరుపుకోవడం నేర్చుకోండి.",
+      pa: "ਤਿਉਹਾਰ ਦਾ ਮੌਸਮ ਤੁਹਾਡੇ ਬੈਂਕ ਨੂੰ ਤੋੜਨ ਵਾਲਾ ਨਹੀਂ ਹੋਣਾ ਚਾਹੀਦਾ। ਸਾਡੇ ਵਿਹਾਰਕ ਸੁਝਾਵਾਂ ਨਾਲ ਆਪਣੇ ਵਿੱਤ ਨੂੰ ਟਰੈਕ 'ਤੇ ਰੱਖਦੇ ਹੋਏ ਖੁਸ਼ੀ ਨਾਲ ਜਸ਼ਨ ਮਨਾਉਣਾ ਸਿੱਖੋ।",
+      gu: "તહેવારની સીઝન તમારા બેંકને તોડવી ન જોઈએ. અમારી વ્યવહારુ ટિપ્સ સાથે તમારા નાણાંને ટ્રેક પર રાખીને આનંદ સાથે ઉજવણી કરવાનું શીખો.",
+      ml: "ഉത്സവ സീസൺ നിങ്ങളുടെ ബാങ്ക് തകർക്കേണ്ടതില്ല. ഞങ്ങളുടെ പ്രായോഗിക നുറുങ്ങുകളുപയോഗിച്ച് നിങ്ങളുടെ ധനകാര്യങ്ങൾ ട്രാക്കിൽ നിലനിർത്തുന്നതിനൊപ്പം സന്തോഷത്തോടെ ആഘോഷിക്കാൻ പഠിക്കുക."
+    },
+    content: {
+      en: "<p>Festival season in India brings joy but can also strain your finances. Here's how to budget effectively:</p><p><strong>1. Plan ahead:</strong> Start saving for festivals months in advance.</p><p><strong>2. Set a clear budget:</strong> Decide how much you'll spend on gifts, decorations, food, and travel.</p><p><strong>3. Prioritize expenses:</strong> Focus on what truly matters to your family.</p><p><strong>4. Look for deals:</strong> Festival sales can help you save if you're careful.</p>",
+      hi: "<p>भारत में त्योहार का मौसम खुशी लाता है लेकिन आपके वित्त पर भी दबाव डाल सकता है। यहां प्रभावी ढंग से बजट बनाने का तरीका बताया गया है:</p><p><strong>1. पहले से योजना बनाएं:</strong> त्योहारों के लिए महीनों पहले से बचत शुरू करें।</p><p><strong>2. स्पष्ट बजट निर्धारित करें:</strong> तय करें कि आप उपहार, सजावट, भोजन और यात्रा पर कितना खर्च करेंगे।</p><p><strong>3. व्यय को प्राथमिकता दें:</strong> इस पर ध्यान दें कि आपके परिवार के लिए वास्तव में क्या मायने रखता है।</p><p><strong>4. डील्स की तलाश करें:</strong> त्योहार की बिक्री आपको बचत में मदद कर सकती है अगर आप सावधान हैं।</p>",
+      hinglish: "<p>India mein festival season khushi lata hai lekin aapke finances par bhi pressure dal sakta hai. Yahan effectively budget banane ka tareeka bataya gaya hai:</p><p><strong>1. Pehle se plan karein:</strong> Festivals ke liye months pehle se saving shuru karein.</p><p><strong>2. Clear budget set karein:</strong> Decide karein ki aap gifts, decorations, food, aur travel par kitna kharch karenge.</p><p><strong>3. Expenses ko prioritize karein:</strong> Focus karein ki aapke family ke liye truly kya matter karta hai.</p><p><strong>4. Deals dhoondhein:</strong> Festival sales aapko bachane mein help kar sakti hain agar aap careful hain.</p>",
+      bn: "<p>ভারতে উৎসবের মৌসুম আনন্দ নিয়ে আসে তবে আপনার অর্থও ব্যয় করতে পারে। এখানে কার্যকরভাবে বাজেট করার উপায়:</p><p><strong>1. আগে থেকে পরিকল্পনা করুন:</strong> মাস আগে থেকে উৎসবের জন্য সঞ্চয় শুরু করুন।</p><p><strong>2. একটি স্পষ্ট বাজেট নির্ধারণ করুন:</strong> আপনি উপহার, সাজসজ্জা, খাবার এবং ভ্রমণে কত খরচ করবেন তা ঠিক করুন।</p><p><strong>3. খরচের অগ্রাধিকার দিন:</strong> আপনার পরিবারের জন্য যা সত্যিই গুরুত্বপূর্ণ তার উপর মনোনিবেশ করুন।</p><p><strong>4. ডিল খুঁজুন:</strong> আপনি যদি সাবধান হন তবে উৎসবের বিক্রয় আপনাকে সাশ্রয় করতে সাহায্য করতে পারে।</p>",
+      ta: "<p>இந்தியாவில் திருவிழா காலம் மகிழ்ச்சியைக் கொண்டு வருகிறது ஆனால் உங்கள் நிதிகளை அழுத்தமும் ஏற்படுத்தலாம். இதோ திறம்பட பட்ஜெட் செய்வது எப்படி:</p><p><strong>1. முன்கூட்டியே திட்டமிடுங்கள்:</strong> திருவிழாக்களுக்கு மாதங்களுக்கு முன்பே சேமிக்கத் தொடங்குங்கள்.</p><p><strong>2. தெளிவான பட்ஜெட்டை அமைக்கவும்:</strong> பரிசுகள், அலங்காரங்கள், உணவு மற்றும் பயணத்திற்கு எவ்வளவு செலவழிப்பீர்கள் என்பதை முடிவு செய்யுங்கள்.</p><p><strong>3. செலவுகளுக்கு முன்னுரிமை அளிக்கவும்:</strong> உங்கள் குடும்பத்திற்கு உண்மையிலேயே முக்கியமானவற்றில் கவனம் செலுத்துங்கள்.</p><p><strong>4. சலுகைகளைத் தேடுங்கள்:</strong> நீங்கள் கவனமாக இருந்தால், திருவிழா விற்பனை உங்களுக்கு சேமிக்க உதவும்.</p>",
+      te: "<p>భారతదేశంలో పండుగ సీజన్ ఆనందాన్ని తెస్తుంది కానీ మీ ఫైనాన్స్‌పై ఒత్తిడి కూడా ఉంటుంది. ఇక్కడ సమర్థవంతంగా బడ్జెట్ చేయడం ఎలా:</p><p><strong>1. ముందుగానే ప్రణాళిక వేయండి:</strong> నెలల ముందు నుండే పండుగల కోసం పొదుపు చేయడం ప్రారంభించండి.</p><p><strong>2. స్పష్టమైన బడ్జెట్‌ని సెట్ చేయండి:</strong> బహుమతులు, అలంకరణలు, ఆహారం మరియు ప్రయాణానికి ఎంత ఖర్చు చేస్తారో నిర్ణయించుకోండి.</p><p><strong>3. ఖర్చులకు ప్రాధాన్యత ఇవ్వండి:</strong> మీ కుటుంబానికి నిజంగా ముఖ్యమైన దానిపై దృష్టి పెట్టండి.</p><p><strong>4. డీల్స్ కోసం చూడండి:</strong> మీరు జాగ్రత్తగా ఉంటే పండుగ సేల్స్ మీకు ఆదా చేయడంలో సహాయపడతాయి.</p>",
+      pa: "<p>ਭਾਰਤ ਵਿੱਚ ਤਿਉਹਾਰਾਂ ਦਾ ਮੌਸਮ ਖੁਸ਼ੀ ਲਿਆਉਂਦਾ ਹੈ ਪਰ ਤੁਹਾਡੇ ਵਿੱਤ 'ਤੇ ਵੀ ਦਬਾਅ ਪਾ ਸਕਦਾ ਹੈ। ਇੱਥੇ ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਢੰਗ ਨਾਲ ਬਜਟ ਬਣਾਉਣ ਦਾ ਤਰੀਕਾ ਹੈ:</p><p><strong>1. ਪਹਿਲਾਂ ਤੋਂ ਯੋਜਨਾ ਬਣਾਓ:</strong> ਤਿਉਹਾਰਾਂ ਲਈ ਮਹੀਨਿਆਂ ਪਹਿਲਾਂ ਤੋਂ ਬਚਾਉਣਾ ਸ਼ੁਰੂ ਕਰੋ।</p><p><strong>2. ਸਪਸ਼ਟ ਬਜਟ ਨਿਰਧਾਰਤ ਕਰੋ:</strong> ਫੈਸਲਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਤੋਹਫ਼ਿਆਂ, ਸਜਾਵਟ, ਭੋਜਨ ਅਤੇ ਯਾਤਰਾ 'ਤੇ ਕਿੰਨਾ ਖਰਚ ਕਰੋਗੇ।</p><p><strong>3. ਖਰਚਿਆਂ ਨੂੰ ਤਰਜੀਹ ਦਿਓ:</strong> ਇਸ ਗੱਲ 'ਤੇ ਧਿਆਨ ਕੇਂਦਰਿਤ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪਰਿਵਾਰ ਲਈ ਅਸਲ ਵਿੱਚ ਕੀ ਮਾਅਨੇ ਰੱਖਦਾ ਹੈ।</p><p><strong>4. ਡੀਲਾਂ ਲਈ ਦੇਖੋ:</strong> ਜੇ ਤੁਸੀਂ ਸਾਵਧਾਨ ਹੋ ਤਾਂ ਤਿਉਹਾਰ ਦੀਆਂ ਸੇਲ ਤੁਹਾਨੂੰ ਬਚਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰ ਸਕਦੀਆਂ ਹਨ।</p>",
+      gu: "<p>ભારતમાં તહેવારની સીઝન આનંદ લાવે છે પરંતુ તમારા નાણાં પર દબાણ પણ કરી શકે છે. અહીં અસરકારક રીતે બજેટ કેવી રીતે બનાવવું તે આપ્યું છે:</p><p><strong>1. અગાઉથી આયોજન કરો:</strong> તહેવારો માટે મહિનાઓ પહેલા બચત શરૂ કરો.</p><p><strong>2. સ્પષ્ટ બજેટ સેટ કરો:</strong> નક્કી કરો કે તમે ભેટો, સજાવટ, ખોરાક અને પ્રવાસ પર કેટલા ખર્ચ કરશો.</p><p><strong>3. ખર્ચને પ્રાધાન્યતા આપો:</strong> તમારા પરિવાર માટે ખરેખર શું મહત્વનું છે તેના પર ધ્યાન કેન્દ્રિત કરો.</p><p><strong>4. ડીલ્સ જુઓ:</strong> જો તમે કાળજી રાખો તો તહેવારની વેચાણ તમને બચાવવામાં મદદ કરી શકે છે.</p>",
+      ml: "<p>ഇന്ത്യയിൽ ഉത്സവ സീസൺ സന്തോഷം കൊണ്ടുവരുന്നു, പക്ഷേ നിങ്ങളുടെ ധനകാര്യങ്ങളെ പിടിക്കുകയും ചെയ്യാം. ഫലപ്രദമായി ബജറ്റ് ചെയ്യുന്നത് എങ്ങനെയെന്ന് ഇതാ:</p><p><strong>1. മുൻകൂട്ടി ആസൂത്രണം ചെയ്യുക:</strong> ഉത്സവങ്ങൾക്കായി മാസങ്ങൾക്ക് മുമ്പ് സേവിംഗ് ആരംഭിക്കുക.</p><p><strong>2. വ്യക്തമായ ബജറ്റ് സജ്ജീകരിക്കുക:</strong> സമ്മാനങ്ങൾ, അലങ്കാരങ്ങൾ, ഭക്ഷണം, യാത്ര എന്നിവയ്ക്ക് എത്ര ചെലവഴിക്കുമെന്ന് തീരുമാനിക്കുക.</p><p><strong>3. ചെലവുകൾക്ക് മുൻഗണന നൽകുക:</strong> നിങ്ങളുടെ കുടുംബത്തിന് ശരിക്കും പ്രധാനപ്പെട്ടതിൽ ശ്രദ്ധ കേന്ദ്രീകരിക്കുക.</p><p><strong>4. ഡീലുകൾ നോക്കുക:</strong> നിങ്ങൾ ശ്രദ്ധാലുവാണെങ്കിൽ ഉത്സവ വില്പനകൾ നിങ്ങൾ സേവിക്കാൻ സഹായിക്കും.</p>"
+    },
+    author: "Meera Patel",
+    date: "2024-05-05",
+    readTime: 4,
+    featuredImage: "/placeholder.svg",
+    imageAlt: {
+      en: "Indian family celebrating festival",
+      hi: "त्योहार मनाता भारतीय परिवार",
+      hinglish: "Festival celebrate karta hua Indian family",
+      bn: "উৎসব উদযাপন করা ভারতীয় পরিবার",
+      ta: "திருவிழா கொண்டாடும் இந்திய குடும்பம்",
+      te: "పండుగ జరుపుకునే భారతీయ కుటుంబం",
+      pa: "ਤਿਉਹਾਰ ਮਨਾਉਂਦਾ ਭਾਰਤੀ ਪਰਿਵਾਰ",
+      gu: "તહેવાર ઉજવતું ભારતીય પરિવાર",
+      ml: "ഉത്സവം ആഘോഷിക്കുന്ന ഇന്ത്യൻ കുടുംബം"
+    },
+    categories: ["Festival Planning", "Budgeting", "Financial Planning"],
+    keywords: ["festival budget", "diwali budget", "indian festivals", "money management", "festival planning"],
+    metaDescription: {
+      en: "Learn how to create a festival budget that lets you enjoy the celebrations without financial stress. Practical tips for Indian families.",
+      hi: "जानें कि कैसे एक त्योहार बजट बनाएं जो आपको वित्तीय तनाव के बिना उत्सव का आनंद लेने दे। भारतीय परिवारों के लिए व्यावहारिक सुझाव।",
+      hinglish: "Seekhein kaise ek festival budget banaye jo aapko financial stress ke bina celebrations enjoy karne de. Indian families ke liye practical tips.",
+      bn: "শিখুন কীভাবে একটি উৎসব বাজেট তৈরি করবেন যা আপনাকে আর্থিক চাপ ছাড়াই উদযাপন উপভোগ করতে দেয়। ভারতীয় পরিবারগুলির জন্য ব্যবহারিক টিপস।",
+      ta: "நிதி அழுத்தம் இல்லாமல் கொண்டாட்டங்களை அனுபவிக்க உங்களை அனுமதிக்கும் திருவிழா பட்ஜெட்டை எவ்வாறு உருவாக்குவது என்பதைக் கற்றுக்கொள்ளுங்கள். இந்திய குடும்பங்களுக்கான நடைமுறை குறிப்புகள்.",
+      te: "ఆర్థిక ఒత్తిడి లేకుండా సంబరాలను ఆస్వాదించడానికి మిమ్మల్ని అనుమతించే పండుగ బడ్జెట్ ను ఎలా సృష్టించాలో నేర్చుకోండి. భారతీయ కుటుంబాలకు ఆచరణాత్మక చిట్కాలు.",
+      pa: "ਸਿੱਖੋ ਕਿ ਤਿਉਹਾਰ ਦਾ ਬਜਟ ਕਿਵੇਂ ਬਣਾਇਆ ਜਾਵੇ ਜੋ ਤੁਹਾਨੂੰ ਵਿੱਤੀ ਤਣਾਅ ਤੋਂ ਬਿਨਾਂ ਜਸ਼ਨ ਦਾ ਆਨੰਦ ਲੈਣ ਦੀ ਆਗਿਆ ਦਿੰਦਾ ਹੈ। ਭਾਰਤੀ ਪਰਿਵਾਰਾਂ ਲਈ ਵਿਹਾਰਕ ਸੁਝਾਅ।",
+      gu: "શીખો કે કેવી રીતે એક તહેવાર બજેટ બનાવવું જે તમને નાણાકીય તણાવ વગર ઉજવણીનો આનંદ લેવા દે. ભારતીય પરિવારો માટે વ્યવહારુ ટીપ્સ.",
+      ml: "സാമ്പത്തിക സമ്മർദ്ദമില്ലാതെ ആഘോഷങ്ങൾ ആസ്വദിക്കാൻ നിങ്ങളെ അനുവദിക്കുന്ന ഒരു ഉത്സവ ബജറ്റ് എങ്ങനെ സൃഷ്ടിക്കാമെന്ന് പഠിക്കുക. ഇന്ത്യൻ കുടുംബങ്ങൾക്കുള്ള പ്രായോഗിക നുറുങ്ങുകൾ."
     }
   }
 ];

@@ -1,271 +1,217 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
-import useUserStore from '@/lib/userStore';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { predefinedUsers } from '@/lib/config';
 import { useLanguage } from '@/contexts/LanguageContext';
+import useUserStore from '@/lib/userStore';
+import { toast } from "sonner";
+import { loginAdmin } from '@/lib/adminService';
 
-export const LoginForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { login } = useUserStore();
+interface AuthFormsProps {
+  onSuccess: () => void;
+  defaultTab?: 'login' | 'signup';
+}
+
+const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }) => {
   const { language, t } = useLanguage();
-  const navigate = useNavigate();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Login attempt with:', email);
-    setIsLoading(true);
-    
-    // Short timeout to simulate API call and show loading state
-    setTimeout(() => {
-      const success = login(email, password);
-      setIsLoading(false);
-      
-      if (success) {
-        console.log('Login successful');
-        toast.success(
-          language === 'en' 
-            ? "Login successful! Welcome back to Wealthवाणी!"
-            : language === 'hi' 
-              ? "लॉगिन सफल! वेल्थवाणी में आपका फिर से स्वागत है!"
-              : "Login successful! Wealthवाणी mein aapka phir se swagat hai!"
-        );
-        
-        // Navigate to onboarding for first time users or dashboard for returning users
-        const user = useUserStore.getState().currentUser;
-        if (user && !user.profileCreated) {
-          console.log('Navigating to onboarding for new user');
-          navigate('/onboarding');
-        } else {
-          console.log('Navigating to dashboard for returning user');
-          navigate('/dashboard');
-        }
-        
-        if (onSuccess) onSuccess();
-      } else {
-        console.log('Login failed');
-        toast.error(
-          language === 'en'
-            ? "Invalid email or password. Please try again."
-            : language === 'hi' 
-              ? "अमान्य ईमेल या पासवर्ड। कृपया पुन: प्रयास करें।"
-              : "Invalid email ya password. Please dobara try karein."
-        );
-      }
-    }, 800);
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="email">{t('email')}</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder={language === 'en' ? "name@example.com" : language === 'hi' ? "नाम@उदाहरण.com" : "name@example.com"}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="password">{t('password')}</Label>
-        <Input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      
-      <div className="text-sm text-muted-foreground">
-        <p>{language === 'en' ? "Predefined accounts:" : language === 'hi' ? "पूर्वनिर्धारित खाते:" : "Predefined accounts:"}</p>
-        <ul className="list-disc pl-5 mt-1">
-          {predefinedUsers.map((user) => (
-            <li key={user.id}>
-              <button 
-                type="button" 
-                className="text-royal-blue underline"
-                onClick={() => {
-                  console.log('Selected predefined user:', user.name);
-                  setEmail(user.email);
-                  setPassword(user.password);
-                }}
-              >
-                {user.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      
-      <Button 
-        type="submit" 
-        className="w-full bg-royal-blue hover:bg-royal-blue/90"
-        disabled={isLoading}
-      >
-        {isLoading 
-          ? (language === 'en' ? "Logging in..." : language === 'hi' ? "लॉग इन हो रहा है..." : "Logging in...") 
-          : t('login')}
-      </Button>
-    </form>
-  );
-};
-
-export const SignUpForm: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { register } = useUserStore();
-  const { language, t } = useLanguage();
-  const navigate = useNavigate();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Signup attempt with:', { name, email });
-    
-    if (password !== confirmPassword) {
-      toast.error(
-        language === 'en'
-          ? "Passwords do not match. Please ensure both passwords are the same."
-          : language === 'hi'
-            ? "पासवर्ड मेल नहीं खाते। कृपया सुनिश्चित करें कि दोनों पासवर्ड समान हैं।"
-            : "Passwords match nahi karte. Please ensure dono passwords ek jaise hain."
-      );
+  const [activeTab, setActiveTab] = useState<string>(defaultTab);
+  const { login, register } = useUserStore();
+  
+  // Login form state
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  
+  // Signup form state
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const handleLogin = () => {
+    if (!loginEmail || !loginPassword) {
+      toast.error(language === 'en' 
+        ? "Please fill in all fields" 
+        : language === 'hi' 
+          ? "कृपया सभी फ़ील्ड भरें" 
+          : "Please saare fields fill karein");
       return;
     }
     
-    setIsLoading(true);
-    
-    // Short timeout to simulate API call and show loading state
-    setTimeout(() => {
-      const success = register(email, password, name);
-      setIsLoading(false);
-      
-      if (success) {
-        console.log('Registration successful');
-        toast.success(
-          language === 'en'
-            ? "Account created successfully! Welcome to Wealthवाणी!"
-            : language === 'hi'
-              ? "खाता सफलतापूर्वक बनाया गया! वेल्थवाणी में आपका स्वागत है!"
-              : "Account successfully create ho gaya! Wealthवाणी mein aapka swagat hai!"
-        );
-        
-        // Navigate to onboarding for new users
-        console.log('Navigating to onboarding after signup');
-        navigate('/onboarding');
-        
-        if (onSuccess) onSuccess();
-      } else {
-        console.log('Registration failed');
-        toast.error(
-          language === 'en'
-            ? "An account with this email already exists."
-            : language === 'hi'
-              ? "इस ईमेल वाला खाता पहले से मौजूद है।"
-              : "Is email ka account pehle se maujood hai."
-        );
+    // Check if this is an admin login attempt
+    if (loginEmail === 'admin@wealthvani.com') {
+      const isAdminLogin = loginAdmin(loginEmail, loginPassword);
+      if (isAdminLogin) {
+        toast.success(language === 'en' 
+          ? "Welcome Admin!" 
+          : language === 'hi' 
+            ? "व्यवस्थापक का स्वागत है!" 
+            : "Admin ka swagat hai!");
+        onSuccess();
+        return;
       }
-    }, 800);
+    }
+    
+    // Regular user login
+    const success = login(loginEmail, loginPassword);
+    
+    if (success) {
+      toast.success(language === 'en' 
+        ? "Login successful!" 
+        : language === 'hi' 
+          ? "लॉगिन सफल!" 
+          : "Login successful!");
+      onSuccess();
+    } else {
+      toast.error(language === 'en' 
+        ? "Invalid email or password" 
+        : language === 'hi' 
+          ? "अमान्य ईमेल या पासवर्ड" 
+          : "Invalid email ya password");
+    }
   };
-
+  
+  const handleSignup = () => {
+    if (!name || !email || !password || !confirmPassword) {
+      toast.error(language === 'en' 
+        ? "Please fill in all fields" 
+        : language === 'hi' 
+          ? "कृपया सभी फ़ील्ड भरें" 
+          : "Please saare fields fill karein");
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      toast.error(language === 'en' 
+        ? "Passwords don't match" 
+        : language === 'hi' 
+          ? "पासवर्ड मेल नहीं खाते" 
+          : "Passwords match nahin karte");
+      return;
+    }
+    
+    // Prevent admin email registration 
+    if (email === 'admin@wealthvani.com') {
+      toast.error(language === 'en' 
+        ? "This email is reserved" 
+        : language === 'hi' 
+          ? "यह ईमेल आरक्षित है" 
+          : "Yeh email reserved hai");
+      return;
+    }
+    
+    const success = register(email, password, name);
+    
+    if (success) {
+      toast.success(language === 'en' 
+        ? "Registration successful!" 
+        : language === 'hi' 
+          ? "पंजीकरण सफल!" 
+          : "Registration successful!");
+      onSuccess();
+    } else {
+      toast.error(language === 'en' 
+        ? "Email already exists" 
+        : language === 'hi' 
+          ? "ईमेल पहले से मौजूद है" 
+          : "Email already exist karta hai");
+    }
+  };
+  
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">{t('full-name')}</Label>
-        <Input
-          id="name"
-          placeholder={language === 'en' ? "John Doe" : language === 'hi' ? "राम कुमार" : "John Doe"}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="email">{t('email')}</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder={language === 'en' ? "name@example.com" : language === 'hi' ? "नाम@उदाहरण.com" : "name@example.com"}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="password">{t('password')}</Label>
-        <Input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword">{t('confirm-password')}</Label>
-        <Input
-          id="confirmPassword"
-          type="password"
-          placeholder="••••••••"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-      </div>
-      
-      <Button 
-        type="submit" 
-        className="w-full bg-royal-blue hover:bg-royal-blue/90"
-        disabled={isLoading}
+    <div>
+      <Tabs 
+        defaultValue={activeTab} 
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full"
       >
-        {isLoading 
-          ? (language === 'en' ? "Creating Account..." : language === 'hi' ? "खाता बना रहा है..." : "Account create ho raha hai...")
-          : t('create-account')}
-      </Button>
-    </form>
-  );
-};
-
-const AuthForms: React.FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
-  const location = useLocation();
-  const { language, t } = useLanguage();
-  // Check for defaultTab from navigation state or URL params
-  const defaultTab = location.state?.defaultTab === 'signup' ? 'signup' : 'login';
-
-  return (
-    <Tabs defaultValue={defaultTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-2 mb-6">
-        <TabsTrigger value="login">{t('login')}</TabsTrigger>
-        <TabsTrigger value="signup">{t('signup')}</TabsTrigger>
-      </TabsList>
-      
-      <TabsContent value="login">
-        <LoginForm onSuccess={onSuccess} />
-      </TabsContent>
-      
-      <TabsContent value="signup">
-        <SignUpForm onSuccess={onSuccess} />
-      </TabsContent>
-    </Tabs>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="login">{t('login')}</TabsTrigger>
+          <TabsTrigger value="signup">{t('signup')}</TabsTrigger>
+        </TabsList>
+        
+        {/* Login Form */}
+        <TabsContent value="login" className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">{t('email')}</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder={language === 'en' ? "Enter your email" : language === 'hi' ? "अपना ईमेल दर्ज करें" : "Apna email darj karein"}
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">{t('password')}</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder={language === 'en' ? "Enter your password" : language === 'hi' ? "अपना पासवर्ड दर्ज करें" : "Apna password darj karein"}
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+          </div>
+          <Button 
+            className="w-full bg-royal-blue hover:bg-royal-blue/90" 
+            onClick={handleLogin}
+          >
+            {t('login')}
+          </Button>
+        </TabsContent>
+        
+        {/* Signup Form */}
+        <TabsContent value="signup" className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">{t('full-name')}</Label>
+            <Input
+              id="name"
+              placeholder={language === 'en' ? "Enter your full name" : language === 'hi' ? "अपना पूरा नाम दर्ज करें" : "Apna poora naam darj karein"}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signup-email">{t('email')}</Label>
+            <Input
+              id="signup-email"
+              type="email"
+              placeholder={language === 'en' ? "Enter your email" : language === 'hi' ? "अपना ईमेल दर्ज करें" : "Apna email darj karein"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signup-password">{t('password')}</Label>
+            <Input
+              id="signup-password"
+              type="password"
+              placeholder={language === 'en' ? "Create a password" : language === 'hi' ? "एक पासवर्ड बनाएं" : "Ek password banaye"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="confirm-password">{t('confirm-password')}</Label>
+            <Input
+              id="confirm-password"
+              type="password"
+              placeholder={language === 'en' ? "Confirm your password" : language === 'hi' ? "अपने पासवर्ड की पुष्टि करें" : "Apne password ki pushtee karen"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+          <Button 
+            className="w-full bg-royal-blue hover:bg-royal-blue/90" 
+            onClick={handleSignup}
+          >
+            {t('signup')}
+          </Button>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 

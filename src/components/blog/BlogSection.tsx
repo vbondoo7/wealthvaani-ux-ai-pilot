@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Facebook, Linkedin, Instagram, Edit } from "lucide-react";
@@ -10,7 +10,7 @@ import BlogSearch from './BlogSearch';
 import BlogCategories from './BlogCategories';
 import { cn } from '@/lib/utils';
 import useUserStore from '@/lib/userStore';
-import BlogAdminPanel from './BlogAdminPanel';
+import { getAuthenticatedAdmin } from '@/lib/adminService';
 
 const BlogSection: React.FC = () => {
   const { language } = useLanguage();
@@ -18,8 +18,14 @@ const BlogSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { currentUser } = useUserStore();
-  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   
+  useEffect(() => {
+    // Check if user is admin
+    const adminData = getAuthenticatedAdmin();
+    setIsAdmin(!!adminData?.isAdmin);
+  }, []);
+
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory ? post.categories.includes(selectedCategory) : true;
     const matchesSearch = searchQuery.trim() === "" || 
@@ -35,11 +41,6 @@ const BlogSection: React.FC = () => {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
-
-  // If in admin mode and user is admin, show admin panel
-  if (isAdminMode && currentUser?.isAdmin) {
-    return <BlogAdminPanel />;
-  }
   
   return (
     <div className="min-h-screen bg-ivory-white">
@@ -60,11 +61,11 @@ const BlogSection: React.FC = () => {
           </Button>
           
           <div className="flex items-center gap-4">
-            {currentUser?.isAdmin && (
+            {isAdmin && (
               <Button 
                 variant="outline"
                 className="flex items-center gap-2 mr-2"
-                onClick={() => setIsAdminMode(!isAdminMode)}
+                onClick={() => navigate('/blog/admin')}
               >
                 <Edit className="h-4 w-4" />
                 {language === 'en' 
