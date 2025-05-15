@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
@@ -112,19 +111,34 @@ const BlogAdminPanel: React.FC = () => {
   
   const handleInputChange = (field: string, value: string) => {
     if (isCreatingNew) {
-      setNewBlog(prev => ({
-        ...prev,
-        [field]: field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt'
-          ? { ...prev[field as keyof BlogPost], [editLanguage]: value }
-          : value
-      }));
+      setNewBlog(prev => {
+        const updatedBlog = { ...prev };
+        if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
+          // Fix for TS2698: Handle the multilingual fields correctly
+          updatedBlog[field as keyof BlogPost] = {
+            ...(updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>),
+            [editLanguage]: value
+          };
+        } else {
+          updatedBlog[field as keyof BlogPost] = value as any;
+        }
+        return updatedBlog;
+      });
     } else if (selectedBlog) {
-      setSelectedBlog(prev => ({
-        ...prev,
-        [field]: field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt'
-          ? { ...prev[field as keyof BlogPost], [editLanguage]: value }
-          : value
-      }));
+      setSelectedBlog(prev => {
+        if (!prev) return null;
+        const updatedBlog = { ...prev };
+        if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
+          // Fix for TS2698: Handle the multilingual fields correctly
+          updatedBlog[field as keyof BlogPost] = {
+            ...(updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>),
+            [editLanguage]: value
+          };
+        } else {
+          updatedBlog[field as keyof BlogPost] = value as any;
+        }
+        return updatedBlog;
+      });
     }
   };
   
