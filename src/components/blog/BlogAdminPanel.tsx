@@ -1,7 +1,7 @@
+
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,13 +17,14 @@ const BlogAdminPanel: React.FC = () => {
   
   // Create empty blog template
   const createEmptyBlog = (): BlogPost => {
-    const languageOptions: LanguageOption[] = ['en', 'hi', 'hinglish', 'bn', 'ta', 'te'];
+    const languageOptions: LanguageOption[] = ['en', 'hi', 'hinglish', 'bn', 'ta', 'te', 'pa', 'gu', 'ml'];
     
     const emptyMultiLangField = (defaultText = '') => {
-      return languageOptions.reduce((acc, lang) => {
-        acc[lang] = defaultText;
-        return acc;
-      }, {} as Record<LanguageOption, string>);
+      const result: Record<LanguageOption, string> = {} as Record<LanguageOption, string>;
+      languageOptions.forEach(lang => {
+        result[lang] = defaultText;
+      });
+      return result;
     };
     
     return {
@@ -114,13 +115,15 @@ const BlogAdminPanel: React.FC = () => {
       setNewBlog(prev => {
         const updatedBlog = { ...prev };
         if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
-          // Fix for TS2698: Handle the multilingual fields correctly
-          updatedBlog[field as keyof BlogPost] = {
-            ...(updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>),
+          const currentField = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
+          (updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>) = {
+            ...currentField,
             [editLanguage]: value
           };
-        } else {
-          updatedBlog[field as keyof BlogPost] = value as any;
+        } else if (field === 'categories') {
+          updatedBlog.categories = value.split(',').map(cat => cat.trim());
+        } else if (field === 'slug') {
+          updatedBlog.slug = value;
         }
         return updatedBlog;
       });
@@ -129,13 +132,15 @@ const BlogAdminPanel: React.FC = () => {
         if (!prev) return null;
         const updatedBlog = { ...prev };
         if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
-          // Fix for TS2698: Handle the multilingual fields correctly
-          updatedBlog[field as keyof BlogPost] = {
-            ...(updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>),
+          const currentField = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
+          (updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>) = {
+            ...currentField,
             [editLanguage]: value
           };
-        } else {
-          updatedBlog[field as keyof BlogPost] = value as any;
+        } else if (field === 'categories') {
+          updatedBlog.categories = value.split(',').map(cat => cat.trim());
+        } else if (field === 'slug') {
+          updatedBlog.slug = value;
         }
         return updatedBlog;
       });
@@ -205,6 +210,9 @@ const BlogAdminPanel: React.FC = () => {
                 <option value="bn">বাংলা (Bengali)</option>
                 <option value="ta">தமிழ் (Tamil)</option>
                 <option value="te">తెలుగు (Telugu)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                <option value="gu">ગુજરાતી (Gujarati)</option>
+                <option value="ml">മലയാളം (Malayalam)</option>
               </select>
             </div>
             
@@ -213,8 +221,8 @@ const BlogAdminPanel: React.FC = () => {
               <Input
                 id="title"
                 value={isCreatingNew 
-                  ? newBlog.title[editLanguage] 
-                  : selectedBlog?.title[editLanguage]}
+                  ? newBlog.title[editLanguage] || ''
+                  : selectedBlog?.title[editLanguage] || ''}
                 onChange={(e) => handleInputChange('title', e.target.value)}
                 className="mt-1"
               />
@@ -224,7 +232,7 @@ const BlogAdminPanel: React.FC = () => {
               <Label htmlFor="slug">Slug</Label>
               <Input
                 id="slug"
-                value={isCreatingNew ? newBlog.slug : selectedBlog?.slug}
+                value={isCreatingNew ? newBlog.slug : selectedBlog?.slug || ''}
                 onChange={(e) => handleInputChange('slug', e.target.value)}
                 className="mt-1"
               />
@@ -235,8 +243,8 @@ const BlogAdminPanel: React.FC = () => {
               <Textarea
                 id="excerpt"
                 value={isCreatingNew 
-                  ? newBlog.excerpt[editLanguage] 
-                  : selectedBlog?.excerpt[editLanguage]}
+                  ? newBlog.excerpt[editLanguage] || ''
+                  : selectedBlog?.excerpt[editLanguage] || ''}
                 onChange={(e) => handleInputChange('excerpt', e.target.value)}
                 className="mt-1"
                 rows={3}
@@ -248,8 +256,8 @@ const BlogAdminPanel: React.FC = () => {
               <Textarea
                 id="content"
                 value={isCreatingNew 
-                  ? newBlog.content[editLanguage] 
-                  : selectedBlog?.content[editLanguage]}
+                  ? newBlog.content[editLanguage] || ''
+                  : selectedBlog?.content[editLanguage] || ''}
                 onChange={(e) => handleInputChange('content', e.target.value)}
                 className="mt-1 font-mono"
                 rows={10}
@@ -275,7 +283,7 @@ const BlogAdminPanel: React.FC = () => {
                 id="categories"
                 value={isCreatingNew 
                   ? newBlog.categories.join(', ') 
-                  : selectedBlog?.categories.join(', ')}
+                  : selectedBlog?.categories.join(', ') || ''}
                 onChange={(e) => handleInputChange('categories', e.target.value)}
                 className="mt-1"
               />
@@ -286,8 +294,8 @@ const BlogAdminPanel: React.FC = () => {
               <Textarea
                 id="metaDescription"
                 value={isCreatingNew 
-                  ? newBlog.metaDescription[editLanguage] 
-                  : selectedBlog?.metaDescription[editLanguage]}
+                  ? newBlog.metaDescription[editLanguage] || ''
+                  : selectedBlog?.metaDescription[editLanguage] || ''}
                 onChange={(e) => handleInputChange('metaDescription', e.target.value)}
                 className="mt-1"
                 rows={2}

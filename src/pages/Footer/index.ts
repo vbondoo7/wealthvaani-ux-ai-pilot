@@ -1,6 +1,5 @@
 
-export { default as Terms } from './Terms';
-export { default as Careers } from './Careers';
-export { default as Pricing } from '../Pricing';
+import Terms from './Terms';
+import Careers from './Careers';
 
-// Export other footer pages as they are added
+export { Terms, Careers };
