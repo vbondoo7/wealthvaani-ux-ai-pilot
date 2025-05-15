@@ -49,6 +49,18 @@ const Marketing: React.FC = () => {
   const navigateToBlog = () => {
     navigate('/blog');
   };
+
+  const navigateToPricing = () => {
+    navigate('/pricing');
+  };
+
+  const navigateToTerms = () => {
+    navigate('/terms');
+  };
+
+  const navigateToCareers = () => {
+    navigate('/careers');
+  };
   
   const rotatingPhrases = [
     "Digital Wealth Brain for Bharat's Middle-Class.",
@@ -186,6 +198,12 @@ const Marketing: React.FC = () => {
                 activeSection === 'how-we-do' ? "text-royal-blue" : "text-gray-600 hover:text-royal-blue")}
             >
               {language === 'en' ? "How We Do It" : language === 'hi' ? "हम यह कैसे करते हैं" : "How We Do It"}
+            </button>
+            <button 
+              onClick={navigateToPricing}
+              className="text-sm font-medium text-gray-600 hover:text-royal-blue transition-colors"
+            >
+              {language === 'en' ? "Pricing" : language === 'hi' ? "कीमतें" : "Pricing"}
             </button>
             <button 
               onClick={navigateToBlog}
@@ -579,13 +597,31 @@ const Marketing: React.FC = () => {
                 <option value="hi">हिंदी</option>
                 <option value="hinglish">Hinglish</option>
               </select>
+            </div>
+            <div className="grid grid-cols-3 gap-4 mb-4">
               <Button 
-                variant="outline" 
+                variant="ghost" 
                 size="sm"
-                className="text-royal-blue border-royal-blue hover:bg-royal-blue/10"
-                onClick={navigateToBlog}
+                onClick={navigateToPricing}
+                className="text-muted-foreground hover:text-royal-blue"
               >
-                {language === 'en' ? "Visit Our Blog" : language === 'hi' ? "हमारा ब्लॉग देखें" : "Hamara Blog Dekhein"}
+                {language === 'en' ? "Pricing" : language === 'hi' ? "कीमतें" : "Pricing"}
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={navigateToTerms}
+                className="text-muted-foreground hover:text-royal-blue"
+              >
+                {language === 'en' ? "Terms" : language === 'hi' ? "नियम और शर्तें" : "Terms"}
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={navigateToCareers}
+                className="text-muted-foreground hover:text-royal-blue"
+              >
+                {language === 'en' ? "Careers" : language === 'hi' ? "करियर" : "Careers"}
               </Button>
             </div>
             <div className="text-sm text-muted-foreground">

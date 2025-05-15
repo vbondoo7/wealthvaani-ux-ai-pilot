@@ -12,7 +12,7 @@ import BlogSection from "./components/blog/BlogSection";
 import BlogPost from "./components/blog/BlogPost";
 import BlogAdminPanel from "./components/blog/BlogAdminPanel";
 import BlogDetails from "./components/blog/BlogDetails";
-import { Terms, Careers } from "./pages/Footer";
+import { Terms, Careers, Privacy } from "./pages/Footer";
 import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient({
@@ -69,6 +69,7 @@ const App = () => (
             <Route path="/terms" element={<Terms />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/privacy" element={<Privacy />} />
             
             {/* Fallback route */}
             <Route path="*" element={<NotFound />} />

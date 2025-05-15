@@ -1,409 +1,463 @@
 
 import React, { useState, useEffect } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { BlogPost, LanguageOption } from '@/lib/types';
-import { blogPosts } from '@/lib/blogData';
-import { generateId } from '@/lib/mockData';
-import { getAuthenticatedAdmin } from '@/lib/adminService';
-import { Users } from 'lucide-react';
+import { 
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue 
+} from "@/components/ui/select";
+import { toast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom';
+import { getAuthenticatedAdmin, loginAdmin, logoutAdmin } from '@/lib/adminService';
+import { blogPosts, updateBlogPost, addBlogPost, deleteBlogPost } from '@/lib/blogData';
+import { BlogPost, LanguageOption } from '@/lib/types';
 
 const BlogAdminPanel: React.FC = () => {
-  const { language, t } = useLanguage();
   const navigate = useNavigate();
-  const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
-  const [isCreatingNew, setIsCreatingNew] = useState(false);
-  const [admin, setAdmin] = useState(getAuthenticatedAdmin());
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   
-  // Redirect if not admin
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  
+  // Form state for new/edit post
+  const [formData, setFormData] = useState<Partial<BlogPost>>({
+    id: '',
+    slug: '',
+    author: '',
+    date: '',
+    category: '',
+    featuredImage: '',
+    keywords: [],
+    title: {
+      en: '',
+      hi: '',
+      hinglish: '',
+    } as Record<LanguageOption, string>,
+    content: {
+      en: '',
+      hi: '',
+      hinglish: '',
+    } as Record<LanguageOption, string>,
+    excerpt: {
+      en: '',
+      hi: '',
+      hinglish: '',
+    } as Record<LanguageOption, string>,
+    metaDescription: {
+      en: '',
+      hi: '',
+      hinglish: '',
+    } as Record<LanguageOption, string>
+  });
+  
+  // Check if admin is authenticated
   useEffect(() => {
-    if (!admin) {
-      navigate('/blog');
-      toast.error("Admin access required");
+    const admin = getAuthenticatedAdmin();
+    if (admin) {
+      setIsAuthenticated(true);
+      loadPosts();
     }
-  }, [admin, navigate]);
+  }, []);
   
-  // Create empty blog template with proper typing
-  const createEmptyBlog = (): BlogPost => {
-    return {
-      id: blogPosts.length + 1,
-      slug: `new-blog-${Date.now()}`,
-      title: {
-        en: 'New Blog Title',
-        hi: 'नया ब्लॉग शीर्षक',
-        hinglish: 'New Blog Title',
-        bn: 'নতুন ব্লগ শিরোনাম',
-        ta: 'புதிய வலைப்பதிவு தலைப்பு',
-        te: 'కొత్త బ్లాగ్ శీర్షిక',
-        pa: 'ਨਵਾਂ ਬਲੌਗ ਸਿਰਲੇਖ',
-        gu: 'નવું બ્લોગ શીર્ષક',
-        ml: 'പുതിയ ബ്ലോഗ് ശീർഷകം'
-      },
-      excerpt: {
-        en: 'This is a new blog post.',
-        hi: 'यह एक नया ब्लॉग पोस्ट है।',
-        hinglish: 'Yeh ek naya blog post hai.',
-        bn: 'এটি একটি নতুন ব্লগ পোস্ট।',
-        ta: 'இது ஒரு புதிய வலைப்பதிவு.',
-        te: 'ఇది ఒక కొత్త బ్లాగ్ పోస్ట్.',
-        pa: 'ਇਹ ਇੱਕ ਨਵੀਂ ਬਲੌਗ ਪੋਸਟ ਹੈ।',
-        gu: 'આ એક નવી બ્લોગ પોસ્ટ છે.',
-        ml: 'ഇത് ഒരു പുതിയ ബ്ലോഗ് പോസ്റ്റ് ആണ്.'
-      },
-      content: {
-        en: '<p>Start writing your blog content here...</p>',
-        hi: '<p>अपनी ब्लॉग सामग्री यहां लिखना शुरू करें...</p>',
-        hinglish: '<p>Apni blog content yahan likhna shuru karen...</p>',
-        bn: '<p>এখানে আপনার ব্লগের বিষয়বস্তু লেখা শুরু করুন...</p>',
-        ta: '<p>உங்கள் வலைப்பதிவு உள்ளடக்கத்தை இங்கே எழுதத் தொடங்கவும்...</p>',
-        te: '<p>మీ బ్లాగ్ కంటెంట్‌ను ఇక్కడ రాయడం ప్రారంభించండి...</p>',
-        pa: '<p>ਆਪਣੀ ਬਲੌਗ ਸਮੱਗਰੀ ਇੱਥੇ ਲਿਖਣਾ ਸ਼ੁਰੂ ਕਰੋ...</p>',
-        gu: '<p>તમારી બ્લોગ સામગ્રી અહીં લખવાનું શરૂ કરો...</p>',
-        ml: '<p>നിങ്ങളുടെ ബ്ലോഗ് ഉള്ളടക്കം ഇവിടെ എഴുതി തുടങ്ങൂ...</p>'
-      },
-      author: 'Admin',
+  const loadPosts = () => {
+    setPosts([...blogPosts]);
+  };
+  
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (loginAdmin(email, password)) {
+      setIsAuthenticated(true);
+      loadPosts();
+      toast({
+        title: "Login Successful",
+        description: "Welcome to the admin panel",
+      });
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid email or password",
+        variant: "destructive",
+      });
+    }
+  };
+  
+  const handleLogout = () => {
+    logoutAdmin();
+    setIsAuthenticated(false);
+    setSelectedPost(null);
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out",
+    });
+  };
+  
+  const selectPost = (post: BlogPost) => {
+    setSelectedPost(post);
+    setFormData(post);
+    setEditMode(true);
+  };
+  
+  const createNewPost = () => {
+    setSelectedPost(null);
+    setFormData({
+      id: Date.now().toString(),
+      slug: '',
+      author: '',
       date: new Date().toISOString().split('T')[0],
-      readTime: 5,
-      featuredImage: '/placeholder.svg',
-      imageAlt: {
-        en: 'Featured image',
-        hi: 'फीचर्ड इमेज',
-        hinglish: 'Featured image',
-        bn: 'বৈশিষ্ট্যযুক্ত ছবি',
-        ta: 'சிறப்பு படம்',
-        te: 'ఫీచర్డ్ ఇమేజ్',
-        pa: 'ਫੀਚਰਡ ਚਿੱਤਰ',
-        gu: 'ફીચર્ડ ઇમેજ',
-        ml: 'ഫീച്ചർഡ് ചിത്രം'
-      },
-      categories: ['Uncategorized'],
-      keywords: ['wealthvani'],
+      category: '',
+      featuredImage: '',
+      keywords: [],
+      title: {
+        en: '',
+        hi: '',
+        hinglish: '',
+      } as Record<LanguageOption, string>,
+      content: {
+        en: '',
+        hi: '',
+        hinglish: '',
+      } as Record<LanguageOption, string>,
+      excerpt: {
+        en: '',
+        hi: '',
+        hinglish: '',
+      } as Record<LanguageOption, string>,
       metaDescription: {
-        en: 'A new blog post by Wealthवाणी.',
-        hi: 'Wealthवाणी द्वारा एक नई ब्लॉग पोस्ट।',
-        hinglish: 'Wealthवाणी dwara ek naya blog post.',
-        bn: 'Wealthवाणी দ্বারা একটি নতুন ব্লগ পোস্ট।',
-        ta: 'Wealthवाणी இன் புதிய வலைப்பதிவு.',
-        te: 'Wealthवाणी ద్వారా కొత్త బ్లాగ్ పోస్ట్.',
-        pa: 'Wealthवाणी ਦੁਆਰਾ ਇੱਕ ਨਵੀਂ ਬਲੌਗ ਪੋਸਟ।',
-        gu: 'Wealthवाणी દ્વારા એક નવી બ્લોગ પોસ્ટ.',
-        ml: 'Wealthवाणी നൽകുന്ന ഒരു പുതിയ ബ്ലോഗ് പോസ്റ്റ്.'
+        en: '',
+        hi: '',
+        hinglish: '',
+      } as Record<LanguageOption, string>
+    });
+    setEditMode(true);
+  };
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  
+  const handleLanguageInputChange = (field: string, language: string, value: string) => {
+    setFormData({
+      ...formData,
+      [field]: {
+        ...(formData[field as keyof typeof formData] as Record<string, string>),
+        [language]: value
       }
-    };
+    });
   };
   
-  const [newBlog, setNewBlog] = useState<BlogPost>(createEmptyBlog());
-  const [editLanguage, setEditLanguage] = useState<LanguageOption>('en');
-  
-  const handleCreateNew = () => {
-    setIsCreatingNew(true);
-    setNewBlog(createEmptyBlog());
-    setSelectedBlog(null);
+  const handleKeywordsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keywordsArray = e.target.value.split(',').map(keyword => keyword.trim());
+    setFormData({ ...formData, keywords: keywordsArray });
   };
   
-  const handleSelectBlog = (blog: BlogPost) => {
-    setSelectedBlog(blog);
-    setIsCreatingNew(false);
-  };
-  
-  const handleSaveNewBlog = () => {
-    // This is a mock implementation - in a real app, you would save to a database
-    toast.success(language === 'en' 
-      ? "Blog created successfully!" 
-      : language === 'hi' 
-        ? "ब्लॉग सफलतापूर्वक बनाया गया!" 
-        : "Blog successfully create ho gaya!");
-        
-    // In a real app, we would persist this to a database
-    console.log('New blog to save:', newBlog);
-    setIsCreatingNew(false);
-  };
-  
-  const handleUpdateBlog = () => {
-    // This is a mock implementation - in a real app, you would update in a database
-    if (!selectedBlog) return;
+  const handleSave = () => {
+    if (!formData.title || !formData.content || !formData.slug) {
+      toast({
+        title: "Error",
+        description: "Title, content, and slug are required",
+        variant: "destructive",
+      });
+      return;
+    }
     
-    toast.success(language === 'en' 
-      ? "Blog updated successfully!" 
-      : language === 'hi' 
-        ? "ब्लॉग सफलतापूर्वक अपडेट किया गया!" 
-        : "Blog successfully update ho gaya!");
-        
-    // In a real app, we would persist this to a database
-    console.log('Blog to update:', selectedBlog);
+    // If we're editing an existing post
+    if (selectedPost) {
+      updateBlogPost({
+        ...selectedPost,
+        ...formData as BlogPost
+      });
+      toast({
+        title: "Success",
+        description: "Post updated successfully",
+      });
+    } else {
+      // If it's a new post
+      addBlogPost(formData as BlogPost);
+      toast({
+        title: "Success",
+        description: "New post created successfully",
+      });
+    }
+    
+    loadPosts();
+    setEditMode(false);
+    setSelectedPost(null);
   };
   
-  const handleDeleteBlog = () => {
-    // This is a mock implementation - in a real app, you would delete from a database
-    if (!selectedBlog) return;
-    
-    const confirmDelete = window.confirm(
-      language === 'en' 
-        ? "Are you sure you want to delete this blog?" 
-        : language === 'hi' 
-          ? "क्या आप वाकई इस ब्लॉग को हटाना चाहते हैं?" 
-          : "Kya aap pakka is blog ko delete karna chahte hain?"
+  const handleDelete = () => {
+    if (selectedPost) {
+      deleteBlogPost(selectedPost.id);
+      toast({
+        title: "Success",
+        description: "Post deleted successfully",
+      });
+      loadPosts();
+      setEditMode(false);
+      setSelectedPost(null);
+    }
+  };
+  
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-ivory-white p-8 flex items-center justify-center">
+        <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold mb-6 text-royal-blue text-center">Admin Login</h1>
+          <form onSubmit={handleLogin}>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
+                <Input 
+                  id="email"
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@wealthvani.com"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium mb-1">Password</label>
+                <Input 
+                  id="password"
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="********"
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full bg-royal-blue hover:bg-royal-blue/90">
+                Login
+              </Button>
+            </div>
+          </form>
+          <div className="mt-4 text-center">
+            <button 
+              onClick={() => navigate('/')} 
+              className="text-sm text-royal-blue hover:underline"
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+      </div>
     );
-    
-    if (confirmDelete) {
-      toast.success(language === 'en' 
-        ? "Blog deleted successfully!" 
-        : language === 'hi' 
-          ? "ब्लॉग सफलतापूर्वक हटाया गया!" 
-          : "Blog successfully delete ho gaya!");
-          
-      // In a real app, we would delete from a database
-      console.log('Blog to delete:', selectedBlog.id);
-      setSelectedBlog(null);
-    }
-  };
-  
-  const handleInputChange = (field: string, value: string) => {
-    if (isCreatingNew) {
-      setNewBlog(prev => {
-        const updatedBlog = { ...prev };
-        
-        if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
-          const currentFieldValue = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
-          
-          // Create new object with updated language value
-          const updatedFieldValue = {
-            ...currentFieldValue,
-            [editLanguage]: value
-          };
-          
-          // Update the field in the blog
-          updatedBlog[field as keyof BlogPost] = updatedFieldValue as any;
-        } else if (field === 'categories') {
-          updatedBlog.categories = value.split(',').map(cat => cat.trim());
-        } else if (field === 'slug') {
-          updatedBlog.slug = value;
-        }
-        
-        return updatedBlog;
-      });
-    } else if (selectedBlog) {
-      setSelectedBlog(prev => {
-        if (!prev) return null;
-        
-        const updatedBlog = { ...prev };
-        
-        if (field === 'title' || field === 'content' || field === 'excerpt' || field === 'metaDescription' || field === 'imageAlt') {
-          const currentFieldValue = updatedBlog[field as keyof BlogPost] as Record<LanguageOption, string>;
-          
-          // Create new object with updated language value
-          const updatedFieldValue = {
-            ...currentFieldValue,
-            [editLanguage]: value
-          };
-          
-          // Update the field in the blog
-          updatedBlog[field as keyof BlogPost] = updatedFieldValue as any;
-        } else if (field === 'categories') {
-          updatedBlog.categories = value.split(',').map(cat => cat.trim());
-        } else if (field === 'slug') {
-          updatedBlog.slug = value;
-        }
-        
-        return updatedBlog;
-      });
-    }
-  };
-  
-  // If not admin, don't render the component
-  if (!admin) {
-    return null;
   }
   
   return (
     <div className="min-h-screen bg-ivory-white p-6">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Users className="h-6 w-6 text-royal-blue" />
-          {t('admin-dashboard')} - {t('manage-blogs')}
-        </h1>
-        
-        <div className="flex mb-6">
-          <Button 
-            onClick={handleCreateNew}
-            className="bg-royal-blue hover:bg-royal-blue/90 text-white"
-          >
-            {t('add-blog')}
-          </Button>
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-royal-blue">Blog Admin Panel</h1>
+          <div className="flex gap-4">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/blog')}
+              className="border-royal-blue text-royal-blue hover:bg-royal-blue/10"
+            >
+              View Blog
+            </Button>
+            <Button 
+              variant="destructive"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
         
-        {!isCreatingNew && !selectedBlog ? (
-          <div className="wealth-card">
-            <h2 className="text-lg font-bold mb-4">
-              {language === 'en' 
-                ? "Select a blog to edit" 
-                : language === 'hi' 
-                  ? "संपादित करने के लिए ब्लॉग चुनें" 
-                  : "Edit karne ke liye blog select karein"}
-            </h2>
-            <div className="space-y-4">
-              {blogPosts.map(blog => (
-                <div 
-                  key={blog.id}
-                  className="p-4 border rounded-md hover:bg-ivory-white/50 cursor-pointer"
-                  onClick={() => handleSelectBlog(blog)}
-                >
-                  <h3 className="font-bold">{blog.title[language]}</h3>
-                  <p className="text-sm text-muted-foreground">{blog.date}</p>
+        {!editMode ? (
+          <div>
+            <div className="mb-6">
+              <Button 
+                onClick={createNewPost}
+                className="bg-saffron-orange hover:bg-saffron-orange/90"
+              >
+                Create New Post
+              </Button>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow">
+              <div className="p-4 border-b">
+                <h2 className="text-xl font-semibold">All Posts</h2>
+              </div>
+              <div className="p-4">
+                <div className="grid grid-cols-1 gap-4">
+                  {posts.map(post => (
+                    <div 
+                      key={post.id}
+                      className="p-4 border rounded hover:bg-gray-50 cursor-pointer flex justify-between items-center"
+                      onClick={() => selectPost(post)}
+                    >
+                      <div>
+                        <h3 className="font-medium">{post.title.en}</h3>
+                        <div className="text-sm text-gray-500">
+                          {post.date} • {post.category}
+                        </div>
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(`/blog/${post.slug}`, '_blank');
+                        }}
+                      >
+                        View
+                      </Button>
+                    </div>
+                  ))}
+                  
+                  {posts.length === 0 && (
+                    <p className="text-center text-gray-500 py-4">No posts found</p>
+                  )}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         ) : (
-          <div className="wealth-card">
-            <h2 className="text-lg font-bold mb-4">
-              {isCreatingNew ? t('add-blog') : t('edit-blog')}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-semibold mb-6">
+              {selectedPost ? 'Edit Post' : 'Create New Post'}
             </h2>
             
-            <div className="mb-4">
-              <Label>
-                {language === 'en' 
-                  ? "Edit Language" 
-                  : language === 'hi' 
-                    ? "भाषा संपादित करें" 
-                    : "Language Edit Karein"}
-              </Label>
-              <select 
-                className="w-full rounded-md border p-2 mt-1"
-                value={editLanguage}
-                onChange={(e) => setEditLanguage(e.target.value as LanguageOption)}
-              >
-                <option value="en">English</option>
-                <option value="hi">हिंदी (Hindi)</option>
-                <option value="hinglish">Hinglish</option>
-              </select>
-            </div>
-            
-            <div className="mb-4">
-              <Label htmlFor="title">{t('blog-title')}</Label>
-              <Input
-                id="title"
-                value={isCreatingNew 
-                  ? newBlog.title[editLanguage] || ''
-                  : selectedBlog?.title[editLanguage] || ''}
-                onChange={(e) => handleInputChange('title', e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            
-            <div className="mb-4">
-              <Label htmlFor="slug">Slug</Label>
-              <Input
-                id="slug"
-                value={isCreatingNew ? newBlog.slug : selectedBlog?.slug || ''}
-                onChange={(e) => handleInputChange('slug', e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            
-            <div className="mb-4">
-              <Label htmlFor="excerpt">Excerpt</Label>
-              <Textarea
-                id="excerpt"
-                value={isCreatingNew 
-                  ? newBlog.excerpt[editLanguage] || ''
-                  : selectedBlog?.excerpt[editLanguage] || ''}
-                onChange={(e) => handleInputChange('excerpt', e.target.value)}
-                className="mt-1"
-                rows={3}
-              />
-            </div>
-            
-            <div className="mb-4">
-              <Label htmlFor="content">{t('blog-content')}</Label>
-              <Textarea
-                id="content"
-                value={isCreatingNew 
-                  ? newBlog.content[editLanguage] || ''
-                  : selectedBlog?.content[editLanguage] || ''}
-                onChange={(e) => handleInputChange('content', e.target.value)}
-                className="mt-1 font-mono"
-                rows={10}
-              />
-              <p className="text-sm text-muted-foreground mt-1">
-                {language === 'en' 
-                  ? "You can use HTML formatting" 
-                  : language === 'hi' 
-                    ? "आप HTML फॉर्मेटिंग का उपयोग कर सकते हैं" 
-                    : "Aap HTML formatting use kar sakte hain"}
-              </p>
-            </div>
-            
-            <div className="mb-4">
-              <Label htmlFor="categories">
-                {language === 'en' 
-                  ? "Categories (comma separated)" 
-                  : language === 'hi' 
-                    ? "श्रेणियां (कॉमा द्वारा अलग की गई)" 
-                    : "Categories (comma se separate)"}
-              </Label>
-              <Input
-                id="categories"
-                value={isCreatingNew 
-                  ? newBlog.categories.join(', ') 
-                  : selectedBlog?.categories.join(', ') || ''}
-                onChange={(e) => handleInputChange('categories', e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            
-            <div className="mb-4">
-              <Label htmlFor="metaDescription">Meta Description</Label>
-              <Textarea
-                id="metaDescription"
-                value={isCreatingNew 
-                  ? newBlog.metaDescription[editLanguage] || ''
-                  : selectedBlog?.metaDescription[editLanguage] || ''}
-                onChange={(e) => handleInputChange('metaDescription', e.target.value)}
-                className="mt-1"
-                rows={2}
-              />
-            </div>
-            
-            <div className="flex justify-end gap-3">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setIsCreatingNew(false);
-                  setSelectedBlog(null);
-                }}
-              >
-                {t('cancel')}
-              </Button>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium mb-1">Slug</label>
+                <Input
+                  name="slug"
+                  value={formData.slug}
+                  onChange={handleInputChange}
+                  placeholder="post-slug-url"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  URL-friendly version of the title with hyphens (e.g., my-blog-post)
+                </p>
+              </div>
               
-              {isCreatingNew ? (
-                <Button
-                  onClick={handleSaveNewBlog}
-                  className="bg-royal-blue hover:bg-royal-blue/90 text-white"
+              <div>
+                <label className="block text-sm font-medium mb-1">Author</label>
+                <Input
+                  name="author"
+                  value={formData.author}
+                  onChange={handleInputChange}
+                  placeholder="Author name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Category</label>
+                <Input
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  placeholder="Post category"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Featured Image URL</label>
+                <Input
+                  name="featuredImage"
+                  value={formData.featuredImage}
+                  onChange={handleInputChange}
+                  placeholder="https://example.com/image.jpg"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Keywords (comma separated)</label>
+                <Input
+                  value={formData.keywords ? formData.keywords.join(', ') : ''}
+                  onChange={handleKeywordsChange}
+                  placeholder="finance, wealth, investment"
+                />
+              </div>
+              
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-medium mb-4">Content in Multiple Languages</h3>
+                
+                {['en', 'hi', 'hinglish'].map((lang) => (
+                  <div key={lang} className="mb-8 p-4 border rounded-lg">
+                    <h4 className="font-medium mb-3 capitalize">{lang === 'en' ? 'English' : lang === 'hi' ? 'Hindi' : 'Hinglish'}</h4>
+                    
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium mb-1">Title</label>
+                      <Input
+                        value={(formData.title as Record<string, string>)?.[lang] || ''}
+                        onChange={(e) => handleLanguageInputChange('title', lang, e.target.value)}
+                        placeholder={`Post title in ${lang === 'en' ? 'English' : lang === 'hi' ? 'Hindi' : 'Hinglish'}`}
+                      />
+                    </div>
+                    
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium mb-1">Excerpt</label>
+                      <Textarea
+                        value={(formData.excerpt as Record<string, string>)?.[lang] || ''}
+                        onChange={(e) => handleLanguageInputChange('excerpt', lang, e.target.value)}
+                        placeholder={`Short excerpt in ${lang === 'en' ? 'English' : lang === 'hi' ? 'Hindi' : 'Hinglish'}`}
+                      />
+                    </div>
+                    
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium mb-1">Content</label>
+                      <Textarea
+                        className="min-h-[200px]"
+                        value={(formData.content as Record<string, string>)?.[lang] || ''}
+                        onChange={(e) => handleLanguageInputChange('content', lang, e.target.value)}
+                        placeholder={`Full content in ${lang === 'en' ? 'English' : lang === 'hi' ? 'Hindi' : 'Hinglish'}`}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Meta Description</label>
+                      <Textarea
+                        value={(formData.metaDescription as Record<string, string>)?.[lang] || ''}
+                        onChange={(e) => handleLanguageInputChange('metaDescription', lang, e.target.value)}
+                        placeholder={`SEO description in ${lang === 'en' ? 'English' : lang === 'hi' ? 'Hindi' : 'Hinglish'}`}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex gap-4 justify-end pt-4 border-t">
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    setEditMode(false);
+                    setSelectedPost(null);
+                  }}
                 >
-                  {t('save-changes')}
+                  Cancel
                 </Button>
-              ) : (
-                <>
-                  <Button
-                    onClick={handleDeleteBlog}
+                {selectedPost && (
+                  <Button 
                     variant="destructive"
+                    onClick={handleDelete}
                   >
-                    {t('delete-blog')}
+                    Delete
                   </Button>
-                  <Button
-                    onClick={handleUpdateBlog}
-                    className="bg-royal-blue hover:bg-royal-blue/90 text-white"
-                  >
-                    {t('save-changes')}
-                  </Button>
-                </>
-              )}
+                )}
+                <Button 
+                  className="bg-royal-blue hover:bg-royal-blue/90"
+                  onClick={handleSave}
+                >
+                  Save
+                </Button>
+              </div>
             </div>
           </div>
         )}

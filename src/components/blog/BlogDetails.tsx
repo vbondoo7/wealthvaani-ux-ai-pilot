@@ -1,276 +1,143 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Facebook, Linkedin, Instagram, Calendar, User, Clock, Languages, Book } from "lucide-react";
-import { toast } from "sonner";
-import { blogPosts } from '@/lib/blogData';
+import { getBlogPostBySlug } from '@/lib/blogData';
+import { BlogPost } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 import BlogSchemaMarkup from './BlogSchemaMarkup';
-import { LanguageOption } from '@/lib/types';
 
 const BlogDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { language, t } = useLanguage();
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguageOption>(language);
-  
-  // Find the blog post by slug
-  const blogPost = React.useMemo(() => {
-    return blogPosts.find(post => post.slug === slug);
-  }, [slug]);
-  
-  // Set initial language
+  const { language } = useLanguage();
+  const [blogPost, setBlogPost] = useState<BlogPost | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    setSelectedLanguage(language);
-  }, [language]);
-  
-  // If blog post not found
+    if (slug) {
+      const post = getBlogPostBySlug(slug);
+      if (post) {
+        setBlogPost(post);
+      }
+      setIsLoading(false);
+    }
+  }, [slug]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-ivory-white py-16 px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mb-6"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/3 mb-10"></div>
+            <div className="h-4 bg-gray-200 rounded w-full mb-3"></div>
+            <div className="h-4 bg-gray-200 rounded w-full mb-3"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-8"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!blogPost) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-ivory-white">
-        <div className="wealth-card text-center">
-          <Book className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
+      <div className="min-h-screen bg-ivory-white py-16 px-6">
+        <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-2xl font-bold mb-4">
-            {language === 'en' ? "Blog Post Not Found" : 
-             language === 'hi' ? "ब्लॉग पोस्ट नहीं मिला" :
-             "Blog Post Nahi Mila"}
-          </h1>
-          <p className="mb-6 text-muted-foreground">
-            {language === 'en' 
-              ? "Sorry, the blog post you're looking for doesn't exist or has been removed." 
+            {language === 'en'
+              ? 'Blog post not found'
               : language === 'hi'
-                ? "क्षमा करें, आप जिस ब्लॉग पोस्ट की तलाश कर रहे हैं वह मौजूद नहीं है या हटा दिया गया है।"
-                : "Sorry, jis blog post ki aap talash kar rahe hain woh maujood nahi hai ya hata diya gaya hai."}
-          </p>
-          <Button onClick={() => navigate('/blog')} className="bg-royal-blue text-white">
-            {language === 'en' ? "Back to Blog" : 
-             language === 'hi' ? "ब्लॉग पर वापस जाएं" :
-             "Blog Par Wapas Jaaye"}
+                ? 'ब्लॉग पोस्ट नहीं मिला'
+                : 'Blog post nahi mila'}
+          </h1>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/blog')}
+            className="mt-4"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {language === 'en'
+              ? 'Back to Blog'
+              : language === 'hi'
+                ? 'ब्लॉग पर वापस जाएँ'
+                : 'Blog par wapas jayen'}
           </Button>
         </div>
       </div>
     );
   }
-  
-  // Handle share functionality
-  const handleShare = (platform: 'facebook' | 'linkedin' | 'twitter') => {
-    const baseUrl = window.location.href;
-    let shareUrl = '';
-    
-    const title = blogPost.title[selectedLanguage];
-    
-    switch (platform) {
-      case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(baseUrl)}`;
-        break;
-      case 'linkedin':
-        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(baseUrl)}&title=${encodeURIComponent(title)}`;
-        break;
-      case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(baseUrl)}&text=${encodeURIComponent(title)}`;
-        break;
-      default:
-        break;
-    }
-    
-    if (shareUrl) {
-      window.open(shareUrl, '_blank', 'noopener,noreferrer');
-    }
-  };
-  
-  const handleLanguageChange = (lang: LanguageOption) => {
-    setSelectedLanguage(lang);
-    toast.success(
-      language === 'en' 
-        ? `Language changed to ${lang.toUpperCase()}` 
-        : language === 'hi' 
-          ? `भाषा को ${lang.toUpperCase()} में बदला गया` 
-          : `Language ${lang.toUpperCase()} mein change kar diya gaya`
-    );
-  };
-  
+
   return (
-    <div className="min-h-screen bg-ivory-white">
-      {/* Add Schema.org structured data for SEO */}
-      <BlogSchemaMarkup blogPost={blogPost} />
-      
-      {/* Navigation */}
-      <nav className="py-4 px-6 bg-white/80 backdrop-blur-sm border-b sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <Button 
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-2"
-            onClick={() => navigate('/blog')}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {language === 'en' ? "Back to Blog" : 
-             language === 'hi' ? "ब्लॉग पर वापस जाएं" :
-             "Blog Par Wapas Jaaye"}
-          </Button>
-          
-          <div className="flex items-center gap-3">
-            <Button 
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-1"
-              onClick={() => navigate('/login')}
-            >
-              {t('login')}
-            </Button>
-          </div>
-        </div>
-      </nav>
-      
-      <main className="max-w-4xl mx-auto py-12 px-6">
-        {/* Language Selector */}
-        <div className="mb-6 flex justify-end">
-          <div className="flex items-center gap-2 p-2 bg-white rounded-md shadow-sm">
-            <Languages className="h-4 w-4 text-royal-blue" />
-            <select 
-              className="bg-transparent border-none text-sm focus:ring-0"
-              value={selectedLanguage}
-              onChange={(e) => handleLanguageChange(e.target.value as LanguageOption)}
-            >
-              <option value="en">English</option>
-              <option value="hi">हिंदी</option>
-              <option value="hinglish">Hinglish</option>
-            </select>
-          </div>
-        </div>
-        
-        {/* Blog Header */}
-        <div className="wealth-card mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            {blogPost.title[selectedLanguage]}
-          </h1>
-          
-          <div className="flex flex-wrap gap-2 mb-6">
-            {blogPost.categories.map((category, index) => (
-              <span 
-                key={index}
-                className="bg-royal-blue/10 text-royal-blue text-sm px-3 py-1 rounded-full"
-              >
-                {category}
-              </span>
-            ))}
-          </div>
-          
-          <div className="flex items-center text-sm text-muted-foreground mb-6 flex-wrap gap-4">
-            <div className="flex items-center gap-1">
-              <User className="h-4 w-4" />
-              <span>{blogPost.author}</span>
+    <div className="min-h-screen bg-ivory-white py-12 px-6">
+      <div className="max-w-4xl mx-auto">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/blog')}
+          className="mb-8 text-royal-blue flex items-center"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {language === 'en'
+            ? 'Back to Blog'
+            : language === 'hi'
+              ? 'ब्लॉग पर वापस जाएँ'
+              : 'Blog par wapas jayen'}
+        </Button>
+
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          {blogPost.featuredImage && (
+            <div className="h-[300px] w-full overflow-hidden">
+              <img
+                src={blogPost.featuredImage}
+                alt={blogPost.title[language]}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
+          )}
+
+          <div className="p-8">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-charcoal">
+              {blogPost.title[language]}
+            </h1>
+
+            <div className="flex items-center text-muted-foreground mb-8">
               <span>{blogPost.date}</span>
+              <span className="mx-2">•</span>
+              <span>{blogPost.author}</span>
+              <span className="mx-2">•</span>
+              <span>{blogPost.category}</span>
             </div>
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>
-                {language === 'en' 
-                  ? `${blogPost.readTime} min read` 
-                  : language === 'hi' 
-                    ? `${blogPost.readTime} मिनट का पठन`
-                    : `${blogPost.readTime} minute ka read`}
-              </span>
+
+            <div className="prose max-w-none">
+              <p className="text-lg mb-6">{blogPost.excerpt[language]}</p>
+              
+              {/* Render content - assuming content is plain text for now */}
+              {blogPost.content[language].split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="mb-4">
+                  {paragraph}
+                </p>
+              ))}
             </div>
-          </div>
-          
-          {/* Featured Image */}
-          <div className="aspect-[16/9] overflow-hidden rounded-lg mb-8 bg-gray-100">
-            <img 
-              src={blogPost.featuredImage} 
-              alt={blogPost.imageAlt[selectedLanguage]}
-              className="w-full h-full object-cover" 
-            />
-          </div>
-        </div>
-        
-        {/* Blog Content */}
-        <div className="wealth-card mb-8">
-          <div 
-            className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: blogPost.content[selectedLanguage] }}
-          />
-        </div>
-        
-        {/* Share Section */}
-        <div className="wealth-card">
-          <h3 className="font-bold mb-4">
-            {language === 'en' ? "Share this article" : 
-             language === 'hi' ? "इस लेख को शेयर करें" :
-             "Is article ko share karein"}
-          </h3>
-          
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="icon"
-              onClick={() => handleShare('facebook')}
-              className="rounded-full hover:bg-blue-50 hover:text-blue-600"
-            >
-              <Facebook className="h-5 w-5" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="icon"
-              onClick={() => handleShare('linkedin')}
-              className="rounded-full hover:bg-blue-50 hover:text-blue-700"
-            >
-              <Linkedin className="h-5 w-5" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="icon"
-              onClick={() => handleShare('twitter')}
-              className="rounded-full hover:bg-blue-50 hover:text-sky-500"
-            >
-              <Instagram className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      </main>
-      
-      {/* Footer */}
-      <footer className="py-10 px-6 border-t bg-white/80 backdrop-blur-sm mt-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              &copy; 2025 Wealthवाणी. {language === 'en' ? "All rights reserved." : language === 'hi' ? "सर्वाधिकार सुरक्षित।" : "All rights reserved."}
-            </p>
-            <div className="flex gap-4 mt-4 md:mt-0">
-              <Button 
-                variant="link" 
-                className="text-sm text-muted-foreground p-0 h-auto"
-                onClick={() => navigate('/terms')}
-              >
-                {language === 'en' ? "Terms & Conditions" : 
-                 language === 'hi' ? "नियम और शर्तें" :
-                 "Terms & Conditions"}
-              </Button>
-              <Button 
-                variant="link" 
-                className="text-sm text-muted-foreground p-0 h-auto"
-                onClick={() => navigate('/careers')}
-              >
-                {language === 'en' ? "Careers" : 
-                 language === 'hi' ? "करियर" :
-                 "Careers"}
-              </Button>
-              <Button 
-                variant="link" 
-                className="text-sm text-muted-foreground p-0 h-auto"
-                onClick={() => navigate('/pricing')}
-              >
-                {language === 'en' ? "Pricing" : 
-                 language === 'hi' ? "मूल्य निर्धारण" :
-                 "Pricing"}
-              </Button>
+
+            <div className="mt-10 pt-6 border-t">
+              <div className="flex flex-wrap gap-2">
+                {blogPost.keywords.map((keyword, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm"
+                  >
+                    {keyword}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </footer>
+
+        {/* Schema markup for SEO */}
+        <BlogSchemaMarkup blogPost={blogPost} />
+      </div>
     </div>
   );
 };
