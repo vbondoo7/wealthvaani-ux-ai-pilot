@@ -24,7 +24,7 @@ export const getAuthenticatedAdmin = (): AdminUser | null => {
 
 export const loginAdmin = (email: string, password: string): boolean => {
   if (isAdminUser(email, password)) {
-    const adminData = { email, isAdmin: true };
+    const adminData: AdminUser = { email, isAdmin: true };
     localStorage.setItem('wealthvani-admin', JSON.stringify(adminData));
     return true;
   }

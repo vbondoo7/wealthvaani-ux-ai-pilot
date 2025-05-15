@@ -1,3 +1,4 @@
+
 // User related types
 export interface User {
   id: string;
@@ -153,4 +154,25 @@ export interface BlogPost {
   categories: string[];
   keywords: string[];
   metaDescription: Record<LanguageOption, string>;
+}
+
+// Add AdminUser interface
+export interface AdminUser {
+  email: string;
+  password?: string;
+  isAdmin: boolean;
+}
+
+// Add PricingPlan interface
+export interface PricingPlan {
+  id: string;
+  name: string;
+  description: Record<string, string>;
+  price: {
+    monthly: number;
+    yearly: number;
+  };
+  features: Record<string, string>[];
+  popular?: boolean;
+  cta: Record<string, string>;
 }

@@ -3,22 +3,22 @@ import React from 'react';
 import { BlogPost } from '@/lib/types';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-interface BlogSchemaMarkupProps {
-  post: BlogPost;
+export interface BlogSchemaMarkupProps {
+  blogPost: BlogPost;
 }
 
-const BlogSchemaMarkup: React.FC<BlogSchemaMarkupProps> = ({ post }) => {
+const BlogSchemaMarkup: React.FC<BlogSchemaMarkupProps> = ({ blogPost }) => {
   const { language } = useLanguage();
   
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": post.title[language],
-    "description": post.excerpt[language],
-    "image": post.featuredImage,
+    "headline": blogPost.title[language],
+    "description": blogPost.excerpt[language],
+    "image": blogPost.featuredImage,
     "author": {
       "@type": "Person",
-      "name": post.author
+      "name": blogPost.author
     },
     "publisher": {
       "@type": "Organization",
@@ -28,13 +28,13 @@ const BlogSchemaMarkup: React.FC<BlogSchemaMarkupProps> = ({ post }) => {
         "url": "https://wealthvani.com/logo.png" // Replace with actual logo URL
       }
     },
-    "datePublished": post.date,
-    "dateModified": post.date,
+    "datePublished": blogPost.date,
+    "dateModified": blogPost.date,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://wealthvani.com/blog/${post.slug}`
+      "@id": `https://wealthvani.com/blog/${blogPost.slug}`
     },
-    "keywords": post.keywords.join(", ")
+    "keywords": blogPost.keywords.join(", ")
   };
   
   return (
