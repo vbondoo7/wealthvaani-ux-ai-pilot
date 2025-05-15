@@ -5,94 +5,126 @@
 
 @layer base {
   :root {
-    --background: 36 33% 97%;
-    --foreground: 210 11% 15%;
-    
-    --royal-blue: 217 90% 50%;
-    --saffron-orange: 33 100% 57%;
-    --teal: 174 100% 29%;
-    --ivory-white: 40 80% 96%;
-    --charcoal: 0 0% 18%;
-    
-    --card: 0 0% 100%;
-    --card-foreground: 210 11% 15%;
-    
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 11% 15%;
-    
-    --primary: 217 90% 50%;
-    --primary-foreground: 0 0% 98%;
-    
-    --secondary: 217 15% 95%;
-    --secondary-foreground: 210 11% 15%;
-    
-    --muted: 213 10% 90%;
-    --muted-foreground: 215 14% 45%;
-    
-    --accent: 33 100% 57%;
-    --accent-foreground: 0 0% 0%;
-    
+    --popover-foreground: 222.2 47.4% 11.2%;
+ 
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+ 
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+ 
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
     --destructive: 0 100% 50%;
-    --destructive-foreground: 0 0% 98%;
-    
-    --border: 215 16% 88%;
-    --input: 215 16% 88%;
-    --ring: 215 16% 65%;
-    
+    --destructive-foreground: 210 40% 98%;
+ 
+    --ring: 215 20.2% 65.1%;
+ 
     --radius: 0.5rem;
+    
+    /* Custom Colors */
+    --royal-blue: #1A73E8;
+    --saffron-orange: #FFA726;
+    --teal: #26A69A;
+    --ivory-white: #FDF6EC;
+    --charcoal-black: #2D2D2D;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Poppins', 'Hind', sans-serif;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-medium;
   }
 }
 
-@layer components {
-  /* Brand-specific components */
-  .hindi-text {
-    font-family: 'Baloo 2', 'Hind', sans-serif;
-  }
-  
-  .wv-container {
-    @apply px-4 sm:px-6 max-w-xl mx-auto;
-  }
-  
-  .wealth-card {
-    @apply p-4 rounded-xl bg-white border shadow-sm hover:shadow-md transition-all;
-  }
-  
-  .wealth-card-primary {
-    @apply p-6 rounded-xl bg-gradient-to-br from-royal-blue/5 to-royal-blue/10 border border-royal-blue/10 shadow-sm;
-  }
-  
-  .wealth-card-accent {
-    @apply p-6 rounded-xl bg-gradient-to-br from-saffron-orange/5 to-saffron-orange/10 border border-saffron-orange/10 shadow-sm;
-  }
-  
-  .wv-card {
-    @apply p-4 rounded-xl bg-white border shadow-sm;
-  }
-  
-  .flex-between {
-    @apply flex justify-between items-center;
-  }
-  
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
-  
-  .mandala-pattern {
-    background-color: var(--ivory-white);
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0C13.432 0 0 13.432 0 30c0 16.568 13.432 30 30 30 16.568 0 30-13.432 30-30C60 13.432 46.568 0 30 0zm0 50c-11.046 0-20-8.954-20-20s8.954-20 20-20 20 8.954 20 20-8.954 20-20 20z' fill='%231A73E8' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
-  }
+/* Custom classes */
+.mandala-pattern {
+  background-color: var(--ivory-white);
+  background-image: radial-gradient(rgba(26, 115, 232, 0.05) 2px, transparent 0),
+    radial-gradient(rgba(255, 167, 38, 0.05) 2px, transparent 0);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+.wealth-card {
+  @apply bg-white p-6 rounded-lg shadow-sm border border-gray-100;
+}
+
+.wealth-card-primary {
+  @apply bg-gradient-to-br from-royal-blue/5 to-white p-6 rounded-lg shadow-sm border border-royal-blue/10;
+}
+
+.wealth-card-accent {
+  @apply bg-gradient-to-br from-saffron-orange/5 to-white p-6 rounded-lg shadow-sm border border-saffron-orange/10;
+}
+
+.hindi-text {
+  font-family: 'Hind', 'Poppins', sans-serif;
+}
+
+/* Blog styling */
+.blog-content h2 {
+  @apply text-2xl font-bold mt-8 mb-4 text-charcoal;
+}
+
+.blog-content h3 {
+  @apply text-xl font-semibold mt-6 mb-3 text-charcoal;
+}
+
+.blog-content p {
+  @apply mb-4 text-base;
+}
+
+.blog-content ul, .blog-content ol {
+  @apply mb-6 ml-6;
+}
+
+.blog-content li {
+  @apply mb-2;
+}
+
+.blog-content ul li {
+  @apply list-disc;
+}
+
+.blog-content ol li {
+  @apply list-decimal;
+}
+
+.blog-content a {
+  @apply text-royal-blue hover:underline;
+}
+
+.blog-content table {
+  @apply w-full mb-6 border-collapse;
+}
+
+.blog-content th {
+  @apply bg-gray-100 p-2 text-left border;
+}
+
+.blog-content td {
+  @apply p-2 border;
+}
+
+.blog-content blockquote {
+  @apply pl-4 border-l-4 border-royal-blue/50 italic my-6;
 }

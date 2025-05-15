@@ -1,4 +1,3 @@
-
 // User related types
 export interface User {
   id: string;
@@ -138,3 +137,19 @@ export interface FamilyMember {
 
 // Language type for the app
 export type LanguageOption = 'en' | 'hi' | 'hinglish';
+
+export interface BlogPost {
+  id: number;
+  slug: string;
+  title: Record<LanguageOption, string>;
+  excerpt: Record<LanguageOption, string>;
+  content: Record<LanguageOption, string>;
+  author: string;
+  date: string;
+  readTime: number;
+  featuredImage: string;
+  imageAlt: Record<LanguageOption, string>;
+  categories: string[];
+  keywords: string[];
+  metaDescription: Record<LanguageOption, string>;
+}

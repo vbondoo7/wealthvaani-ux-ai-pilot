@@ -6,7 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Marketing from "./pages/Marketing";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import BlogSection from "./components/blog/BlogSection";
+import BlogPost from "./components/blog/BlogPost";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,6 +54,12 @@ const App = () => (
               <Route path="learning-center" element={null} />
               <Route index element={<Navigate to="/landing" replace />} />
             </Route>
+            
+            {/* New Marketing Landing Page and Blog */}
+            <Route path="/marketing" element={<Marketing />} />
+            <Route path="/blog" element={<BlogSection />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            
             {/* Fallback route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
