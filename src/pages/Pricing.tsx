@@ -57,8 +57,8 @@ const Pricing: React.FC = () => {
         hinglish: 'Financial growth ke prati serious individuals ke liye',
       },
       price: {
-        monthly: 499,
-        yearly: 4999,
+        monthly: 199,
+        yearly: 1999,
       },
       features: [
         {
@@ -98,8 +98,8 @@ const Pricing: React.FC = () => {
         hinglish: 'Comprehensive financial management ki talash karne wale families ke liye',
       },
       price: {
-        monthly: 999,
-        yearly: 9999,
+        monthly: 499,
+        yearly: 4999,
       },
       features: [
         {

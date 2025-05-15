@@ -12,18 +12,18 @@ export const blogPosts: BlogPost[] = [
     featuredImage: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=2071&auto=format&fit=crop',
     keywords: ['mutual funds', 'investments', 'finance', 'wealth'],
     title: {
-      en: 'Understanding Mutual Funds: A Beginner's Guide',
+      en: 'Understanding Mutual Funds: A Beginner\'s Guide',
       hi: 'म्यूचुअल फंड समझना: एक शुरुआती गाइड',
-      hinglish: 'Mutual Funds ko Samajhna: Ek Beginner's Guide',
-      bn: 'Understanding Mutual Funds: A Beginner's Guide',
-      ta: 'Understanding Mutual Funds: A Beginner's Guide',
-      te: 'Understanding Mutual Funds: A Beginner's Guide',
-      pa: 'Understanding Mutual Funds: A Beginner's Guide',
-      ml: 'Understanding Mutual Funds: A Beginner's Guide',
-      gu: 'Understanding Mutual Funds: A Beginner's Guide'
+      hinglish: 'Mutual Funds ko Samajhna: Ek Beginner\'s Guide',
+      bn: 'Understanding Mutual Funds: A Beginner\'s Guide',
+      ta: 'Understanding Mutual Funds: A Beginner\'s Guide',
+      te: 'Understanding Mutual Funds: A Beginner\'s Guide',
+      pa: 'Understanding Mutual Funds: A Beginner\'s Guide',
+      ml: 'Understanding Mutual Funds: A Beginner\'s Guide',
+      gu: 'Understanding Mutual Funds: A Beginner\'s Guide'
     },
     content: {
-      en: 'Mutual funds are investment vehicles that pool money from multiple investors to purchase securities like stocks, bonds, and other assets. They offer diversification, professional management, and liquidity, making them an excellent choice for beginners. When you invest in a mutual fund, you're buying units or shares of the fund, which represent a portion of the fund's holdings. Funds can be actively managed by professionals or passively track an index. Different types include equity funds, debt funds, hybrid funds, and more, each with varying risk profiles and investment objectives. Understanding your risk tolerance and investment goals is crucial before selecting a fund.',
+      en: 'Mutual funds are investment vehicles that pool money from multiple investors to purchase securities like stocks, bonds, and other assets. They offer diversification, professional management, and liquidity, making them an excellent choice for beginners. When you invest in a mutual fund, you\'re buying units or shares of the fund, which represent a portion of the fund\'s holdings. Funds can be actively managed by professionals or passively track an index. Different types include equity funds, debt funds, hybrid funds, and more, each with varying risk profiles and investment objectives. Understanding your risk tolerance and investment goals is crucial before selecting a fund.',
       hi: 'म्यूचुअल फंड ऐसे निवेश वाहन हैं जो प्रतिभूतियों जैसे स्टॉक, बॉन्ड और अन्य संपत्तियों को खरीदने के लिए कई निवेशकों से धन एकत्र करते हैं। वे विविधता, पेशेवर प्रबंधन और तरलता प्रदान करते हैं, जिससे वे शुरुआती लोगों के लिए एक उत्कृष्ट विकल्प हैं। जब आप म्यूचुअल फंड में निवेश करते हैं, तो आप फंड की इकाइयां या शेयर खरीद रहे होते हैं, जो फंड की होल्डिंग्स के एक हिस्से का प्रतिनिधित्व करते हैं। फंड को पेशेवरों द्वारा सक्रिय रूप से प्रबंधित किया जा सकता है या निष्क्रिय रूप से एक इंडेक्स को ट्रैक कर सकता है। विभिन्न प्रकारों में इक्विटी फंड, डेट फंड, हाइब्रिड फंड और अन्य शामिल हैं, प्रत्येक में अलग-अलग जोखिम प्रोफाइल और निवेश उद्देश्य हैं। फंड का चयन करने से पहले अपनी जोखिम सहनशीलता और निवेश लक्ष्यों को समझना महत्वपूर्ण है।',
       hinglish: 'Mutual funds aise investment vehicles hain jo securities jaise stocks, bonds aur doosri assets ko kharidne ke liye multiple investors se paisa collect karte hain. Ye diversification, professional management, aur liquidity offer karte hain, isliye beginners ke liye ye excellent choice hain. Jab aap mutual fund mein invest karte hain, aap fund ke units ya shares kharid rahe hote hain, jo fund ki holdings ka ek portion represent karte hain. Funds ko actively professionals dwara manage kiya ja sakta hai ya passively index ko track kar sakte hain. Different types mein equity funds, debt funds, hybrid funds, aur bhi bahut kuch shamil hain, har ek mein alag-alag risk profiles aur investment objectives hote hain. Fund select karne se pehle apni risk tolerance aur investment goals ko samajhna bahut zaroori hai.',
       bn: 'Mutual funds are investment vehicles that pool money from multiple investors to purchase securities like stocks, bonds, and other assets.',
