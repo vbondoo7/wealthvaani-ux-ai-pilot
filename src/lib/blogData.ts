@@ -23,7 +23,7 @@ export const blogPosts: BlogPost[] = [
       bn: 'অর্থের বিষয়ে অধিকাংশ ভারতীয় আবেগতাড়িত হয় — কিন্তু আগের চেয়ে বেশি উপার্জন করা সত্ত্বেও, অধিকাংশ ভারতীয় পরিবার মৌলিক আর্থিক পরিকল্পনা নিয়ে সংগ্রাম করে।',
       ta: 'பணம் என்று வரும்போது பெரும்பாலான இந்தியர்கள் உணர்ச்சிவசப்படுகிறார்கள் — ஆனால் முன்னெப்போதையும் விட அதிகமாக சம்பாதித்தபோதிலும், பெரும்பாலான இந்திய குடும்பங்கள் அடிப்படை நிதித் திட்டமிடலில் போராடுகின்றன.',
       te: 'డబ్బు విషయానికి వస్తే చాలా మంది భారతీయులు భావోద్వేగంగా ఉంటారు — కానీ ముందెన్నడూ లేనంత ఎక్కువ సంపాదిస్తున్నప్పటికీ, చాలా మంది భారతీయ కుటుంబాలు ప్రాథమిక ఆర్థిక ప్రణాళికతో పోరాడుతున్నాయి.',
-      pa: 'ਪੈਸੇ ਦੀ ਗੱਲ ਆਉਂਦੀ ਹੈ ਤਾਂ ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਭਾਵਨਾਤਮਕ ਤੌਰ 'ਤੇ ਪ੍ਰੇਰਿਤ ਹੁੰਦੇ ਹਨ — ਪਰ ਪਹਿਲਾਂ ਨਾਲੋਂ ਕਿਤੇ ਵੱਧ ਕਮਾਈ ਕਰਨ ਦੇ ਬਾਵਜੂਦ, ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਪਰਿਵਾਰ ਬੁਨਿਆਦੀ ਵਿੱਤੀ ਯੋਜਨਾਬੰਦੀ ਦੇ ਨਾਲ ਸੰਘਰਸ਼ ਕਰਦੇ ਹਨ।',
+      pa: 'ਪੈਸੇ ਦੀ ਗੱਲ ਆਉਂਦੀ ਹੈ ਤਾਂ ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਭਾਵਨਾਤਮਕ ਤੌਰ \'ਤੇ ਪ੍ਰੇਰਿਤ ਹੁੰਦੇ ਹਨ — ਪਰ ਪਹਿਲਾਂ ਨਾਲੋਂ ਕਿਤੇ ਵੱਧ ਕਮਾਈ ਕਰਨ ਦੇ ਬਾਵਜੂਦ, ਜ਼ਿਆਦਾਤਰ ਭਾਰਤੀ ਪਰਿਵਾਰ ਬੁਨਿਆਦੀ ਵਿੱਤੀ ਯੋਜਨਾਬੰਦੀ ਦੇ ਨਾਲ ਸੰਘਰਸ਼ ਕਰਦੇ ਹਨ।',
       gu: 'પૈસાની બાબતમાં મોટાભાગના ભારતીયો ભાવનાત્મક રીતે સંચાલિત થાય છે — પરંતુ પહેલા કરતા વધુ કમાણી કરવા છતાં, મોટાભાગના ભારતીય પરિવારો મૂળભૂત નાણાકીય આયોજન સાથે સંઘર્ષ કરે છે.',
       ml: 'പണത്തിന്റെ കാര്യത്തിൽ മിക്ക ഇന്ത്യക്കാരും വികാരപരമായി നയിക്കപ്പെടുന്നവരാണ് — എന്നാൽ മുമ്പത്തെക്കാൾ കൂടുതൽ സമ്പാദിക്കുന്നുണ്ടെങ്കിലും, മിക്ക ഇന്ത്യൻ കുടുംബങ്ങളും അടിസ്ഥാന സാമ്പത്തിക ആസൂത്രണത്തിൽ പോരാടുന്നു.'
     },
@@ -194,7 +194,7 @@ export const blogPosts: BlogPost[] = [
       
       hinglish: `<div class="blog-content">
         <h2>Introduction</h2>
-        <p>"Paisa to sab kamate hain… par sambhalte kitne log hain?" Most Indians emotionally driven hote hain jab money ki baat aati hai — lekin sach ye hai ki, pehle se kahin zyada kamane ke bawajood, most Indian households basic financial planning ke saath struggle karte hain.</p>
+        <p>"Paisa to sab kamate hain… par sambhalte kitne log hain?" Most Indians emotionally driven hote hain jab money ki baat aati hai — lekin sach ye hai ki, pehle se kahin zyada kamane ke bawajood, zyaadatar Indian households basic financial planning ke saath struggle karte hain.</p>
         <p>Urban millennial jo paycheck-to-paycheck jeete hain, se lekar middle-aged parents jo bacchon ki education aur aging parents ke bare mein worried hain, retired elders jo bank schemes se confused hain tak — financial confusion har jagah hai.</p>
         <p>Lekin kyun?</p>
         
@@ -272,14 +272,7 @@ export const blogPosts: BlogPost[] = [
         
         <h2>Bonus Tip: 90% Indians se financially wiser hona chahte hain?</h2>
         <p>Humare blog ko subscribe karein, aur Instagram & LinkedIn par follow karein weekly tips, mythbusters, aur real-life stories ke liye jo aapki money mindset ko transform kar denge.</p>
-      </div>`,
-      
-      bn: '', // Added empty string placeholders for other languages
-      ta: '',
-      te: '',
-      pa: '',
-      gu: '',
-      ml: ''
+      </div>`
     },
     author: 'Team Wealthवाणी',
     date: '2025-05-15',
