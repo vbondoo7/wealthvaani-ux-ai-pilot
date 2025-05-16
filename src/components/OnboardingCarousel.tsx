@@ -6,7 +6,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '@/contexts/LanguageContext';
-import { isLanguage } from '@/lib/typeUtils';
+import { asLanguageOption, isLanguage } from '@/lib/typeUtils';
 
 const OnboardingCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);

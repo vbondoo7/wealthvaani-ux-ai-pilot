@@ -70,12 +70,8 @@ const App = () => (
               <Route index element={<Navigate to="/landing" replace />} />
             </Route>
             
-            {/* Marketing Landing Page with consistent header/footer */}
-            <Route path="/marketing" element={
-              <PublicLayout>
-                <Marketing />
-              </PublicLayout>
-            } />
+            {/* Marketing Landing Page - no header/footer as it has its own */}
+            <Route path="/marketing" element={<Marketing />} />
             
             {/* Blog routes with consistent header/footer */}
             <Route path="/blog" element={

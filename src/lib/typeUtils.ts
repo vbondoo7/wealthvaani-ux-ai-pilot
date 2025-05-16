@@ -49,7 +49,7 @@ export const asLanguageOption = (value: string): LanguageOption => {
 };
 
 /**
- * Compare a LanguageOption with a string value safely
+ * Compare a language parameter with a string value safely
  * This helps avoid type comparison errors in TypeScript
  */
 export const isLanguage = (language: LanguageOption, value: LanguageOption): boolean => {

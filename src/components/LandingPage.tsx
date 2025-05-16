@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import RotatingText from '@/components/ui/RotatingText';
 import { asLanguageOption, isLanguage } from '@/lib/typeUtils';
-import { LanguageOption } from '@/lib/types';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -229,49 +228,6 @@ const LandingPage: React.FC = () => {
                   ? "अपनी वित्तीय यात्रा शुरू करें"
                   : "Apni Financial Journey Shuru Karen"}
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      </section>
-      
-      {/* Menu Links Section */}
-      <section className="py-8 px-6 bg-white/60 backdrop-blur-sm">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center py-4"
-              onClick={() => navigate('/about')}
-            >
-              <Shield className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{isLanguage(language, 'en') ? "About Us" : isLanguage(language, 'hi') ? "हमारे बारे में" : "About Us"}</span>
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center py-4"
-              onClick={() => navigate('/services')}
-            >
-              <ChartBar className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{isLanguage(language, 'en') ? "Services" : isLanguage(language, 'hi') ? "सेवाएं" : "Services"}</span>
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center py-4"
-              onClick={() => navigate('/features')}
-            >
-              <Sparkles className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{isLanguage(language, 'en') ? "Features" : isLanguage(language, 'hi') ? "सुविधाएं" : "Features"}</span>
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              className="flex flex-col items-center py-4"
-              onClick={() => navigate('/pricing')}
-            >
-              <MessageCircle className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{isLanguage(language, 'en') ? "Pricing" : isLanguage(language, 'hi') ? "मूल्य निर्धारण" : "Pricing"}</span>
             </Button>
           </div>
         </div>
