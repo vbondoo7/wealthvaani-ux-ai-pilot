@@ -19,12 +19,17 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
     navigate(`/blog/${post.slug}`);
   };
   
+  // Ensure we have localized content or provide fallbacks
+  const title = getLocalizedContent(post.title, language);
+  const excerpt = getLocalizedContent(post.excerpt, language);
+  const imageAlt = getLocalizedContent(post.imageAlt, language) || 'Blog post image';
+  
   return (
     <div className="wealth-card hover:shadow-lg transition-shadow">
       <div className="aspect-video rounded-md overflow-hidden bg-gray-100 mb-4">
         <img 
           src={post.featuredImage} 
-          alt={getLocalizedContent(post.imageAlt, language)} 
+          alt={imageAlt}
           className="w-full h-full object-cover"
         />
       </div>
@@ -41,11 +46,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
       </div>
       
       <h3 className="text-lg font-bold text-charcoal line-clamp-2 mb-2">
-        {getLocalizedContent(post.title, language)}
+        {title}
       </h3>
       
       <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
-        {getLocalizedContent(post.excerpt, language)}
+        {excerpt}
       </p>
       
       <Button 

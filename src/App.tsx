@@ -70,8 +70,12 @@ const App = () => (
               <Route index element={<Navigate to="/landing" replace />} />
             </Route>
             
-            {/* Marketing Landing Page */}
-            <Route path="/marketing" element={<Marketing />} />
+            {/* Marketing Landing Page with consistent header/footer */}
+            <Route path="/marketing" element={
+              <PublicLayout>
+                <Marketing />
+              </PublicLayout>
+            } />
             
             {/* Blog routes with consistent header/footer */}
             <Route path="/blog" element={
@@ -109,6 +113,36 @@ const App = () => (
             <Route path="/privacy" element={
               <PublicLayout>
                 <Privacy />
+              </PublicLayout>
+            } />
+            
+            {/* About page */}
+            <Route path="/about" element={
+              <PublicLayout>
+                <div className="container mx-auto py-16">
+                  <h1 className="text-3xl font-bold mb-6">About Us</h1>
+                  <p className="mb-4">India's first agentic Wealth Operating System, designed to act as a Proactive Wealth Companion for Indian families.</p>
+                </div>
+              </PublicLayout>
+            } />
+            
+            {/* Services page */}
+            <Route path="/services" element={
+              <PublicLayout>
+                <div className="container mx-auto py-16">
+                  <h1 className="text-3xl font-bold mb-6">Our Services</h1>
+                  <p className="mb-4">Comprehensive financial services tailored for Indian families.</p>
+                </div>
+              </PublicLayout>
+            } />
+            
+            {/* Features page */}
+            <Route path="/features" element={
+              <PublicLayout>
+                <div className="container mx-auto py-16">
+                  <h1 className="text-3xl font-bold mb-6">Features</h1>
+                  <p className="mb-4">Explore the powerful features of Wealthवाणी.</p>
+                </div>
               </PublicLayout>
             } />
             

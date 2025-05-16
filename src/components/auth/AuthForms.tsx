@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { loginAdmin } from '@/lib/adminService';
 import LoginOptions from './LoginOptions';
 import { useNavigate } from 'react-router-dom';
+import { asLanguageOption } from '@/lib/typeUtils';
 
 interface AuthFormsProps {
   onSuccess: () => void;
@@ -41,6 +42,10 @@ const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }
           : "Please saare fields fill karein");
       return;
     }
+    
+    // Store credentials in local storage to persist across page reloads
+    localStorage.setItem('userEmail', loginEmail);
+    localStorage.setItem('userPassword', loginPassword);
     
     // Check if this is an admin login attempt
     if (loginEmail === 'admin@wealthvani.com') {
@@ -107,6 +112,10 @@ const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }
     const success = register(email, password, name);
     
     if (success) {
+      // Store credentials in local storage
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userPassword', password);
+      
       toast.success(language === 'en' 
         ? "Registration successful!" 
         : language === 'hi' 

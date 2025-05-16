@@ -6,6 +6,7 @@ import Logo from '@/components/logo/Logo';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import RotatingText from '@/components/ui/RotatingText';
+import { asLanguageOption } from '@/lib/typeUtils';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -83,7 +84,7 @@ const LandingPage: React.FC = () => {
               <select 
                 className="text-sm border-none bg-transparent focus:ring-0"
                 value={language}
-                onChange={(e) => changeLanguage(e.target.value as 'en' | 'hi' | 'hinglish')}
+                onChange={(e) => changeLanguage(asLanguageOption(e.target.value))}
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>
@@ -232,36 +233,48 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
       
-      {/* Footer */}
-      <footer className="py-10 px-6 border-t bg-white/80 backdrop-blur-sm">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-6 md:mb-0">
-            <Logo variant="full" />
-            <p className="mt-2 text-sm text-muted-foreground">
-              {language === 'en'
-                ? "Your AI-powered financial planner"
-                : language === 'hi'
-                  ? "आपका एआई-संचालित वित्तीय योजनाकार"
-                  : "Aapka AI-powered financial planner"}
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <select 
-              className="text-sm border-none bg-transparent focus:ring-0"
-              value={language}
-              onChange={(e) => changeLanguage(e.target.value as 'en' | 'hi' | 'hinglish')}
+      {/* Menu Links Section */}
+      <section className="py-8 px-6 bg-white/60 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center py-4"
+              onClick={() => navigate('/about')}
             >
-              <option value="en">English</option>
-              <option value="hi">हिंदी</option>
-              <option value="hinglish">Hinglish</option>
-            </select>
-            <div className="text-sm text-muted-foreground">
-              &copy; 2025 Wealthवाणी. {language === 'en' ? "All rights reserved." : language === 'hi' ? "सर्वाधिकार सुरक्षित।" : "All rights reserved."}
-            </div>
+              <Shield className="h-6 w-6 mb-2 text-royal-blue" />
+              <span>{language === 'en' ? "About Us" : language === 'hi' ? "हमारे बारे में" : "About Us"}</span>
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center py-4"
+              onClick={() => navigate('/services')}
+            >
+              <ChartBar className="h-6 w-6 mb-2 text-royal-blue" />
+              <span>{language === 'en' ? "Services" : language === 'hi' ? "सेवाएं" : "Services"}</span>
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center py-4"
+              onClick={() => navigate('/features')}
+            >
+              <Sparkles className="h-6 w-6 mb-2 text-royal-blue" />
+              <span>{language === 'en' ? "Features" : language === 'hi' ? "सुविधाएं" : "Features"}</span>
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className="flex flex-col items-center py-4"
+              onClick={() => navigate('/pricing')}
+            >
+              <MessageCircle className="h-6 w-6 mb-2 text-royal-blue" />
+              <span>{language === 'en' ? "Pricing" : language === 'hi' ? "मूल्य निर्धारण" : "Pricing"}</span>
+            </Button>
           </div>
         </div>
-      </footer>
+      </section>
     </div>
   );
 };

@@ -30,13 +30,25 @@ export const mapLegacyGoal = (legacyGoal: any): Omit<Goal, 'id'> => {
   };
 };
 
+// Define the LanguageOption type to match what's used in the app
+export type LanguageOption = 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te';
+
 /**
  * Helper for handling language type checking
  * @param value Language code string to check
  * @returns True if valid language code
  */
-export const isValidLanguage = (value: any): value is 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te' => {
+export const isValidLanguage = (value: any): value is LanguageOption => {
   return ['en', 'hi', 'hinglish', 'bn', 'ta', 'te'].includes(value);
+};
+
+/**
+ * Cast a string to LanguageOption type safely
+ * @param value String to cast to LanguageOption
+ * @returns Language option or default 'en' if invalid
+ */
+export const asLanguageOption = (value: string): LanguageOption => {
+  return isValidLanguage(value) ? value as LanguageOption : 'en';
 };
 
 /**
@@ -52,5 +64,11 @@ export const getLocalizedContent = (
   fallbackLanguage: string = 'en'
 ): string => {
   if (!content) return '';
+  
+  // Ensure content has values for all required languages
+  if (content && (!content.en || Object.keys(content).length === 0)) {
+    return '';
+  }
+  
   return content[language] || content[fallbackLanguage] || '';
 };

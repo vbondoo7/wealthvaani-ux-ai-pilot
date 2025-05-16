@@ -9,6 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { isAdminLoggedIn } from '@/lib/adminService';
 import { Globe } from "lucide-react";
 import { toast } from "sonner";
+import { asLanguageOption } from '@/lib/typeUtils';
 
 // Import all necessary components
 import OnboardingCarousel from '@/components/OnboardingCarousel';
@@ -137,16 +138,10 @@ const Index = () => {
     navigate('/landing');
   };
   
-  // Non-authenticated landing page
+  // Non-authenticated landing page - now without duplicate header/footer
   if (!isAuthenticated && !adminLoggedIn && (currentScreen === 'landing' || location.pathname === '/landing')) {
     console.log('Rendering LandingPage');
-    return (
-      <>
-        <Header />
-        <LandingPage />
-        <Footer />
-      </>
-    );
+    return <LandingPage />;
   }
   
   // Authentication screen
@@ -163,7 +158,7 @@ const Index = () => {
               <select 
                 className="text-sm border-none bg-transparent focus:ring-0"
                 value={language}
-                onChange={(e) => changeLanguage(e.target.value as any)}
+                onChange={(e) => changeLanguage(asLanguageOption(e.target.value))}
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>
@@ -189,24 +184,6 @@ const Index = () => {
     );
   }
   
-  // Admin access to blog pages
-  if (adminLoggedIn && ['blog', 'blog-admin'].includes(currentScreen)) {
-    console.log('Rendering admin blog section');
-    return (
-      <>
-        <Header />
-        {currentScreen === 'blog-admin' ? <BlogAdminPanel /> : <BlogSection />}
-        <Footer />
-      </>
-    );
-  }
-  
-  // Redirect to login if trying to access authenticated routes without being authenticated
-  if (!isAuthenticated && !adminLoggedIn && currentScreen !== 'landing' && currentScreen !== 'login') {
-    console.log('Not authenticated, redirecting to login');
-    return <Navigate to="/login" replace />;
-  }
-  
   // Profile creation state for regular users
   if (isAuthenticated && currentUser && !currentUser.profileCreated && !adminLoggedIn) {
     console.log('Rendering ProfileCreation');
@@ -220,7 +197,7 @@ const Index = () => {
               <select 
                 className="text-sm border-none bg-transparent focus:ring-0"
                 value={language}
-                onChange={(e) => changeLanguage(e.target.value as any)}
+                onChange={(e) => changeLanguage(asLanguageOption(e.target.value))}
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>
@@ -296,7 +273,7 @@ const Index = () => {
     <div className="min-h-screen bg-background pb-20">
       <Header handleLogout={handleLogout} />
       
-      <div className="pb-16">
+      <div className="container mx-auto px-4 pb-16">
         {renderScreen()}
         <Outlet />
       </div>
