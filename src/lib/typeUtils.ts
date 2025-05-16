@@ -35,6 +35,22 @@ export const mapLegacyGoal = (legacyGoal: any): Omit<Goal, 'id'> => {
  * @param value Language code string to check
  * @returns True if valid language code
  */
-export const isValidLanguage = (value: any): value is 'en' | 'hi' | 'hinglish' => {
-  return ['en', 'hi', 'hinglish'].includes(value);
+export const isValidLanguage = (value: any): value is 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te' => {
+  return ['en', 'hi', 'hinglish', 'bn', 'ta', 'te'].includes(value);
+};
+
+/**
+ * Safe access function for localized content
+ * @param content Record with localized strings
+ * @param language Current language code
+ * @param fallbackLanguage Fallback language code
+ * @returns Content in requested language or fallback
+ */
+export const getLocalizedContent = (
+  content: Record<string, string> | undefined, 
+  language: string, 
+  fallbackLanguage: string = 'en'
+): string => {
+  if (!content) return '';
+  return content[language] || content[fallbackLanguage] || '';
 };

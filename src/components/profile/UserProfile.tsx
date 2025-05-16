@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,6 +24,7 @@ import {
 import PersonalDetailsForm from './PersonalDetailsForm';
 import FinancialDetailsForm from './FinancialDetailsForm';
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile: React.FC = () => {
   const { currentUser, logout } = useUserStore();
@@ -30,6 +32,7 @@ const UserProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [editMode, setEditMode] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const handleEditComplete = () => {
     setEditMode(false);
@@ -47,9 +50,25 @@ const UserProfile: React.FC = () => {
       description: "You have been logged out successfully.",
       variant: "default",
     });
+    navigate('/login');
   };
   
-  if (!user) return null;
+  if (!user) {
+    // Redirect to login if no user is found
+    React.useEffect(() => {
+      navigate('/login');
+    }, []);
+    
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold mb-2">Session Expired</h2>
+          <p className="text-muted-foreground mb-4">Please log in again to view your profile</p>
+          <Button onClick={() => navigate('/login')}>Go to Login</Button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="wv-container py-6">
@@ -105,14 +124,14 @@ const UserProfile: React.FC = () => {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center">
-                    <UserIcon className="h-5 w-5 mr-2 text-wealthveda-indigo" />
+                    <UserIcon className="h-5 w-5 mr-2 text-royal-blue" />
                     Personal Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-wealthveda-indigo/10 flex-center">
+                      <div className="h-10 w-10 rounded-full bg-royal-blue/10 flex items-center justify-center">
                         {user.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
@@ -126,39 +145,47 @@ const UserProfile: React.FC = () => {
                     
                     {user.personalDetails && (
                       <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
-                        <div className="space-y-1">
-                          <div className="text-muted-foreground">Age</div>
-                          <div className="font-medium flex items-center">
-                            <Calendar className="h-3 w-3 mr-1" />
-                            {user.personalDetails.age} years
+                        {user.personalDetails.age !== undefined && (
+                          <div className="space-y-1">
+                            <div className="text-muted-foreground">Age</div>
+                            <div className="font-medium flex items-center">
+                              <Calendar className="h-3 w-3 mr-1" />
+                              {user.personalDetails.age} years
+                            </div>
                           </div>
-                        </div>
+                        )}
                         
-                        <div className="space-y-1">
-                          <div className="text-muted-foreground">Family Size</div>
-                          <div className="font-medium flex items-center">
-                            <Users className="h-3 w-3 mr-1" />
-                            {user.personalDetails.familySize} members
+                        {user.personalDetails.familySize !== undefined && (
+                          <div className="space-y-1">
+                            <div className="text-muted-foreground">Family Size</div>
+                            <div className="font-medium flex items-center">
+                              <Users className="h-3 w-3 mr-1" />
+                              {user.personalDetails.familySize} members
+                            </div>
                           </div>
-                        </div>
+                        )}
                         
-                        <div className="space-y-1">
-                          <div className="text-muted-foreground">Marital Status</div>
-                          <div className="font-medium flex items-center">
-                            <Heart className="h-3 w-3 mr-1" />
-                            {user.personalDetails.maritalStatus.charAt(0).toUpperCase() + 
-                              user.personalDetails.maritalStatus.slice(1)}
+                        {user.personalDetails.maritalStatus && (
+                          <div className="space-y-1">
+                            <div className="text-muted-foreground">Marital Status</div>
+                            <div className="font-medium flex items-center">
+                              <Heart className="h-3 w-3 mr-1" />
+                              {user.personalDetails.maritalStatus.charAt(0).toUpperCase() + 
+                                user.personalDetails.maritalStatus.slice(1)}
+                            </div>
                           </div>
-                        </div>
+                        )}
                         
-                        <div className="space-y-1">
-                          <div className="text-muted-foreground">Risk Tolerance</div>
-                          <div className="font-medium flex items-center">
-                            <ShieldCheck className="h-3 w-3 mr-1" />
-                            {user.personalDetails.riskTolerance.charAt(0).toUpperCase() + 
-                              user.personalDetails.riskTolerance.slice(1)}
+                        {user.personalDetails.riskTolerance && (
+                          <div className="space-y-1">
+                            <div className="text-muted-foreground">Risk Tolerance</div>
+                            <div className="font-medium flex items-center">
+                              <ShieldCheck className="h-3 w-3 mr-1" />
+                              {user.personalDetails.riskTolerance.charAt(0).toUpperCase() + 
+                                user.personalDetails.riskTolerance.slice(1)}
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -168,40 +195,48 @@ const UserProfile: React.FC = () => {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center">
-                    <Wallet className="h-5 w-5 mr-2 text-wealthveda-teal" />
+                    <Wallet className="h-5 w-5 mr-2 text-teal" />
                     Financial Summary
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {user.financialDetails ? (
                     <div className="space-y-3">
-                      <div className="flex justify-between py-1 border-b">
-                        <div className="text-muted-foreground">Monthly Income</div>
-                        <div className="font-medium">₹{user.financialDetails.totalIncome.toLocaleString()}</div>
-                      </div>
-                      
-                      <div className="flex justify-between py-1 border-b">
-                        <div className="text-muted-foreground">Monthly Expenses</div>
-                        <div className="font-medium">
-                          ₹{Object.values(user.financialDetails.expenses)
-                            .reduce((sum, val) => sum + val, 0)
-                            .toLocaleString()}
+                      {user.financialDetails.totalIncome !== undefined && (
+                        <div className="flex justify-between py-1 border-b">
+                          <div className="text-muted-foreground">Monthly Income</div>
+                          <div className="font-medium">₹{user.financialDetails.totalIncome.toLocaleString()}</div>
                         </div>
-                      </div>
+                      )}
                       
-                      <div className="flex justify-between py-1 border-b">
-                        <div className="text-muted-foreground">Monthly Savings</div>
-                        <div className="font-medium">₹{user.financialDetails.savings.toLocaleString()}</div>
-                      </div>
-                      
-                      <div className="flex justify-between py-1 border-b">
-                        <div className="text-muted-foreground">Total Investments</div>
-                        <div className="font-medium">
-                          ₹{user.financialDetails.investments
-                            .reduce((sum, inv) => sum + inv.amount, 0)
-                            .toLocaleString()}
+                      {user.financialDetails.expenses && (
+                        <div className="flex justify-between py-1 border-b">
+                          <div className="text-muted-foreground">Monthly Expenses</div>
+                          <div className="font-medium">
+                            ₹{Object.values(user.financialDetails.expenses)
+                              .reduce((sum, val) => sum + val, 0)
+                              .toLocaleString()}
+                          </div>
                         </div>
-                      </div>
+                      )}
+                      
+                      {user.financialDetails.savings !== undefined && (
+                        <div className="flex justify-between py-1 border-b">
+                          <div className="text-muted-foreground">Monthly Savings</div>
+                          <div className="font-medium">₹{user.financialDetails.savings.toLocaleString()}</div>
+                        </div>
+                      )}
+                      
+                      {user.financialDetails.investments && (
+                        <div className="flex justify-between py-1 border-b">
+                          <div className="text-muted-foreground">Total Investments</div>
+                          <div className="font-medium">
+                            ₹{user.financialDetails.investments
+                              .reduce((sum, inv) => sum + (inv.amount || 0), 0)
+                              .toLocaleString()}
+                          </div>
+                        </div>
+                      )}
                       
                       {user.financialDetails.debts && user.financialDetails.debts.length > 0 && (
                         <div className="flex justify-between py-1">
@@ -225,17 +260,17 @@ const UserProfile: React.FC = () => {
               <Card className="md:col-span-2">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center">
-                    <BadgeIndianRupee className="h-5 w-5 mr-2 text-wealthveda-saffron" />
+                    <BadgeIndianRupee className="h-5 w-5 mr-2 text-saffron-orange" />
                     Subscription Plan
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-                    <div className="bg-gradient-to-r from-wealthveda-indigo/10 to-wealthveda-teal/10 rounded-lg p-4 flex-1">
+                    <div className="bg-gradient-to-r from-royal-blue/10 to-teal/10 rounded-lg p-4 flex-1">
                       <div className="text-xl font-bold mb-1">
                         {user.subscription.plan} Plan
                       </div>
-                      <div className="text-wealthveda-indigo mb-2">
+                      <div className="text-royal-blue mb-2">
                         ₹{user.subscription.pricePerMonth}/month
                       </div>
                       <div className="text-sm text-muted-foreground">
@@ -245,19 +280,19 @@ const UserProfile: React.FC = () => {
                       </div>
                     </div>
                     
-                    {user.subscription.plan !== 'Premium' && (
-                      <div className="bg-gradient-to-r from-wealthveda-teal/10 to-wealthveda-saffron/10 rounded-lg p-4 flex-1 border border-dashed border-muted">
+                    {user.subscription.plan !== 'Premium' && user.subscription.upgradeOptions && (
+                      <div className="bg-gradient-to-r from-teal/10 to-saffron-orange/10 rounded-lg p-4 flex-1 border border-dashed border-muted">
                         <div className="text-lg font-medium mb-1">
                           Upgrade to {user.subscription.upgradeOptions[0].plan}
                         </div>
-                        <div className="text-wealthveda-teal mb-2">
-                          ₹{user.subscription.upgradeOptions[0].plan === 'Pro' ? '199' : '499'}/month
+                        <div className="text-teal mb-2">
+                          ₹{user.subscription.upgradeOptions[0].pricePerMonth}/month
                         </div>
                         <div className="text-sm text-muted-foreground mb-3">
                           Unlock premium features and get more from your financial journey
                         </div>
                         <Button 
-                          className="w-full bg-gradient-to-r from-wealthveda-teal to-wealthveda-indigo hover:opacity-90"
+                          className="w-full bg-gradient-to-r from-teal to-royal-blue hover:opacity-90"
                           size="sm"
                         >
                           <TrendingUp className="h-4 w-4 mr-2" />
@@ -267,20 +302,24 @@ const UserProfile: React.FC = () => {
                     )}
                   </div>
                   
-                  <div className="text-sm font-medium mb-2">Current Plan Features:</div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {user.subscription.features.map((feature, index) => (
-                      <div 
-                        key={index} 
-                        className="flex items-center text-sm p-1.5 rounded-md bg-muted/30"
-                      >
-                        <div className="h-4 w-4 rounded-full bg-wealthveda-teal/20 flex-center mr-2">
-                          <div className="h-1.5 w-1.5 rounded-full bg-wealthveda-teal"></div>
-                        </div>
-                        {formatFeatureName(feature)}
+                  {user.subscription.features && (
+                    <>
+                      <div className="text-sm font-medium mb-2">Current Plan Features:</div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {user.subscription.features.map((feature, index) => (
+                          <div 
+                            key={index} 
+                            className="flex items-center text-sm p-1.5 rounded-md bg-muted/30"
+                          >
+                            <div className="h-4 w-4 rounded-full bg-teal/20 flex items-center justify-center mr-2">
+                              <div className="h-1.5 w-1.5 rounded-full bg-teal"></div>
+                            </div>
+                            {formatFeatureName(feature)}
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -305,36 +344,46 @@ const UserProfile: React.FC = () => {
                         <div className="font-medium">{user.email}</div>
                       </div>
                       
-                      <div className="space-y-2">
-                        <label className="text-muted-foreground text-sm">Age</label>
-                        <div className="font-medium">{user.personalDetails.age} years</div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label className="text-muted-foreground text-sm">Marital Status</label>
-                        <div className="font-medium">
-                          {user.personalDetails.maritalStatus.charAt(0).toUpperCase() + 
-                            user.personalDetails.maritalStatus.slice(1)}
+                      {user.personalDetails.age !== undefined && (
+                        <div className="space-y-2">
+                          <label className="text-muted-foreground text-sm">Age</label>
+                          <div className="font-medium">{user.personalDetails.age} years</div>
                         </div>
-                      </div>
+                      )}
                       
-                      <div className="space-y-2">
-                        <label className="text-muted-foreground text-sm">Family Size</label>
-                        <div className="font-medium">{user.personalDetails.familySize} members</div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label className="text-muted-foreground text-sm">Dependents</label>
-                        <div className="font-medium">{user.personalDetails.dependents}</div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label className="text-muted-foreground text-sm">Risk Tolerance</label>
-                        <div className="font-medium">
-                          {user.personalDetails.riskTolerance.charAt(0).toUpperCase() + 
-                            user.personalDetails.riskTolerance.slice(1)}
+                      {user.personalDetails.maritalStatus && (
+                        <div className="space-y-2">
+                          <label className="text-muted-foreground text-sm">Marital Status</label>
+                          <div className="font-medium">
+                            {user.personalDetails.maritalStatus.charAt(0).toUpperCase() + 
+                              user.personalDetails.maritalStatus.slice(1)}
+                          </div>
                         </div>
-                      </div>
+                      )}
+                      
+                      {user.personalDetails.familySize !== undefined && (
+                        <div className="space-y-2">
+                          <label className="text-muted-foreground text-sm">Family Size</label>
+                          <div className="font-medium">{user.personalDetails.familySize} members</div>
+                        </div>
+                      )}
+                      
+                      {user.personalDetails.dependents !== undefined && (
+                        <div className="space-y-2">
+                          <label className="text-muted-foreground text-sm">Dependents</label>
+                          <div className="font-medium">{user.personalDetails.dependents}</div>
+                        </div>
+                      )}
+                      
+                      {user.personalDetails.riskTolerance && (
+                        <div className="space-y-2">
+                          <label className="text-muted-foreground text-sm">Risk Tolerance</label>
+                          <div className="font-medium">
+                            {user.personalDetails.riskTolerance.charAt(0).toUpperCase() + 
+                              user.personalDetails.riskTolerance.slice(1)}
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
                     {user.personalDetails?.financialChallenges && 
@@ -366,57 +415,63 @@ const UserProfile: React.FC = () => {
               <CardContent>
                 {user.financialDetails ? (
                   <div className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-medium mb-3">Income Sources</h3>
-                      <div className="space-y-2">
-                        {Object.entries(user.financialDetails.incomeSources).map(([source, amount]) => (
-                          <div key={source} className="flex justify-between py-1 border-b last:border-0">
-                            <div className="capitalize">{source}</div>
-                            <div className="font-medium">₹{amount.toLocaleString()}/month</div>
-                          </div>
-                        ))}
-                        <div className="flex justify-between py-1 bg-muted/30 rounded-md px-2">
-                          <div className="font-medium">Total Income</div>
-                          <div className="font-bold">₹{user.financialDetails.totalIncome.toLocaleString()}/month</div>
+                    {user.financialDetails.incomeSources && (
+                      <div>
+                        <h3 className="text-lg font-medium mb-3">Income Sources</h3>
+                        <div className="space-y-2">
+                          {Object.entries(user.financialDetails.incomeSources).map(([source, amount]) => (
+                            <div key={source} className="flex justify-between py-1 border-b last:border-0">
+                              <div className="capitalize">{source}</div>
+                              <div className="font-medium">₹{amount.toLocaleString()}/month</div>
+                            </div>
+                          ))}
+                          {user.financialDetails.totalIncome !== undefined && (
+                            <div className="flex justify-between py-1 bg-muted/30 rounded-md px-2">
+                              <div className="font-medium">Total Income</div>
+                              <div className="font-bold">₹{user.financialDetails.totalIncome.toLocaleString()}/month</div>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    </div>
+                    )}
                     
-                    <div>
-                      <h3 className="text-lg font-medium mb-3">Monthly Expenses</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {Object.entries(user.financialDetails.expenses).map(([category, amount]) => (
-                          <div key={category} className="flex justify-between py-1 border-b">
-                            <div className="capitalize">{category.replace('_', ' ')}</div>
-                            <div className="font-medium">₹{amount.toLocaleString()}</div>
+                    {user.financialDetails.expenses && (
+                      <div>
+                        <h3 className="text-lg font-medium mb-3">Monthly Expenses</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {Object.entries(user.financialDetails.expenses).map(([category, amount]) => (
+                            <div key={category} className="flex justify-between py-1 border-b">
+                              <div className="capitalize">{category.replace('_', ' ')}</div>
+                              <div className="font-medium">₹{amount.toLocaleString()}</div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex justify-between py-2 mt-2 bg-muted/30 rounded-md px-2">
+                          <div className="font-medium">Total Expenses</div>
+                          <div className="font-bold">
+                            ₹{Object.values(user.financialDetails.expenses)
+                              .reduce((sum, val) => sum + val, 0)
+                              .toLocaleString()}/month
                           </div>
-                        ))}
-                      </div>
-                      <div className="flex justify-between py-2 mt-2 bg-muted/30 rounded-md px-2">
-                        <div className="font-medium">Total Expenses</div>
-                        <div className="font-bold">
-                          ₹{Object.values(user.financialDetails.expenses)
-                            .reduce((sum, val) => sum + val, 0)
-                            .toLocaleString()}/month
                         </div>
                       </div>
-                    </div>
+                    )}
                     
-                    {user.financialDetails.investments.length > 0 && (
+                    {user.financialDetails.investments && user.financialDetails.investments.length > 0 && (
                       <div>
                         <h3 className="text-lg font-medium mb-3">Investments</h3>
                         <div className="space-y-2">
                           {user.financialDetails.investments.map((investment, index) => (
                             <div key={index} className="flex justify-between py-1 border-b last:border-0">
                               <div>{investment.type}</div>
-                              <div className="font-medium">₹{investment.amount.toLocaleString()}</div>
+                              <div className="font-medium">₹{(investment.amount || 0).toLocaleString()}</div>
                             </div>
                           ))}
                           <div className="flex justify-between py-1 bg-muted/30 rounded-md px-2">
                             <div className="font-medium">Total Investments</div>
                             <div className="font-bold">
                               ₹{user.financialDetails.investments
-                                .reduce((sum, inv) => sum + inv.amount, 0)
+                                .reduce((sum, inv) => sum + (inv.amount || 0), 0)
                                 .toLocaleString()}
                             </div>
                           </div>

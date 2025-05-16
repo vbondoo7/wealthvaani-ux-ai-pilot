@@ -24,6 +24,12 @@ export interface PersonalDetails {
   income: number;
   location: string;
   phone: string;
+  age?: number;
+  familySize?: number;
+  maritalStatus?: string;
+  riskTolerance?: string;
+  dependents?: number;
+  financialChallenges?: string[];
 }
 
 export interface FinancialDetails {
@@ -37,11 +43,20 @@ export interface FinancialDetails {
   insurancePolicies: InsurancePolicy[];
   festivalPlanning?: { [festival: string]: FestivalPlan };
   seasonalPlanning?: { [season: string]: SeasonalPlan };
+  totalIncome?: number;
+  incomeSources?: { [source: string]: number };
+  expenses?: { [category: string]: number };
+  savings?: number;
+  investments?: { type: string; amount: number }[];
+  debts?: { type: string; amount: number; interestRate: number; monthlyPayment: number; remainingTenure?: number }[];
+  debtToIncomeRatio?: number;
+  savingsRate?: number;
 }
 
 export interface Investment {
   type: string;
   value: number;
+  amount?: number;
 }
 
 export interface InsurancePolicy {
@@ -125,7 +140,9 @@ export interface BlogPost {
   date: string;
   category: string;
   featuredImage: string;
+  imageAlt?: Record<string, string>;
   keywords: string[];
+  categories: string[];
   title: Record<string, string>;
   content: Record<string, string>;
   excerpt: Record<string, string>;

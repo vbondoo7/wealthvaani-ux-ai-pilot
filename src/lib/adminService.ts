@@ -28,6 +28,9 @@ export const getAdminUser = () => {
   return null;
 };
 
+// Alias for backward compatibility
+export const getAuthenticatedAdmin = getAdminUser;
+
 export const logoutAdmin = (): void => {
   localStorage.removeItem('adminLoggedIn');
   localStorage.removeItem('adminUser');

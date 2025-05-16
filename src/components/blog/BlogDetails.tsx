@@ -7,6 +7,7 @@ import { BlogPost } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import BlogSchemaMarkup from './BlogSchemaMarkup';
+import { getLocalizedContent } from '@/lib/typeUtils';
 
 const BlogDetails: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -90,7 +91,7 @@ const BlogDetails: React.FC = () => {
             <div className="h-[300px] w-full overflow-hidden">
               <img
                 src={blogPost.featuredImage}
-                alt={blogPost.title[language]}
+                alt={getLocalizedContent(blogPost.title, language)}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -98,7 +99,7 @@ const BlogDetails: React.FC = () => {
 
           <div className="p-8">
             <h1 className="text-3xl md:text-4xl font-bold mb-4 text-charcoal">
-              {blogPost.title[language]}
+              {getLocalizedContent(blogPost.title, language)}
             </h1>
 
             <div className="flex items-center text-muted-foreground mb-8">
@@ -110,10 +111,10 @@ const BlogDetails: React.FC = () => {
             </div>
 
             <div className="prose max-w-none">
-              <p className="text-lg mb-6">{blogPost.excerpt[language]}</p>
+              <p className="text-lg mb-6">{getLocalizedContent(blogPost.excerpt, language)}</p>
               
               {/* Render content - assuming content is plain text for now */}
-              {blogPost.content[language].split('\n\n').map((paragraph, idx) => (
+              {getLocalizedContent(blogPost.content, language).split('\n\n').map((paragraph, idx) => (
                 <p key={idx} className="mb-4">
                   {paragraph}
                 </p>

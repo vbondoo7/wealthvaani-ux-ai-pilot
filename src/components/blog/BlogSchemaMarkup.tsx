@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { BlogPost } from '@/lib/types';
+import { getLocalizedContent } from '@/lib/typeUtils';
 
 export interface BlogSchemaMarkupProps {
   blogPost: BlogPost;
@@ -11,8 +12,8 @@ const BlogSchemaMarkup: React.FC<BlogSchemaMarkupProps> = ({ blogPost }) => {
   const schemaData = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    headline: blogPost.title.en || '',
-    description: blogPost.excerpt.en || '',
+    headline: getLocalizedContent(blogPost.title, 'en'),
+    description: getLocalizedContent(blogPost.excerpt, 'en'),
     datePublished: blogPost.date,
     author: {
       '@type': 'Person',

@@ -5,6 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { BlogPost } from '@/lib/types';
+import { getLocalizedContent } from '@/lib/typeUtils';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -23,7 +24,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
       <div className="aspect-video rounded-md overflow-hidden bg-gray-100 mb-4">
         <img 
           src={post.featuredImage} 
-          alt={post.imageAlt[language]} 
+          alt={getLocalizedContent(post.imageAlt, language)} 
           className="w-full h-full object-cover"
         />
       </div>
@@ -40,11 +41,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
       </div>
       
       <h3 className="text-lg font-bold text-charcoal line-clamp-2 mb-2">
-        {post.title[language]}
+        {getLocalizedContent(post.title, language)}
       </h3>
       
       <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
-        {post.excerpt[language]}
+        {getLocalizedContent(post.excerpt, language)}
       </p>
       
       <Button 
