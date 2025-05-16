@@ -1,10 +1,9 @@
-
 import { create } from 'zustand';
 import { 
   User, Goal, Nudge, Transaction, PersonalDetails, FinancialDetails, FestivalPlan, SeasonalPlan, FamilyMember
 } from './types';
 import { sampleGoals, sampleNudges, sampleTransactions, generateId, sampleSubscriptions } from './mockData';
-import { predefinedUsers } from './config';
+import { predefinedUsers, adminUser } from './config';
 
 interface UserStore {
   users: User[];
@@ -40,20 +39,6 @@ interface UserStore {
   // Family Management
   updateFamilyMembers: (members: FamilyMember[]) => void;
 }
-
-// Add admin user
-const adminUser: User = {
-  id: 'admin-001',
-  name: 'Admin',
-  email: 'admin@wealthvani.com',
-  password: 'Vishal#123',
-  profileCreated: true,
-  isAdmin: true,
-  goals: [],
-  savedNudges: [],
-  transactions: [],
-  subscription: sampleSubscriptions.Premium
-};
 
 const useUserStore = create<UserStore>((set, get) => ({
   // Initialize with predefined users

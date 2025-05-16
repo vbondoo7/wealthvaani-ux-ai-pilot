@@ -1,6 +1,215 @@
 
-import { User } from './types';
-import { sampleGoals, sampleNudges, sampleTransactions, sampleSubscriptions } from './mockData';
+import { User, Goal, Transaction } from './types';
+import { sampleSubscriptions } from './mockData';
+
+// Generate some historical transaction data for users (3 months)
+const generateHistoricalTransactions = (userId: string, type: 'high' | 'medium' | 'low'): Transaction[] => {
+  const transactions: Transaction[] = [];
+  const currentDate = new Date();
+  const multiplier = type === 'high' ? 1.5 : type === 'medium' ? 1 : 0.7;
+  
+  // Generate transactions for the last 3 months
+  for (let month = 2; month >= 0; month--) {
+    const date = new Date(currentDate);
+    date.setMonth(currentDate.getMonth() - month);
+    
+    // Add salary - monthly income
+    transactions.push({
+      id: `${userId}-salary-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-05`,
+      description: 'Monthly Salary',
+      amount: Math.round(120000 * multiplier),
+      category: 'salary',
+      type: 'income'
+    });
+    
+    // Add rent expense
+    transactions.push({
+      id: `${userId}-rent-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-07`,
+      description: 'Monthly Rent',
+      amount: Math.round(30000 * multiplier),
+      category: 'rent',
+      type: 'expense'
+    });
+    
+    // Add grocery expenses (twice a month)
+    transactions.push({
+      id: `${userId}-grocery1-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-10`,
+      description: 'Groceries',
+      amount: Math.round(8000 * multiplier),
+      category: 'groceries',
+      type: 'expense'
+    });
+    
+    transactions.push({
+      id: `${userId}-grocery2-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-25`,
+      description: 'Groceries',
+      amount: Math.round(7000 * multiplier),
+      category: 'groceries',
+      type: 'expense'
+    });
+    
+    // Add utility bills
+    transactions.push({
+      id: `${userId}-utility-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-15`,
+      description: 'Utility Bills',
+      amount: Math.round(5000 * multiplier),
+      category: 'utilities',
+      type: 'expense'
+    });
+    
+    // Add entertainment expense
+    transactions.push({
+      id: `${userId}-entertainment-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-20`,
+      description: 'Entertainment',
+      amount: Math.round(3000 * multiplier),
+      category: 'entertainment',
+      type: 'expense'
+    });
+    
+    // Add dining out
+    transactions.push({
+      id: `${userId}-dining-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-18`,
+      description: 'Dining Out',
+      amount: Math.round(4500 * multiplier),
+      category: 'dining',
+      type: 'expense'
+    });
+    
+    // Add transportation
+    transactions.push({
+      id: `${userId}-transport-${month}`,
+      date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-12`,
+      description: 'Transportation',
+      amount: Math.round(2500 * multiplier),
+      category: 'transport',
+      type: 'expense'
+    });
+    
+    // Add investment if high or medium income
+    if (type !== 'low') {
+      transactions.push({
+        id: `${userId}-investment-${month}`,
+        date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-06`,
+        description: 'Monthly Investment',
+        amount: Math.round(15000 * multiplier),
+        category: 'investment',
+        type: 'expense'
+      });
+    }
+  }
+  
+  return transactions;
+};
+
+// Predefined goals for different user profiles
+const emergencyFundGoal: Goal = {
+  id: 'goal-001',
+  title: 'Emergency Fund',
+  targetAmount: 300000,
+  deadline: '2026-05-01',
+  priority: 'high',
+  category: 'emergency',
+  progress: 25,
+  savedAmount: 75000,
+  description: 'Save for unexpected expenses and emergencies',
+  name: 'emergency_fund',
+  cost: 300000,
+  timelineYears: 1,
+  monthlySavings: 25000,
+  investment: 'liquid_fund'
+};
+
+const homeGoal: Goal = {
+  id: 'goal-002',
+  title: 'Buy a Home',
+  targetAmount: 5000000,
+  deadline: '2031-01-01',
+  priority: 'medium',
+  category: 'housing',
+  progress: 10,
+  savedAmount: 500000,
+  description: 'Save for down payment on a home',
+  name: 'buy_home',
+  cost: 5000000,
+  timelineYears: 6,
+  monthlySavings: 62500,
+  investment: 'equity_sip'
+};
+
+const educationGoal: Goal = {
+  id: 'goal-003',
+  title: 'Child Education',
+  targetAmount: 2000000,
+  deadline: '2030-04-01',
+  priority: 'high',
+  category: 'education',
+  progress: 15,
+  savedAmount: 300000,
+  description: 'Save for child\'s higher education',
+  name: 'education_fund',
+  cost: 2000000,
+  timelineYears: 5,
+  monthlySavings: 28333,
+  investment: 'fixed_deposit'
+};
+
+const retirementGoal: Goal = {
+  id: 'goal-004',
+  title: 'Retirement',
+  targetAmount: 10000000,
+  deadline: '2045-01-01',
+  priority: 'medium',
+  category: 'retirement',
+  progress: 5,
+  savedAmount: 500000,
+  description: 'Save for comfortable retirement',
+  name: 'retirement_plan',
+  cost: 10000000,
+  timelineYears: 20,
+  monthlySavings: 39583,
+  investment: 'mutual_funds'
+};
+
+const vacationGoal: Goal = {
+  id: 'goal-005',
+  title: 'Dream Vacation',
+  targetAmount: 500000,
+  deadline: '2026-12-01',
+  priority: 'low',
+  category: 'travel',
+  progress: 30,
+  savedAmount: 150000,
+  description: 'Save for a dream international vacation',
+  name: 'vacation_fund',
+  cost: 500000,
+  timelineYears: 1.5,
+  monthlySavings: 19444,
+  investment: 'liquid_fund'
+};
+
+const carGoal: Goal = {
+  id: 'goal-006',
+  title: 'New Car',
+  targetAmount: 1200000,
+  deadline: '2027-06-01',
+  priority: 'low',
+  category: 'vehicle',
+  progress: 20,
+  savedAmount: 240000,
+  description: 'Save to buy a new car',
+  name: 'car_fund',
+  cost: 1200000,
+  timelineYears: 2,
+  monthlySavings: 40000,
+  investment: 'debt_fund'
+};
 
 // Predefined users for demonstration purposes
 export const predefinedUsers: User[] = [
@@ -10,260 +219,143 @@ export const predefinedUsers: User[] = [
     email: 'rahul@example.com',
     password: 'password123',
     profileCreated: true,
-    goals: [...sampleGoals],
-    savedNudges: [...sampleNudges.slice(0, 2)],
-    transactions: [...sampleTransactions],
+    goals: [emergencyFundGoal, homeGoal, retirementGoal, educationGoal],
+    savedNudges: [],
+    transactions: generateHistoricalTransactions('user-001', 'high'),
     personalDetails: {
-      fullName: 'Rahul Sharma',
+      firstName: 'Rahul',
+      lastName: 'Sharma',
       dateOfBirth: '1985-06-15',
       gender: 'male',
-      address: 'B-104, Sunshine Apartments, Powai, Mumbai',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      pinCode: '400076',
-      occupation: 'Software Engineer',
-      phoneNumber: '+91 98765 43210'
+      occupation: 'Senior Software Engineer',
+      income: 120000,
+      location: 'Mumbai, Maharashtra',
+      phone: '+91 98765 43210'
     },
     financialDetails: {
       monthlyIncome: 120000,
-      monthlySavings: 25000,
       monthlyExpenses: 75000,
-      existingLoans: [
-        {
-          type: 'Home Loan',
-          amount: 5000000,
-          interestRate: 7.5,
-          duration: 20,
-          emi: 40000
-        }
-      ],
-      investments: [
-        {
-          type: 'Fixed Deposit',
-          amount: 500000,
-          returns: 6.5
-        },
-        {
-          type: 'Equity',
-          amount: 750000,
-          returns: 12
-        }
-      ],
-      bankAccounts: [
-        {
-          bank: 'HDFC Bank',
-          accountType: 'Savings',
-          balance: 250000
-        },
-        {
-          bank: 'ICICI Bank',
-          accountType: 'Current',
-          balance: 180000
-        }
-      ],
+      totalSavings: 1500000,
+      investmentExperience: 'moderate',
       riskTolerance: 'moderate',
-      financialGoals: ['retirement', 'education', 'home']
+      debtAmount: 5000000,
+      existingInvestments: [
+        { type: 'Equity', value: 750000 },
+        { type: 'Fixed Deposit', value: 500000 },
+        { type: 'PPF', value: 250000 }
+      ],
+      insurancePolicies: [
+        { type: 'Term Life', coverageAmount: 10000000 },
+        { type: 'Health', coverageAmount: 1000000 }
+      ]
     },
     familyMembers: [
       {
+        id: 'family-001',
         name: 'Priya Sharma',
-        relation: 'spouse',
-        age: 32,
-        occupation: 'Doctor',
-        income: 90000,
-        financialDependents: false
+        relationship: 'spouse',
+        dateOfBirth: '1988-09-12',
+        financialDependence: false,
+        annualExpenses: 300000
       },
       {
+        id: 'family-002',
         name: 'Aryan Sharma',
-        relation: 'child',
-        age: 8,
-        occupation: 'Student',
-        income: 0,
-        financialDependents: true
+        relationship: 'son',
+        dateOfBirth: '2015-03-25',
+        financialDependence: true,
+        annualExpenses: 500000
       }
     ],
-    subscription: sampleSubscriptions.Basic
+    subscription: sampleSubscriptions.Premium
   },
   {
     id: 'user-002',
-    name: 'Priya Gupta',
+    name: 'Priya Patel',
     email: 'priya@example.com',
     password: 'password123',
     profileCreated: true,
-    goals: [sampleGoals[0], sampleGoals[2]],
-    savedNudges: [...sampleNudges.slice(2, 4)],
-    transactions: [...sampleTransactions.slice(0, 5)],
+    goals: [homeGoal, vacationGoal, retirementGoal],
+    savedNudges: [],
+    transactions: generateHistoricalTransactions('user-002', 'medium'),
     personalDetails: {
-      fullName: 'Priya Gupta',
+      firstName: 'Priya',
+      lastName: 'Patel',
       dateOfBirth: '1990-09-23',
       gender: 'female',
-      address: '42, Green Park Avenue, Delhi',
-      city: 'New Delhi',
-      state: 'Delhi',
-      pinCode: '110016',
       occupation: 'Marketing Manager',
-      phoneNumber: '+91 87654 32109'
+      income: 85000,
+      location: 'Delhi, Delhi',
+      phone: '+91 87654 32109'
     },
     financialDetails: {
       monthlyIncome: 85000,
-      monthlySavings: 15000,
       monthlyExpenses: 60000,
-      existingLoans: [
-        {
-          type: 'Car Loan',
-          amount: 800000,
-          interestRate: 9,
-          duration: 5,
-          emi: 16500
-        }
-      ],
-      investments: [
-        {
-          type: 'Mutual Funds',
-          amount: 350000,
-          returns: 10.5
-        }
-      ],
-      bankAccounts: [
-        {
-          bank: 'Axis Bank',
-          accountType: 'Savings',
-          balance: 175000
-        }
-      ],
+      totalSavings: 750000,
+      investmentExperience: 'beginner',
       riskTolerance: 'aggressive',
-      financialGoals: ['early_retirement', 'travel', 'investment_property']
+      debtAmount: 800000,
+      existingInvestments: [
+        { type: 'Mutual Funds', value: 350000 },
+        { type: 'Stocks', value: 400000 }
+      ],
+      insurancePolicies: [
+        { type: 'Health', coverageAmount: 500000 }
+      ]
     },
     subscription: sampleSubscriptions.Pro
   },
   {
     id: 'user-003',
-    name: 'Vikram Singh',
+    name: 'Vikram Malhotra',
     email: 'vikram@example.com',
     password: 'password123',
     profileCreated: true,
-    goals: [sampleGoals[1], sampleGoals[3]],
-    savedNudges: [...sampleNudges.slice(4, 6)],
-    transactions: [...sampleTransactions.slice(5)],
+    goals: [emergencyFundGoal, carGoal],
+    savedNudges: [],
+    transactions: generateHistoricalTransactions('user-003', 'low'),
     personalDetails: {
-      fullName: 'Vikram Singh',
-      dateOfBirth: '1978-02-05',
+      firstName: 'Vikram',
+      lastName: 'Malhotra',
+      dateOfBirth: '1992-04-18',
       gender: 'male',
-      address: '201, Shivaji Nagar, Near MG Road, Bangalore',
-      city: 'Bangalore',
-      state: 'Karnataka',
-      pinCode: '560001',
-      occupation: 'Business Owner',
-      phoneNumber: '+91 76543 21098'
+      occupation: 'Freelance Designer',
+      income: 60000,
+      location: 'Bangalore, Karnataka',
+      phone: '+91 76543 21098'
     },
     financialDetails: {
-      monthlyIncome: 200000,
-      monthlySavings: 50000,
-      monthlyExpenses: 120000,
-      existingLoans: [],
-      investments: [
-        {
-          type: 'Real Estate',
-          amount: 10000000,
-          returns: 8
-        },
-        {
-          type: 'Gold',
-          amount: 2000000,
-          returns: 7
-        },
-        {
-          type: 'Stocks',
-          amount: 1500000,
-          returns: 15
-        }
+      monthlyIncome: 60000,
+      monthlyExpenses: 45000,
+      totalSavings: 250000,
+      investmentExperience: 'novice',
+      riskTolerance: 'conservative',
+      debtAmount: 200000,
+      existingInvestments: [
+        { type: 'Fixed Deposit', value: 150000 },
+        { type: 'RD', value: 100000 }
       ],
-      bankAccounts: [
-        {
-          bank: 'HDFC Bank',
-          accountType: 'Current',
-          balance: 950000
-        },
-        {
-          bank: 'SBI',
-          accountType: 'Savings',
-          balance: 350000
-        }
-      ],
-      riskTolerance: 'high',
-      financialGoals: ['wealth_creation', 'childrens_education', 'business_expansion'],
-      festivalPlanning: {
-        diwali: {
-          budget: 100000,
-          savingsGoal: 80000,
-          currentSavings: 45000,
-          expenses: [
-            {
-              category: 'Gifts',
-              amount: 40000
-            },
-            {
-              category: 'Decoration',
-              amount: 15000
-            },
-            {
-              category: 'Celebration',
-              amount: 25000
-            }
-          ]
-        }
-      },
-      seasonalPlanning: {
-        summer: {
-          budget: 150000,
-          savingsGoal: 120000,
-          currentSavings: 75000,
-          expenses: [
-            {
-              category: 'Vacation',
-              amount: 100000
-            },
-            {
-              category: 'Summer Clothes',
-              amount: 20000
-            },
-            {
-              category: 'Activities',
-              amount: 30000
-            }
-          ]
-        }
-      }
+      insurancePolicies: [
+        { type: 'Term Life', coverageAmount: 5000000 }
+      ]
     },
-    familyMembers: [
-      {
-        name: 'Neha Singh',
-        relation: 'spouse',
-        age: 40,
-        occupation: 'Teacher',
-        income: 50000,
-        financialDependents: false
-      },
-      {
-        name: 'Riya Singh',
-        relation: 'child',
-        age: 16,
-        occupation: 'Student',
-        income: 0,
-        financialDependents: true
-      },
-      {
-        name: 'Rohan Singh',
-        relation: 'child',
-        age: 12,
-        occupation: 'Student',
-        income: 0,
-        financialDependents: true
-      }
-    ],
-    subscription: sampleSubscriptions.Premium
+    subscription: sampleSubscriptions.Basic
   }
 ];
+
+// Admin user (handled separately)
+export const adminUser = {
+  id: 'admin-001',
+  name: 'Admin',
+  email: 'admin@wealthvani.com',
+  password: 'Vishal#123',
+  profileCreated: true,
+  isAdmin: true,
+  goals: [],
+  savedNudges: [],
+  transactions: [],
+  subscription: sampleSubscriptions.Premium
+};
 
 // App Configuration
 export const appConfig = {
@@ -273,7 +365,7 @@ export const appConfig = {
   maxGoals: 10,
   maxNudges: 20,
   defaultLanguage: 'en',
-  supportedLanguages: ['en', 'hi', 'hinglish', 'bn', 'ta', 'te', 'pa', 'ml', 'gu'],
+  supportedLanguages: ['en', 'hi', 'hinglish'],
   advisorAvailability: {
     weekdays: '9:00 AM - 7:00 PM',
     weekends: '10:00 AM - 5:00 PM'

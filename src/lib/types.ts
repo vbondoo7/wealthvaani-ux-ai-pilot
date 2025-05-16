@@ -1,3 +1,4 @@
+
 export interface User {
   id: string;
   name: string;
@@ -58,6 +59,12 @@ export interface Goal {
   category: string;
   progress: number;
   savedAmount: number;
+  // For backwards compatibility with existing code
+  name?: string;
+  cost?: number;
+  timelineYears?: number;
+  monthlySavings?: number;
+  investment?: string;
 }
 
 export interface Nudge {
@@ -70,6 +77,12 @@ export interface Nudge {
   isActionable: boolean;
   saved?: boolean;
   autoActionEnabled?: boolean;
+  goalId?: string;
+  message?: string;
+  priority?: string;
+  schedule?: string;
+  type?: string;
+  action?: string;
 }
 
 export interface Transaction {
@@ -78,14 +91,24 @@ export interface Transaction {
   description: string;
   amount: number;
   category: string;
-  type: 'income' | 'expense';
+  type: 'income' | 'expense' | 'credit' | 'debit';
+  account?: string;
 }
 
 export interface SubscriptionPlan {
   plan: 'Basic' | 'Pro' | 'Premium';
-  startDate: string;
-  endDate: string;
-  price: number;
+  startDate?: string;
+  endDate?: string;
+  price?: number;
+  features?: string[];
+  pricePerMonth?: number;
+  nudgesRemaining?: number;
+  upgradeOptions?: UpgradeOption[];
+}
+
+export interface UpgradeOption {
+  plan: string;
+  pricePerMonth: number;
   features: string[];
 }
 
@@ -103,15 +126,17 @@ export interface BlogPost {
   category: string;
   featuredImage: string;
   keywords: string[];
-  title: { [key: string]: string };
-  content: { [key: string]: string };
-  excerpt: { [key: string]: string };
-  metaDescription: { [key: string]: string };
+  title: Record<string, string>;
+  content: Record<string, string>;
+  excerpt: Record<string, string>;
+  metaDescription: Record<string, string>;
 }
 
 export interface AdminUser {
+  id: string;
   email: string;
   password?: string;
+  name: string;
   isAdmin: boolean;
 }
 
