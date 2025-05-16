@@ -8,6 +8,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import useUserStore from '@/lib/userStore';
 import { toast } from "sonner";
 import { loginAdmin } from '@/lib/adminService';
+import LoginOptions from './LoginOptions';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthFormsProps {
   onSuccess: () => void;
@@ -18,6 +20,7 @@ const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }
   const { language, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<string>(defaultTab);
   const { login, register } = useUserStore();
+  const navigate = useNavigate();
   
   // Login form state
   const [loginEmail, setLoginEmail] = useState('');
@@ -48,7 +51,7 @@ const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }
           : language === 'hi' 
             ? "व्यवस्थापक का स्वागत है!" 
             : "Admin ka swagat hai!");
-        onSuccess();
+        navigate('/blog');
         return;
       }
     }
@@ -118,9 +121,14 @@ const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }
           : "Email already exist karta hai");
     }
   };
+
+  const handleSelectUser = (email: string, password: string) => {
+    setLoginEmail(email);
+    setLoginPassword(password);
+  };
   
   return (
-    <div>
+    <div className="w-full max-w-md mx-auto">
       <Tabs 
         defaultValue={activeTab} 
         value={activeTab}
@@ -160,6 +168,9 @@ const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }
           >
             {t('login')}
           </Button>
+
+          {/* Demo Users */}
+          <LoginOptions onSelectUser={handleSelectUser} />
         </TabsContent>
         
         {/* Signup Form */}

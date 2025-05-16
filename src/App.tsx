@@ -14,6 +14,8 @@ import BlogAdminPanel from "./components/blog/BlogAdminPanel";
 import BlogDetails from "./components/blog/BlogDetails";
 import { Terms, Careers, Privacy } from "./pages/Footer";
 import Pricing from "./pages/Pricing";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +26,15 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Layout component for pages that need consistent header/footer
+const PublicLayout = ({ children }: { children: React.ReactNode }) => (
+  <div className="min-h-screen flex flex-col">
+    <Header />
+    <main className="flex-1">{children}</main>
+    <Footer />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -59,17 +70,47 @@ const App = () => (
               <Route index element={<Navigate to="/landing" replace />} />
             </Route>
             
-            {/* Marketing Landing Page and Blog */}
+            {/* Marketing Landing Page */}
             <Route path="/marketing" element={<Marketing />} />
-            <Route path="/blog" element={<BlogSection />} />
-            <Route path="/blog/:slug" element={<BlogDetails />} />
-            <Route path="/blog/admin" element={<BlogAdminPanel />} />
             
-            {/* Footer Pages */}
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/privacy" element={<Privacy />} />
+            {/* Blog routes with consistent header/footer */}
+            <Route path="/blog" element={
+              <PublicLayout>
+                <BlogSection />
+              </PublicLayout>
+            } />
+            <Route path="/blog/:slug" element={
+              <PublicLayout>
+                <BlogDetails />
+              </PublicLayout>
+            } />
+            <Route path="/blog/admin" element={
+              <PublicLayout>
+                <BlogAdminPanel />
+              </PublicLayout>
+            } />
+            
+            {/* Footer Pages with consistent header/footer */}
+            <Route path="/terms" element={
+              <PublicLayout>
+                <Terms />
+              </PublicLayout>
+            } />
+            <Route path="/careers" element={
+              <PublicLayout>
+                <Careers />
+              </PublicLayout>
+            } />
+            <Route path="/pricing" element={
+              <PublicLayout>
+                <Pricing />
+              </PublicLayout>
+            } />
+            <Route path="/privacy" element={
+              <PublicLayout>
+                <Privacy />
+              </PublicLayout>
+            } />
             
             {/* Fallback route */}
             <Route path="*" element={<NotFound />} />

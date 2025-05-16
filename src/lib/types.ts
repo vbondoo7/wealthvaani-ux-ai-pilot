@@ -1,178 +1,146 @@
-
-// User related types
 export interface User {
   id: string;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   profileCreated: boolean;
   personalDetails?: PersonalDetails;
   financialDetails?: FinancialDetails;
   goals: Goal[];
   savedNudges: Nudge[];
   transactions: Transaction[];
-  subscription: Subscription;
-  familyMembers?: FamilyMember[];
+  subscription: SubscriptionPlan;
   isAdmin?: boolean;
+  familyMembers?: FamilyMember[];
 }
 
 export interface PersonalDetails {
-  age: number;
-  familySize: number;
-  maritalStatus: 'single' | 'married' | 'divorced' | 'widowed';
-  dependents: number;
-  riskTolerance: 'low' | 'medium' | 'high';
-  occupation?: string;
-  phoneNumber?: string;
-  address?: string;
-  financialChallenges?: string[];
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: string;
+  occupation: string;
+  income: number;
+  location: string;
+  phone: string;
 }
 
 export interface FinancialDetails {
-  totalIncome: number;
-  incomeSources: Record<string, number>;
-  expenses: Record<string, number>;
-  savings: number;
-  investments: Investment[];
-  debts: Debt[];
-  debtToIncomeRatio: number;
-  savingsRate: number;
-  festivalPlanning?: Record<string, FestivalPlan>;
-  seasonalPlanning?: Record<string, SeasonalPlan>;
-  investmentIntelligence?: InvestmentIntelligence;
+  monthlyIncome: number;
+  monthlyExpenses: number;
+  totalSavings: number;
+  investmentExperience: string;
+  riskTolerance: string;
+  debtAmount: number;
+  existingInvestments: Investment[];
+  insurancePolicies: InsurancePolicy[];
+  festivalPlanning?: { [festival: string]: FestivalPlan };
+  seasonalPlanning?: { [season: string]: SeasonalPlan };
 }
 
 export interface Investment {
   type: string;
-  amount: number;
+  value: number;
 }
 
-export interface Debt {
+export interface InsurancePolicy {
   type: string;
-  amount: number;
-  interestRate: number;
-  monthlyPayment: number;
-  remainingTenure: number;
-}
-
-export interface FestivalPlan {
-  budget: number;
-  saved: number;
-}
-
-export interface SeasonalPlan {
-  budget: number;
-  saved: number;
-  purpose: string;
-}
-
-export interface InvestmentIntelligence {
-  riskScore: number;
-  diversificationScore: number;
-  recommendedAssetAllocation: Record<string, number>;
-  upcomingIPOs?: UpcomingIPO[];
-  portfolioPerformance: {
-    lastMonth: number;
-    lastQuarter: number;
-    lastYear: number;
-  };
-}
-
-export interface UpcomingIPO {
-  name: string;
-  expectedDate: string;
-  interestRegistered: boolean;
+  coverageAmount: number;
 }
 
 export interface Goal {
   id: string;
-  name: string;
-  cost: number;
-  timelineYears: number;
-  monthlySavings: number;
-  investment: string;
+  title: string;
+  targetAmount: number;
+  deadline: string;
+  priority: string;
+  description?: string;
+  category: string;
   progress: number;
   savedAmount: number;
 }
 
 export interface Nudge {
   id: string;
-  goalId: string;
-  message: string;
-  priority: 'low' | 'medium' | 'high';
-  schedule: string;
-  type: 'reminder' | 'tip' | 'opportunity' | 'risk';
-  action: string;
-  saved: boolean;
-  autoActionEnabled: boolean;
+  title: string;
+  description: string;
+  category: string;
+  relevanceScore: number;
+  actionLink: string;
+  isActionable: boolean;
+  saved?: boolean;
+  autoActionEnabled?: boolean;
 }
 
 export interface Transaction {
   id: string;
   date: string;
-  amount: number;
-  type: 'credit' | 'debit';
-  category: string;
   description: string;
-  account: string;
+  amount: number;
+  category: string;
+  type: 'income' | 'expense';
 }
 
-export interface Subscription {
+export interface SubscriptionPlan {
   plan: 'Basic' | 'Pro' | 'Premium';
-  pricePerMonth: number;
+  startDate: string;
+  endDate: string;
+  price: number;
   features: string[];
-  nudgesRemaining?: number;
-  upgradeOptions: {
-    plan: 'Pro' | 'Premium';
-    pricePerMonth: number;
-    features: string[];
-  }[];
 }
 
-export interface FamilyMember {
+export interface LanguageOption {
+  code: string;
   name: string;
-  relationship: string;
-  age: number;
-  income: number;
-  expenses: number;
+  displayName: string;
 }
-
-// Language type for the app
-export type LanguageOption = 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te' | 'pa' | 'gu' | 'ml';
 
 export interface BlogPost {
-  id: number;
+  id: string;
   slug: string;
-  title: Record<LanguageOption, string>;
-  excerpt: Record<LanguageOption, string>;
-  content: Record<LanguageOption, string>;
   author: string;
   date: string;
-  readTime: number;
+  category: string;
   featuredImage: string;
-  imageAlt: Record<LanguageOption, string>;
-  categories: string[];
   keywords: string[];
-  metaDescription: Record<LanguageOption, string>;
+  title: { [key: string]: string };
+  content: { [key: string]: string };
+  excerpt: { [key: string]: string };
+  metaDescription: { [key: string]: string };
 }
 
-// Add AdminUser interface
 export interface AdminUser {
   email: string;
   password?: string;
   isAdmin: boolean;
 }
 
-// Add PricingPlan interface
 export interface PricingPlan {
   id: string;
   name: string;
-  description: Record<string, string>;
-  price: {
-    monthly: number;
-    yearly: number;
-  };
-  features: Record<string, string>[];
-  popular?: boolean;
-  cta: Record<string, string>;
+  price: number;
+  features: string[];
+  recommended?: boolean;
+  color?: string;
+}
+
+export interface FestivalPlan {
+  budget: number;
+  items: { name: string; cost: number; }[];
+  notes?: string;
+}
+
+export interface SeasonalPlan {
+  budget: number;
+  items: { name: string; cost: number; }[];
+  notes?: string;
+}
+
+export interface FamilyMember {
+  id: string;
+  name: string;
+  relationship: string;
+  dateOfBirth: string;
+  financialDependence: boolean;
+  annualExpenses: number;
 }
