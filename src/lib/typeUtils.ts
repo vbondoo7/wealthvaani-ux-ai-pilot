@@ -1,5 +1,5 @@
 
-import { Goal } from './types';
+import { Goal, LanguageOption } from './types';
 
 /**
  * Maps legacy goal format to current format
@@ -30,9 +30,6 @@ export const mapLegacyGoal = (legacyGoal: any): Omit<Goal, 'id'> => {
   };
 };
 
-// Define the LanguageOption type to match what's used in the app
-export type LanguageOption = 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te';
-
 /**
  * Helper for handling language type checking
  * @param value Language code string to check
@@ -48,7 +45,15 @@ export const isValidLanguage = (value: any): value is LanguageOption => {
  * @returns Language option or default 'en' if invalid
  */
 export const asLanguageOption = (value: string): LanguageOption => {
-  return isValidLanguage(value) ? value as LanguageOption : 'en';
+  return isValidLanguage(value) ? value : 'en';
+};
+
+/**
+ * Compare a LanguageOption with a string value safely
+ * This helps avoid type comparison errors in TypeScript
+ */
+export const isLanguage = (language: LanguageOption, value: LanguageOption): boolean => {
+  return language === value;
 };
 
 /**

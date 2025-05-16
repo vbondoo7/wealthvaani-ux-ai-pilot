@@ -6,7 +6,8 @@ import Logo from '@/components/logo/Logo';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import RotatingText from '@/components/ui/RotatingText';
-import { asLanguageOption } from '@/lib/typeUtils';
+import { asLanguageOption, isLanguage } from '@/lib/typeUtils';
+import { LanguageOption } from '@/lib/types';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,36 +38,36 @@ const LandingPage: React.FC = () => {
     {
       icon: <ChartBar className="h-8 w-8 text-royal-blue" />,
       title: t("smart-planning"),
-      description: language === 'en' 
+      description: isLanguage(language, 'en') 
         ? "AI-powered insights and personalized financial planning that grows with you."
-        : language === 'hi'
+        : isLanguage(language, 'hi')
           ? "एआई-संचालित अंतर्दृष्टि और व्यक्तिगत वित्तीय योजना जो आपके साथ बढ़ती है।"
           : "AI-powered insights aur personalized financial planning jo aapke saath badhti hai."
     },
     {
       icon: <Shield className="h-8 w-8 text-teal" />,
       title: t("secure-private"),
-      description: language === 'en'
+      description: isLanguage(language, 'en')
         ? "Your financial data stays encrypted and private with robust security measures."
-        : language === 'hi'
+        : isLanguage(language, 'hi')
           ? "आपका वित्तीय डेटा मजबूत सुरक्षा उपायों के साथ एन्क्रिप्टेड और निजी रहता है।"
           : "Aapka financial data strong security measures ke saath encrypted aur private rehta hai."
     },
     {
       icon: <MessageCircle className="h-8 w-8 text-saffron-orange" />,
       title: t("financial-companion"),
-      description: language === 'en'
+      description: isLanguage(language, 'en')
         ? "Chat with our AI assistant about budgets, investments, or financial queries in simple language."
-        : language === 'hi'
+        : isLanguage(language, 'hi')
           ? "सरल भाषा में बजट, निवेश या वित्तीय प्रश्नों के बारे में हमारे एआई सहायक से चैट करें।"
           : "Simple language mein budgets, investments, ya financial queries ke bare mein hamare AI assistant se chat karein."
     },
     {
       icon: <Sparkles className="h-8 w-8 text-royal-blue" />,
       title: t("proactive-insights"),
-      description: language === 'en'
+      description: isLanguage(language, 'en')
         ? "Get proactive nudges and recommendations tailored to your spending patterns."
-        : language === 'hi'
+        : isLanguage(language, 'hi')
           ? "अपने खर्च पैटर्न के अनुरूप सक्रिय सुझाव और सिफारिशें प्राप्त करें।"
           : "Apne spending patterns ke hisaab se proactive nudges aur recommendations paayein."
     }
@@ -111,8 +112,8 @@ const LandingPage: React.FC = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-charcoal">
-              <span>{language === 'en' ? "India's First" : language === 'hi' ? "भारत का पहला" : "India Ka Pehla"}</span> 
-              <span className="text-royal-blue"> {language === 'en' ? "Proactive Wealth Companion" : language === 'hi' ? "सक्रिय धन साथी" : "Proactive Wealth Companion"}</span>
+              <span>{isLanguage(language, 'en') ? "India's First" : isLanguage(language, 'hi') ? "भारत का पहला" : "India Ka Pehla"}</span> 
+              <span className="text-royal-blue"> {isLanguage(language, 'en') ? "Proactive Wealth Companion" : isLanguage(language, 'hi') ? "सक्रिय धन साथी" : "Proactive Wealth Companion"}</span>
             </h1>
             
             <RotatingText phrases={rotatingPhrases} className="mb-8" />
@@ -140,9 +141,9 @@ const LandingPage: React.FC = () => {
               <div className="bg-white/80 backdrop-blur-sm py-1 px-4 rounded-full text-sm flex items-center gap-2">
                 <Sun className="h-4 w-4 text-saffron-orange" />
                 <span>
-                  {language === 'en'
+                  {isLanguage(language, 'en')
                     ? "Trusted by 10,000+ Indian families"
-                    : language === 'hi'
+                    : isLanguage(language, 'hi')
                       ? "10,000+ भारतीय परिवारों द्वारा विश्वास किया जाता है"
                       : "10,000+ Indian families ka vishwas"}
                 </span>
@@ -183,23 +184,23 @@ const LandingPage: React.FC = () => {
       <section className="py-16 px-6">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-4 text-charcoal">
-            {language === 'en'
+            {isLanguage(language, 'en')
               ? "How "
-              : language === 'hi'
+              : isLanguage(language, 'hi')
                 ? "कैसे "
                 : "Kaise "
             }
             <span className="text-royal-blue">Wealth</span><span className="text-saffron-orange hindi-text">वाणी</span>
-            {language === 'en'
+            {isLanguage(language, 'en')
               ? " Works for You"
-              : language === 'hi'
+              : isLanguage(language, 'hi')
                 ? " आपके लिए काम करता है"
                 : " Aapke Liye Kaam Karta Hai"}
           </h2>
           <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-            {language === 'en'
+            {isLanguage(language, 'en')
               ? "Combining the wisdom of traditional Indian financial principles with cutting-edge AI technology"
-              : language === 'hi'
+              : isLanguage(language, 'hi')
                 ? "पारंपरिक भारतीय वित्तीय सिद्धांतों के ज्ञान को अत्याधुनिक एआई तकनीक के साथ जोड़ना"
                 : "Traditional Indian financial principles ki wisdom ko cutting-edge AI technology ke saath combine karna"}
           </p>
@@ -222,9 +223,9 @@ const LandingPage: React.FC = () => {
               className="bg-saffron-orange hover:bg-saffron-orange/90 text-white font-medium"
               onClick={handleLoginClick}
             >
-              {language === 'en'
+              {isLanguage(language, 'en')
                 ? "Start Your Financial Journey"
-                : language === 'hi'
+                : isLanguage(language, 'hi')
                   ? "अपनी वित्तीय यात्रा शुरू करें"
                   : "Apni Financial Journey Shuru Karen"}
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -243,7 +244,7 @@ const LandingPage: React.FC = () => {
               onClick={() => navigate('/about')}
             >
               <Shield className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{language === 'en' ? "About Us" : language === 'hi' ? "हमारे बारे में" : "About Us"}</span>
+              <span>{isLanguage(language, 'en') ? "About Us" : isLanguage(language, 'hi') ? "हमारे बारे में" : "About Us"}</span>
             </Button>
             
             <Button 
@@ -252,7 +253,7 @@ const LandingPage: React.FC = () => {
               onClick={() => navigate('/services')}
             >
               <ChartBar className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{language === 'en' ? "Services" : language === 'hi' ? "सेवाएं" : "Services"}</span>
+              <span>{isLanguage(language, 'en') ? "Services" : isLanguage(language, 'hi') ? "सेवाएं" : "Services"}</span>
             </Button>
             
             <Button 
@@ -261,7 +262,7 @@ const LandingPage: React.FC = () => {
               onClick={() => navigate('/features')}
             >
               <Sparkles className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{language === 'en' ? "Features" : language === 'hi' ? "सुविधाएं" : "Features"}</span>
+              <span>{isLanguage(language, 'en') ? "Features" : isLanguage(language, 'hi') ? "सुविधाएं" : "Features"}</span>
             </Button>
             
             <Button 
@@ -270,7 +271,7 @@ const LandingPage: React.FC = () => {
               onClick={() => navigate('/pricing')}
             >
               <MessageCircle className="h-6 w-6 mb-2 text-royal-blue" />
-              <span>{language === 'en' ? "Pricing" : language === 'hi' ? "मूल्य निर्धारण" : "Pricing"}</span>
+              <span>{isLanguage(language, 'en') ? "Pricing" : isLanguage(language, 'hi') ? "मूल्य निर्धारण" : "Pricing"}</span>
             </Button>
           </div>
         </div>

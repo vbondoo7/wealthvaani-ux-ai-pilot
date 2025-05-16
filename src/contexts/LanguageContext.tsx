@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { LanguageOption } from '@/lib/types';
+import { isValidLanguage, asLanguageOption } from '@/lib/typeUtils';
 
 type LanguageContextType = {
   language: LanguageOption;
@@ -78,7 +79,7 @@ const translations = {
     'smart-planning': 'स्मार्ट वित्तीय योजना',
     'secure-private': 'सुरक्षित और निजी',
     'financial-companion': 'वित्तीय AI साथी',
-    'proactive-insights': 'सक्रिय अंतर्दृष्टि',
+    'proactive-insights': 'सक��रिय अंतर्दृष्टि',
     'admin-dashboard': 'व्यवस्थापक डैशबोर्ड',
     'manage-blogs': 'ब्लॉग प्रबंधित करें',
     'add-blog': 'ब्लॉग जोड़ें',
@@ -193,9 +194,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Load language from localStorage on mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('wealthvani-language');
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'hi' || savedLanguage === 'hinglish' || 
-        savedLanguage === 'bn' || savedLanguage === 'ta' || savedLanguage === 'te')) {
-      setLanguage(savedLanguage as LanguageOption);
+    if (savedLanguage) {
+      setLanguage(asLanguageOption(savedLanguage));
     }
   }, []);
 
