@@ -4,6 +4,7 @@ import {
 } from './types';
 import { sampleGoals, sampleNudges, sampleTransactions, generateId, sampleSubscriptions } from './mockData';
 import { predefinedUsers, adminUser } from './config';
+import { mapLegacyGoal } from './typeUtils';
 
 interface UserStore {
   users: User[];
@@ -161,8 +162,6 @@ const useUserStore = create<UserStore>((set, get) => ({
     const newGoal: Goal = {
       ...goalData,
       id: generateId(),
-      progress: 0,
-      savedAmount: 0
     };
     
     set(state => {

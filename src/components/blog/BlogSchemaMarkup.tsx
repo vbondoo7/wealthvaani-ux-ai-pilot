@@ -11,8 +11,8 @@ const BlogSchemaMarkup: React.FC<BlogSchemaMarkupProps> = ({ blogPost }) => {
   const schemaData = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    headline: blogPost.title.en,
-    description: blogPost.excerpt.en,
+    headline: blogPost.title.en || '',
+    description: blogPost.excerpt.en || '',
     datePublished: blogPost.date,
     author: {
       '@type': 'Person',

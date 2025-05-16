@@ -5,6 +5,12 @@ export const loginAdmin = (email: string, password: string): boolean => {
   if (email === adminUser.email && password === adminUser.password) {
     // Store admin authentication state in local storage to persist across page reloads
     localStorage.setItem('adminLoggedIn', 'true');
+    localStorage.setItem('adminUser', JSON.stringify({
+      id: adminUser.id,
+      name: adminUser.name,
+      email: adminUser.email,
+      isAdmin: true
+    }));
     return true;
   }
   return false;
@@ -14,8 +20,17 @@ export const isAdminLoggedIn = (): boolean => {
   return localStorage.getItem('adminLoggedIn') === 'true';
 };
 
+export const getAdminUser = () => {
+  const adminData = localStorage.getItem('adminUser');
+  if (adminData) {
+    return JSON.parse(adminData);
+  }
+  return null;
+};
+
 export const logoutAdmin = (): void => {
   localStorage.removeItem('adminLoggedIn');
+  localStorage.removeItem('adminUser');
 };
 
 // Admin services for blog management

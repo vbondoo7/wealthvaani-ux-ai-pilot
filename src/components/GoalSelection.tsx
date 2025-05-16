@@ -5,6 +5,7 @@ import { ChevronRight, Home, GraduationCap, Car, HeartPulse, Plane, Landmark } f
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import useUserStore from '@/lib/userStore';
+import { Goal } from '@/lib/types';
 
 const GoalSelection: React.FC = () => {
   const navigate = useNavigate();
@@ -34,14 +35,25 @@ const GoalSelection: React.FC = () => {
     selectedGoals.forEach(goalId => {
       const goal = goals.find(g => g.id === goalId);
       if (goal) {
+        const currentDate = new Date();
+        const deadlineDate = new Date();
+        deadlineDate.setFullYear(currentDate.getFullYear() + goal.timelineYears);
+
         addGoal({
+          title: goal.label,
+          targetAmount: goal.cost,
+          deadline: deadlineDate.toISOString().split('T')[0],
+          priority: "medium",
+          category: goal.id,
+          progress: 0,
+          savedAmount: 0,
+          description: `Goal to ${goal.label.toLowerCase()}`,
+          // For backwards compatibility
           name: goal.id,
           cost: goal.cost,
           timelineYears: goal.timelineYears,
           monthlySavings: Math.round(goal.cost / (goal.timelineYears * 12)),
-          investment: 'mutual_funds',
-          progress: 0,
-          savedAmount: 0
+          investment: 'mutual_funds'
         });
       }
     });

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -50,14 +51,25 @@ const GoalTracker: React.FC = () => {
   };
   
   const handleAddGoal = () => {
+    const currentDate = new Date();
+    const deadlineDate = new Date();
+    deadlineDate.setFullYear(currentDate.getFullYear() + Number(goalYears));
+    
     const newGoal = {
-      name: goalName.trim(),
+      title: goalName.trim(),
+      targetAmount: Number(goalAmount),
+      deadline: deadlineDate.toISOString().split('T')[0],
+      priority: "medium",
+      category: goalName.toLowerCase().replace(/ /g, '_'),
+      description: `Goal to ${goalName.toLowerCase()}`,
+      progress: 0,
+      savedAmount: 0,
+      // For backwards compatibility
+      name: goalName.trim().toLowerCase().replace(/ /g, '_'),
       cost: Number(goalAmount),
       timelineYears: Number(goalYears),
       monthlySavings: Number(goalMonthlySavings),
-      investment: goalInvestment,
-      progress: 0, // Adding the missing required property
-      savedAmount: 0 // Adding the missing required property
+      investment: goalInvestment
     };
     
     addGoal(newGoal);

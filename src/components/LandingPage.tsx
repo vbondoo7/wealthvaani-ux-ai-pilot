@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, ChartBar, MessageCircle, Sparkles, Globe, Sun } from "lucide-react";
