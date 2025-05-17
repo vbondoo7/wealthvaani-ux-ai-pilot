@@ -127,11 +127,8 @@ export interface UpgradeOption {
   features: string[];
 }
 
-export interface LanguageOption {
-  code: string;
-  name: string;
-  displayName: string;
-}
+// Updated LanguageOption to be a string literal type instead of an interface
+export type LanguageOption = 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te';
 
 export interface BlogPost {
   id: string;

@@ -6,7 +6,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '@/contexts/LanguageContext';
-import { asLanguageOption, isLanguage } from '@/lib/typeUtils';
+import { asLanguageOption } from '@/lib/typeUtils';
 
 const OnboardingCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -16,38 +16,38 @@ const OnboardingCarousel: React.FC = () => {
   
   const slides = [
     {
-      title: isLanguage(language, 'en') ? "Namaste to a Smarter Financial Future" : 
-             isLanguage(language, 'hi') ? "स्मार्ट वित्तीय भविष्य के लिए नमस्ते" : 
+      title: language === 'en' ? "Namaste to a Smarter Financial Future" : 
+             language === 'hi' ? "स्मार्ट वित्तीय भविष्य के लिए नमस्ते" : 
              "Smarter Financial Future ke liye Namaste",
-      description: isLanguage(language, 'en') ? "WealthVeda - Your AI-powered financial assistant that makes money management simple and effective." :
-                  isLanguage(language, 'hi') ? "वेल्थवेदा - आपका एआई-संचालित वित्तीय सहायक जो धन प्रबंधन को सरल और प्रभावी बनाता है।" :
+      description: language === 'en' ? "WealthVeda - Your AI-powered financial assistant that makes money management simple and effective." :
+                  language === 'hi' ? "वेल्थवेदा - आपका एआई-संचालित वित्तीय सहायक जो धन प्रबंधन को सरल और प्रभावी बनाता है।" :
                   "WealthVeda - Aapka AI-powered financial assistant jo money management ko simple aur effective banata hai.",
       icon: <Lightbulb className="h-12 w-12 text-saffron-orange" />
     },
     {
-      title: isLanguage(language, 'en') ? "Personalized Financial Insights" :
-             isLanguage(language, 'hi') ? "व्यक्तिगत वित्तीय अंतर्दृष्टि" :
+      title: language === 'en' ? "Personalized Financial Insights" :
+             language === 'hi' ? "व्यक्तिगत वित्तीय अंतर्दृष्टि" :
              "Personalized Financial Insights",
-      description: isLanguage(language, 'en') ? "Get proactive nudges and recommendations tailored to your spending patterns and financial goals." :
-                  isLanguage(language, 'hi') ? "अपने खर्च पैटर्न और वित्तीय लक्ष्यों के अनुरूप सक्रिय सुझाव और सिफारिशें प्राप्त करें।" :
+      description: language === 'en' ? "Get proactive nudges and recommendations tailored to your spending patterns and financial goals." :
+                  language === 'hi' ? "अपने खर्च पैटर्न और वित्तीय लक्ष्यों के अनुरूप सक्रिय सुझाव और सिफारिशें प्राप्त करें।" :
                   "Apne spending patterns aur financial goals ke hisab se proactive nudges aur recommendations paayein.",
       icon: <Wallet className="h-12 w-12 text-teal" />
     },
     {
-      title: isLanguage(language, 'en') ? "Secure Bank Connections" :
-             isLanguage(language, 'hi') ? "सुरक्षित बैंक कनेक्शन" :
+      title: language === 'en' ? "Secure Bank Connections" :
+             language === 'hi' ? "सुरक्षित बैंक कनेक्शन" :
              "Secure Bank Connections",
-      description: isLanguage(language, 'en') ? "Connect your accounts securely using Account Aggregator framework. Your data stays encrypted and private." :
-                  isLanguage(language, 'hi') ? "अकाउंट एग्रीगेटर फ्रेमवर्क का उपयोग करके अपने खातों को सुरक्षित रूप से कनेक्ट करें। आपका डेटा एन्क्रिप्टेड और निजी रहता है।" :
+      description: language === 'en' ? "Connect your accounts securely using Account Aggregator framework. Your data stays encrypted and private." :
+                  language === 'hi' ? "अकाउंट एग्रीगेटर फ्रेमवर्क का उपयोग करके अपने खातों को सुरक्षित रूप से कनेक्ट करें। आपका डेटा एन्क्रिप्टेड और निजी रहता है।" :
                   "Account Aggregator framework ka use karke apne accounts ko securely connect karein. Aapka data encrypted aur private rehta hai.",
       icon: <Shield className="h-12 w-12 text-royal-blue" />
     },
     {
-      title: isLanguage(language, 'en') ? "Ask Anything About Your Money" :
-             isLanguage(language, 'hi') ? "अपने पैसे के बारे में कुछ भी पूछें" :
+      title: language === 'en' ? "Ask Anything About Your Money" :
+             language === 'hi' ? "अपने पैसे के बारे में कुछ भी पूछें" :
              "Apne paise ke bare mein kuch bhi poochein",
-      description: isLanguage(language, 'en') ? "Chat with our AI assistant about budgets, investments, or financial queries in simple language." :
-                  isLanguage(language, 'hi') ? "सरल भाषा में बजट, निवेश, या वित्तीय प्रश्नों के बारे में हमारे एआई सहायक से चैट करें।" :
+      description: language === 'en' ? "Chat with our AI assistant about budgets, investments, or financial queries in simple language." :
+                  language === 'hi' ? "सरल भाषा में बजट, निवेश, या वित्तीय प्रश्नों के बारे में हमारे एआई सहायक से चैट करें।" :
                   "Simple language mein budgets, investments, ya financial queries ke bare mein hamare AI assistant se chat karein.",
       icon: <Bot className="h-12 w-12 text-saffron-orange" />
     }
@@ -59,11 +59,11 @@ const OnboardingCarousel: React.FC = () => {
     } else {
       // Show a toast message
       toast({
-        title: isLanguage(language, 'en') ? "Welcome to Wealthवाणी" :
-               isLanguage(language, 'hi') ? "वेल्थवाणी में आपका स्वागत है" :
+        title: language === 'en' ? "Welcome to Wealthवाणी" :
+               language === 'hi' ? "वेल्थवाणी में आपका स्वागत है" :
                "Wealthवाणी mein aapka swagat hai",
-        description: isLanguage(language, 'en') ? "Let's set up your financial goals!" :
-                    isLanguage(language, 'hi') ? "आइए अपने वित्तीय लक्ष्य स्थापित करें!" :
+        description: language === 'en' ? "Let's set up your financial goals!" :
+                    language === 'hi' ? "आइए अपने वित्तीय लक्ष्य स्थापित करें!" :
                     "Chaliye apne financial goals set karein!",
       });
       
@@ -113,8 +113,8 @@ const OnboardingCarousel: React.FC = () => {
           className="w-full bg-royal-blue hover:bg-royal-blue/90 h-12"
         >
           {currentSlide < slides.length - 1 ? 
-            (isLanguage(language, 'en') ? 'Continue' : isLanguage(language, 'hi') ? 'जारी रखें' : 'Continue') : 
-            (isLanguage(language, 'en') ? 'Get Started' : isLanguage(language, 'hi') ? 'शुरू करें' : 'Shuru Karen')}
+            (language === 'en' ? 'Continue' : language === 'hi' ? 'जारी रखें' : 'Continue') : 
+            (language === 'en' ? 'Get Started' : language === 'hi' ? 'शुरू करें' : 'Shuru Karen')}
           <ChevronRight className="h-4 w-4 ml-2" />
         </Button>
       </div>

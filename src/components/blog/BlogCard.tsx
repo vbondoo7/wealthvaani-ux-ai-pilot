@@ -64,15 +64,15 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
         className="p-0 text-saffron-orange hover:text-saffron-orange/80"
         onClick={handleClick}
       >
-        {isLanguage(language, 'en')
+        {language === 'en'
           ? "Read More" 
-          : isLanguage(language, 'hi')
+          : language === 'hi'
             ? "और पढ़ें" 
-            : isLanguage(language, 'hinglish')
+            : language === 'hinglish'
               ? "Aur Padhein"
-              : isLanguage(language, 'bn')
+              : language === 'bn'
                 ? "আরো পড়ুন"
-                : isLanguage(language, 'ta')
+                : language === 'ta'
                   ? "மேலும் படிக்க"
                   : "మరింత చదవండి"}
         <ArrowRight className="ml-1 h-4 w-4" />
