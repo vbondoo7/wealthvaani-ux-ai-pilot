@@ -1,11 +1,15 @@
 
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
-import { blackA, mauve, violet } from "@radix-ui/colors";
 
 export default {
   darkMode: ["class"],
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
   theme: {
     container: {
       center: true,
@@ -49,21 +53,24 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // WealthVani brand colors
-        'royal-blue': '#1A73E8',
-        'saffron-orange': '#FFA726',
-        'teal': '#009688',
-        'ivory-white': '#FDF6EC',
-        'charcoal': '#2D2D2D',
+        // Custom Wealthवाणी colors
+        'royal-blue': "hsl(var(--royal-blue))",
+        'saffron-orange': "hsl(var(--saffron-orange))",
+        'wealthveda-indigo': "hsl(var(--wealthveda-indigo))",
+        'wealthveda-teal': "hsl(var(--wealthveda-teal))",
+        'wealthveda-saffron': "hsl(var(--wealthveda-saffron))",
       },
       borderRadius: {
-        lg: `var(--radius)`,
-        md: `calc(var(--radius) - 2px)`,
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["Poppins", "sans-serif", ...fontFamily.sans],
-        hindi: ["Baloo 2", "Hind", "sans-serif"],
+        sans: ["var(--font-sans)", ...fontFamily.sans],
+        poppins: ["Poppins", "sans-serif"],
+        mulish: ["Mulish", "sans-serif"],
+        baloo: ["Baloo 2", "cursive"],
+        hind: ["Hind", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -74,10 +81,20 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-out": {
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
+        "fade-out": "fade-out 0.3s ease-out",
       },
     },
   },

@@ -2,62 +2,61 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
     --radius: 0.5rem;
     
-    /* Custom Wealthvani Colors */
-    --royal-blue: 221 83% 53%;
-    --saffron-orange: 35 100% 55%;
-    --ivory-white: 48 100% 97%;
-    --charcoal-black: 0 0% 18%;
-    --teal: 174 72% 56%;
-    --mint-green: 142 77% 73%;
+    /* Wealthवाणी Custom Colors */
+    --royal-blue: 217 89% 50%;
+    --saffron-orange: 35 100% 56%;
+    --wealthveda-indigo: 220 76% 51%;
+    --wealthveda-teal: 170 76% 35%;
+    --wealthveda-saffron: 35 100% 56%;
   }
- 
+
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 216 12.2% 83.9%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -66,77 +65,78 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-
-  html {
-    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
+  
+  /* Hindi text styling */
+  .hindi-text {
+    font-family: 'Hind', 'Baloo 2', sans-serif;
   }
 }
 
 @layer components {
-  .wealth-card {
-    @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100;
+  /* Wealth Veda specific components */
+  .wv-container {
+    @apply container mx-auto px-4;
   }
   
-  .wealth-card-primary {
-    @apply bg-royal-blue/5 p-6 rounded-xl shadow-sm border border-royal-blue/20;
+  .wv-card {
+    @apply bg-white border rounded-lg p-4 shadow-sm;
   }
   
-  .wealth-card-accent {
-    @apply bg-saffron-orange/5 p-6 rounded-xl shadow-sm border border-saffron-orange/20;
+  .flex-center {
+    @apply flex items-center justify-center;
   }
   
-  .hindi-text {
-    font-family: 'Baloo 2', 'Hind', sans-serif;
-  }
-  
-  .mandala-pattern {
-    background-color: var(--ivory-white);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='100' y1='33' x2='100' y2='167'%3E%3Cstop offset='0' stop-color='%23317AE8' stop-opacity='0.2'/%3E%3Cstop offset='1' stop-color='%23FFA726' stop-opacity='0.1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle fill='url(%23a)' cx='100' cy='100' r='70'/%3E%3Ccircle fill='none' stroke='%23317AE8' stroke-width='0.5' stroke-opacity='0.1' cx='100' cy='100' r='90'/%3E%3Ccircle fill='none' stroke='%23FFA726' stroke-width='0.5' stroke-opacity='0.05' cx='100' cy='100' r='60'/%3E%3C/svg%3E");
-    background-attachment: fixed;
-    background-size: 800px 800px;
-  }
-
-  /* Mobile responsiveness fixes */
-  .container {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    max-width: 100%;
-  }
-  
-  @media (min-width: 640px) {
-    .container {
-      max-width: 640px;
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .container {
-      max-width: 768px;
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .container {
-      max-width: 1024px;
-    }
-  }
-  
-  @media (min-width: 1280px) {
-    .container {
-      max-width: 1280px;
-    }
+  .flex-between {
+    @apply flex items-center justify-between;
   }
 }
 
-/* Fix for responsive screens */
-@media (max-width: 640px) {
-  html, body {
-    overflow-x: hidden;
+@layer utilities {
+  .royal-blue {
+    color: hsl(var(--royal-blue));
   }
-  body {
-    position: relative;
+  
+  .saffron-orange {
+    color: hsl(var(--saffron-orange));
+  }
+  
+  .bg-royal-blue {
+    background-color: hsl(var(--royal-blue));
+  }
+  
+  .bg-saffron-orange {
+    background-color: hsl(var(--saffron-orange));
+  }
+  
+  .text-royal-blue {
+    color: hsl(var(--royal-blue));
+  }
+  
+  .text-saffron-orange {
+    color: hsl(var(--saffron-orange));
+  }
+  
+  .text-wealthveda-indigo {
+    color: hsl(var(--wealthveda-indigo));
+  }
+  
+  .text-wealthveda-teal {
+    color: hsl(var(--wealthveda-teal));
+  }
+  
+  .text-wealthveda-saffron {
+    color: hsl(var(--wealthveda-saffron));
+  }
+  
+  .bg-wealthveda-indigo {
+    background-color: hsl(var(--wealthveda-indigo));
+  }
+  
+  .bg-wealthveda-teal {
+    background-color: hsl(var(--wealthveda-teal));
+  }
+  
+  .bg-wealthveda-saffron {
+    background-color: hsl(var(--wealthveda-saffron));
   }
 }

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Navigate, Outlet } from 'react-router-dom';
 import AuthForms from '@/components/auth/AuthForms';
@@ -33,10 +34,10 @@ import FamilyManagement from '@/components/family/FamilyManagement';
 import LearningCenter from '@/components/LearningCenter';
 import LandingPage from '@/components/LandingPage';
 import BlogAdminPanel from '@/components/blog/BlogAdminPanel';
-import BlogSection from '@/components/blog/BlogSection';
 import MainMenu from '@/components/menu/MainMenu';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { BottomTabs } from '@/components/ui/bottom-tabs';
 
 const MAX_IDLE_TIME = 5 * 60 * 1000; // 5 minutes
 
@@ -235,40 +236,48 @@ const Index = () => {
       case 'dashboard':
         return <Dashboard onChangeScreen={setCurrentScreen} />;
       case 'banking':
-        return <BankConnection />;
+        return <BankConnection onChangeScreen={setCurrentScreen} />;
       case 'goals':
-        return <GoalTracker />;
+        return <GoalTracker onChangeScreen={setCurrentScreen} />;
       case 'chat':
-        return <ChatInterface />;
+        return <ChatInterface onChangeScreen={setCurrentScreen} />;
       case 'notifications':
-        return <NotificationSettings />;
+        return <NotificationSettings onChangeScreen={setCurrentScreen} />;
       case 'budget':
-        return <BudgetAndExpenses />;
+        return <BudgetAndExpenses onChangeScreen={setCurrentScreen} />;
       case 'saving-recommendations':
-        return <SavingRecommendations />;
+        return <SavingRecommendations onChangeScreen={setCurrentScreen} />;
       case 'profile':
-        return <UserProfile />;
+        return <UserProfile onChangeScreen={setCurrentScreen} />;
       case 'saved-nudges':
-        return <SavedNudges />;
+        return <SavedNudges onChangeScreen={setCurrentScreen} />;
       case 'transactions':
-        return <Transactions />;
+        return <Transactions onChangeScreen={setCurrentScreen} />;
       case 'subscription':
-        return <SubscriptionPlans />;
+        return <SubscriptionPlans onChangeScreen={setCurrentScreen} />;
       case 'analytics':
         return <FinancialAnalytics onAction={setCurrentScreen} />;
       case 'advisor':
-        return <TalkToAdvisor />;
+        return <TalkToAdvisor onChangeScreen={setCurrentScreen} />;
       case 'festival-planning':
-        return <FestivalPlanning />;
+        return <FestivalPlanning onChangeScreen={setCurrentScreen} />;
       case 'investment-intelligence':
-        return <InvestmentIntelligence />;
+        return <InvestmentIntelligence onChangeScreen={setCurrentScreen} />;
       case 'family-management':
-        return <FamilyManagement />;
+        return <FamilyManagement onChangeScreen={setCurrentScreen} />;
       case 'learning-center':
-        return <LearningCenter />;
+        return <LearningCenter onChangeScreen={setCurrentScreen} />;
       default:
         return <Dashboard onChangeScreen={setCurrentScreen} />;
     }
+  };
+
+  const shouldShowBottomTabs = () => {
+    return (
+      isAuthenticated && 
+      !adminLoggedIn && 
+      ['dashboard', 'budget', 'goals', 'chat', 'analytics', 'calendar'].includes(currentScreen)
+    );
   };
 
   return (
@@ -282,6 +291,11 @@ const Index = () => {
       
       {/* Main Menu */}
       <MainMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onChangeScreen={setCurrentScreen} />
+      
+      {/* Bottom Tabs */}
+      {shouldShowBottomTabs() && (
+        <BottomTabs currentScreen={currentScreen} onChangeScreen={setCurrentScreen} />
+      )}
       
       <Footer />
     </div>

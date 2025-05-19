@@ -15,13 +15,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import useUserStore from '@/lib/userStore';
 import { format } from 'date-fns';
 
 import NudgeFeed from './NudgeFeed';
 import ChatBox from './ChatBox';
+import { BottomTabs } from './ui/bottom-tabs';
 
 interface DashboardProps {
   onChangeScreen: (screen: string) => void;
@@ -52,18 +53,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
     progress: 0
   };
   
-  const formatCurrency = (amount: number) => {
-    if (amount >= 100000) {
-      return `₹${(amount / 100000).toFixed(1)}L`;
-    } else if (amount >= 1000) {
-      return `₹${(amount / 1000).toFixed(0)}K`;
-    } else {
-      return `₹${amount}`;
-    }
-  };
-  
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-background pb-16">
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur">
         <div className="wv-container py-4">
           <div className="flex-between">
@@ -241,6 +232,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onChangeScreen }) => {
       {showChatBox && (
         <ChatBox onClose={() => setShowChatBox(false)} />
       )}
+
+      {/* Bottom Navigation Tabs */}
+      <BottomTabs currentScreen="dashboard" onChangeScreen={onChangeScreen} />
     </div>
   );
 };
