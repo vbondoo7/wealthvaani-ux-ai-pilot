@@ -117,7 +117,7 @@ export interface SubscriptionPlan {
   plan: 'Basic' | 'Pro' | 'Premium';
   startDate?: string;
   endDate?: string;
-  price?: number;
+  price?: number | { monthly: number; yearly: number };
   features?: string[];
   pricePerMonth?: number;
   nudgesRemaining?: number;
@@ -160,24 +160,24 @@ export interface AdminUser {
 export interface PricingPlan {
   id: string;
   name: string;
-  price: number;
-  features: string[];
+  price: number | { monthly: number; yearly: number };
+  features: string[] | Record<string, string>[];
   recommended?: boolean;
   color?: string;
 }
 
 export interface FestivalPlan {
   budget: number;
-  items: { name: string; cost: number; }[];
+  items?: { name: string; cost: number; }[];
+  saved: number; // Changed from boolean to number
   notes?: string;
-  saved?: boolean;
 }
 
 export interface SeasonalPlan {
   budget: number;
-  items: { name: string; cost: number; }[];
+  items?: { name: string; cost: number; }[];
+  saved: number; // Changed from boolean to number
   notes?: string;
-  saved?: boolean;
   purpose?: string;
 }
 

@@ -42,7 +42,8 @@ interface UserStore {
   updateFamilyMembers: (members: FamilyMember[]) => void;
 }
 
-const useUserStore = create<UserStore>(
+// Fix the create function call to work with persist middleware
+const useUserStore = create<UserStore>()(
   persist(
     (set, get) => ({
       // Initialize with predefined users

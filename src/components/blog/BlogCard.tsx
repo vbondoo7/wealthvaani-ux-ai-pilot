@@ -38,7 +38,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
       </div>
       
       <div className="mb-2 flex gap-2">
-        {categories.length > 0 ? 
+        {categories && categories.length > 0 ? 
           categories.slice(0, 2).map(category => (
             <span 
               key={category} 

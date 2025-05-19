@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Card,
@@ -119,7 +118,11 @@ const FestivalPlanning: React.FC = () => {
     
     updateFestivalPlan(
       newBudget.name.toLowerCase().replace(/\s/g, '_'), 
-      { budget: newBudget.budget, saved: newBudget.saved || 0 }
+      { 
+        budget: newBudget.budget, 
+        saved: newBudget.saved || 0,
+        items: [] // Add empty items array to match FestivalPlan type
+      }
     );
     
     toast({
@@ -146,6 +149,7 @@ const FestivalPlanning: React.FC = () => {
       { 
         budget: newBudget.budget, 
         saved: newBudget.saved || 0,
+        items: [], // Add empty items array to match SeasonalPlan type
         purpose: newBudget.name === "Summer" 
           ? "Vacation" 
           : newBudget.name === "Monsoon" 
@@ -203,7 +207,8 @@ const FestivalPlanning: React.FC = () => {
       if (festival) {
         updateFestivalPlan(name, { 
           budget: festival.budget, 
-          saved: festival.saved + amount 
+          saved: (festival.saved || 0) + amount,
+          items: festival.items || [] 
         });
         
         toast({
@@ -216,7 +221,8 @@ const FestivalPlanning: React.FC = () => {
       if (season) {
         updateSeasonalPlan(name, { 
           budget: season.budget, 
-          saved: season.saved + amount,
+          saved: (season.saved || 0) + amount,
+          items: season.items || [],
           purpose: season.purpose
         });
         
