@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -264,7 +263,7 @@ const PricingPlans: React.FC = () => {
                       ? plan.cta.en
                       : isLanguage(language, 'hi')
                         ? plan.cta.hi
-                        : plan.cta.hinglish || plan.cta.en}
+                        : (plan.cta.hinglish || plan.cta.en)}
                 </Button>
                 
                 <div className="space-y-3">
@@ -301,9 +300,9 @@ const PricingPlans: React.FC = () => {
               </h3>
               <p className="text-muted-foreground">
                 {isLanguage(language, 'en')
-                  ? 'Yes, you can upgrade your plan at any time. Your new benefits will be available immediately and we'll prorate your billing.'
+                  ? "Yes, you can upgrade your plan at any time. Your new benefits will be available immediately and we'll prorate your billing."
                   : isLanguage(language, 'hi')
-                    ? 'हां, आप किसी भी समय अपना प्लान अपग्रेड कर सकते हैं। आपके नए लाभ तुरंत उपलब्ध होंगे और हम आपके बिलिंग को आनुपातिक रूप से समायोजित करेंगे।'
+                    ? 'हां, ���प किसी भी समय अपना प्लान अपग्रेड कर सकते हैं। आपके नए लाभ तुरंत उपलब्ध होंगे और हम आपके बिलिंग को आनुपातिक रूप से समायोजित करेंगे।'
                     : 'Haan, aap kisi bhi samay apna plan upgrade kar sakte hain. Aapke new benefits turant available honge aur hum aapke billing ko prorate karenge.'}
               </p>
             </div>
@@ -335,7 +334,7 @@ const PricingPlans: React.FC = () => {
               </h3>
               <p className="text-muted-foreground">
                 {isLanguage(language, 'en')
-                  ? 'Yes, you can cancel your subscription at any time. You'll continue to have access to your plan until the end of your billing period.'
+                  ? "Yes, you can cancel your subscription at any time. You'll continue to have access to your plan until the end of your billing period."
                   : isLanguage(language, 'hi')
                     ? 'हां, आप किसी भी समय अपनी सदस्यता रद्द कर सकते हैं। आपके बिलिंग अवधि के अंत तक आपके पास अपने प्लान की एक्सेस रहेगी।'
                     : 'Haan, aap kisi bhi samay apni subscription cancel kar sakte hain. Aapke billing period ke end tak aapke paas apne plan ki access rahegi.'}
