@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from '@/contexts/LanguageContext';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { isLanguage } from '@/lib/typeUtils';
 import { PricingPlan } from '@/lib/types';
 
@@ -245,8 +245,8 @@ const PricingPlans: React.FC = () => {
                   </span>
                   <span className="text-muted-foreground ml-1">
                     /{isYearly 
-                      ? isLanguage(language, 'en') ? 'year' : isLanguage(language, 'hi') ? 'वर्ष' : 'saal'
-                      : isLanguage(language, 'en') ? 'month' : isLanguage(language, 'hi') ? 'माह' : 'mahina'}
+                      ? (isLanguage(language, 'en') ? 'year' : isLanguage(language, 'hi') ? 'वर्ष' : 'saal')
+                      : (isLanguage(language, 'en') ? 'month' : isLanguage(language, 'hi') ? 'माह' : 'mahina')}
                   </span>
                 </div>
                 
