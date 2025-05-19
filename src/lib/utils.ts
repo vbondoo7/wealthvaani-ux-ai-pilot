@@ -1,28 +1,21 @@
 
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 /**
- * Formats a number as Indian Rupee currency
- * @param amount - The amount to format
- * @returns Formatted currency string with ₹ symbol
+ * Format a number as Indian Rupees currency
  */
-export function formatCurrency(amount: number | string): string {
-  const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+export function formatCurrency(amount: number | undefined): string {
+  if (amount === undefined || amount === null) return '₹0';
   
-  if (isNaN(numAmount)) {
-    return '₹0';
-  }
-
-  if (numAmount >= 100000) {
-    return `₹${(numAmount / 100000).toFixed(1)}L`;
-  } else if (numAmount >= 1000) {
-    return `₹${(numAmount / 1000).toFixed(0)}K`;
-  } else {
-    return `₹${numAmount.toFixed(0)}`;
-  }
+  // Format as Indian currency (with commas as per Indian numbering system)
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0
+  }).format(amount);
 }

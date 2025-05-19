@@ -39,7 +39,8 @@ interface GoalTrackerProps {
 }
 
 const GoalTracker: React.FC<GoalTrackerProps> = ({ onChangeScreen }) => {
-  const { goals, removeGoal } = useUserStore();
+  const goals = useUserStore(state => state.goals);
+  const { removeGoal } = useUserStore();
   const [showAddGoalModal, setShowAddGoalModal] = useState(false);
   const [showEditGoalModal, setShowEditGoalModal] = useState(false);
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);

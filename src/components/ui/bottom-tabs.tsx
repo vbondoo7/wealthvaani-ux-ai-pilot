@@ -32,7 +32,7 @@ export const BottomTabs: React.FC<BottomTabsProps> = ({ currentScreen, onChangeS
   };
   
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 shadow-lg">
       <div className="flex justify-around items-center h-16">
         {tabs.map((tab) => {
           const isActive = currentScreen === tab.id;
@@ -43,11 +43,11 @@ export const BottomTabs: React.FC<BottomTabsProps> = ({ currentScreen, onChangeS
               key={tab.id}
               className={cn(
                 "flex flex-col items-center justify-center w-full h-full",
-                isActive ? "text-royal-blue" : "text-gray-500"
+                isActive ? "text-wealthveda-teal" : "text-gray-500"
               )}
               onClick={() => handleTabClick(tab.id)}
             >
-              <Icon className={cn("h-5 w-5", isActive ? "text-royal-blue" : "text-gray-500")} />
+              <Icon className={cn("h-5 w-5", isActive ? "text-wealthveda-teal" : "text-gray-500")} />
               <span className="text-xs mt-1">{tab.label}</span>
             </button>
           );

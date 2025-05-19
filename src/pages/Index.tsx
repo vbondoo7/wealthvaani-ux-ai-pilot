@@ -39,6 +39,16 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BottomTabs } from '@/components/ui/bottom-tabs';
 
+// Define props types for components that need onChangeScreen
+interface ComponentWithScreenChangeProps {
+  onChangeScreen?: (screen: string) => void;
+}
+
+// Fix type for components that need changeAction
+interface AnalyticsProps {
+  onAction?: (screen: string) => void;
+}
+
 const MAX_IDLE_TIME = 5 * 60 * 1000; // 5 minutes
 
 const Index = () => {

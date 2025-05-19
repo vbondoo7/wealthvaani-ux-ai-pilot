@@ -34,7 +34,8 @@ const goalSchema = z.object({
 type GoalFormValues = z.infer<typeof goalSchema>;
 
 const GoalForm: React.FC<GoalFormProps> = ({ goalId, onComplete, onCancel }) => {
-  const { goals, addGoal, updateGoal } = useUserStore();
+  const { addGoal, updateGoal } = useUserStore();
+  const goals = useUserStore(state => state.goals);
   const [isEditing, setIsEditing] = useState(false);
 
   const form = useForm<GoalFormValues>({
@@ -51,7 +52,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ goalId, onComplete, onCancel }) => 
 
   useEffect(() => {
     if (goalId) {
-      const goal = goals.find(g => g.id === goalId || g.name === goalId);
+      const goal = goals.find(g => g.id === goalId);
       if (goal) {
         setIsEditing(true);
         
@@ -60,7 +61,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ goalId, onComplete, onCancel }) => 
           : new Date(new Date().setFullYear(new Date().getFullYear() + (goal.timelineYears || 5)));
         
         form.reset({
-          title: goal.title || goal.name.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()),
+          title: goal.title || goal.name,
           category: goal.category || goal.name,
           targetAmount: goal.targetAmount || goal.cost || 0,
           deadline,
@@ -94,8 +95,8 @@ const GoalForm: React.FC<GoalFormProps> = ({ goalId, onComplete, onCancel }) => 
       investment: 'mutual_funds'
     };
     
-    if (isEditing) {
-      updateGoal(goalId!, goalData);
+    if (isEditing && goalId) {
+      updateGoal(goalId, goalData);
     } else {
       addGoal(goalData);
     }

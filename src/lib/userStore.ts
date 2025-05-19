@@ -1,3 +1,4 @@
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { 
@@ -21,8 +22,10 @@ interface UserStore {
   updateFinancialDetails: (details: FinancialDetails) => void;
   
   // Goal methods
-  addGoal: (goal: Omit<Goal, 'id'>) => void;
-  updateGoal: (goal: Goal) => void;
+  goals: Goal[];
+  addGoal: (goal: Goal) => void;
+  updateGoal: (goalId: string, goal: Goal) => void;
+  removeGoal: (goalId: string) => void;
   deleteGoal: (goalId: string) => void;
   
   // Nudge methods
@@ -165,12 +168,13 @@ const useUserStore = create<UserStore>()(
         });
       },
       
-      addGoal: (goalData) => {
-        const newGoal: Goal = {
-          ...goalData,
-          id: generateId(),
-        };
-        
+      // Get current user's goals
+      get goals() {
+        const state = get();
+        return state.currentUser?.goals || [];
+      },
+      
+      addGoal: (goal) => {
         set(state => {
           if (!state.currentUser) {
             console.log('Cannot add goal: No current user');
@@ -179,7 +183,7 @@ const useUserStore = create<UserStore>()(
           
           const updatedUser = {
             ...state.currentUser,
-            goals: [...state.currentUser.goals, newGoal]
+            goals: [...state.currentUser.goals, goal]
           };
           
           console.log('Added new goal for user:', updatedUser.id);
@@ -191,7 +195,7 @@ const useUserStore = create<UserStore>()(
         });
       },
       
-      updateGoal: (goal) => {
+      updateGoal: (goalId, goal) => {
         set(state => {
           if (!state.currentUser) {
             console.log('Cannot update goal: No current user');
@@ -200,7 +204,7 @@ const useUserStore = create<UserStore>()(
           
           const updatedUser = {
             ...state.currentUser,
-            goals: state.currentUser.goals.map(g => g.id === goal.id ? goal : g)
+            goals: state.currentUser.goals.map(g => g.id === goalId ? goal : g)
           };
           
           console.log('Updated goal for user:', updatedUser.id);
@@ -212,7 +216,7 @@ const useUserStore = create<UserStore>()(
         });
       },
       
-      deleteGoal: (goalId) => {
+      removeGoal: (goalId) => {
         set(state => {
           if (!state.currentUser) {
             console.log('Cannot delete goal: No current user');
@@ -231,6 +235,11 @@ const useUserStore = create<UserStore>()(
             users: state.users.map(u => u.id === updatedUser.id ? updatedUser : u)
           };
         });
+      },
+      
+      // Alias for removeGoal to maintain compatibility
+      deleteGoal: function(goalId) {
+        this.removeGoal(goalId);
       },
       
       saveNudge: (nudge) => {
