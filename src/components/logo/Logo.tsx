@@ -5,11 +5,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'full' | 'icon' | 'compact';
+  className?: string;
 }
 
 const Logo: React.FC<LogoProps> = ({ 
   size = 'md', 
-  variant = 'full'
+  variant = 'full',
+  className = ''
 }) => {
   const { language } = useLanguage();
   
@@ -43,7 +45,7 @@ const Logo: React.FC<LogoProps> = ({
   const logoSize = getLogoSize();
   
   return (
-    <div className="flex items-center">
+    <div className={`flex items-center ${className}`}>
       <div className={`flex items-center justify-center ${logoSize} rounded-full bg-gradient-to-r from-royal-blue to-teal shadow-md overflow-hidden border border-royal-blue/20`}>
         <span className="text-white font-bold">W</span>
       </div>

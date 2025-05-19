@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, ChartBar, MessageCircle, Sparkles, Info, BookOpen, Briefcase } from "lucide-react";
@@ -90,8 +89,9 @@ const Marketing: React.FC = () => {
       </div>
   
       {/* Hero Section */}
-      <section id="hero-section" className="py-16 md:py-24 px-6">
-        <div className="max-w-5xl mx-auto">
+      <section id="hero-section" className="py-16 md:py-24 px-6 relative">
+        <div className="absolute inset-0 bg-[url('/assets/mandala-watermark.png')] bg-center bg-no-repeat bg-cover opacity-15 z-0"></div>
+        <div className="max-w-5xl mx-auto z-10 relative">
           <div className="flex flex-col items-center text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-charcoal">
               <span>{isLanguage(language, 'en') ? "Transform Your" : isLanguage(language, 'hi') ? "अपने वित्त को बदलें" : "Apne Finance Ko Transform Karein"}</span> 
@@ -144,7 +144,7 @@ const Marketing: React.FC = () => {
                 {isLanguage(language, 'en')
                   ? "To make every Indian household financially intelligent and self-reliant using AI."
                   : isLanguage(language, 'hi')
-                    ? "AI का उपयोग करके हर भारतीय परिवार को वित्तीय रूप से समझदार और आत्मनिर्भर बनाना।"
+                    ? "AI का उपयोग करके हर भारतीय परिवार को वित्तीय ��ूप से समझदार और आत्मनिर्भर बनाना।"
                     : "AI ka use karke har Indian family ko financially intelligent aur aatmanirbhar banana."}
               </p>
             </div>
@@ -343,7 +343,7 @@ const Marketing: React.FC = () => {
                 {isLanguage(language, 'en')
                   ? "Optimize your taxes with personalized strategies and timely reminders."
                   : isLanguage(language, 'hi')
-                    ? "व्यक्तिगत रणनीतियों और समय पर अनुस्मारकों के साथ अपने करों को अनुकूलित करें।"
+                    ? "व्यक्तिगत र��नीतियों और समय पर अनुस्मारकों के साथ अपने करों को अनुकूलित करें।"
                     : "Personalized strategies aur timely reminders ke saath apne taxes ko optimize karein."}
               </p>
             </div>

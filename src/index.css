@@ -32,6 +32,11 @@
     --wealthveda-indigo: 220 76% 51%;
     --wealthveda-teal: 170 76% 35%;
     --wealthveda-saffron: 35 100% 56%;
+    
+    /* Additional Colors */
+    --ivory-white: 48 100% 98%;
+    --charcoal-black: 0 0% 18%;
+    --teal: 180 100% 35%;
   }
 
   .dark {
@@ -89,6 +94,31 @@
   .flex-between {
     @apply flex items-center justify-between;
   }
+  
+  /* Wealth Cards */
+  .wealth-card {
+    @apply bg-white border rounded-lg p-6 shadow-sm;
+  }
+  
+  .wealth-card-primary {
+    @apply bg-gradient-to-br from-royal-blue/5 to-royal-blue/10 border rounded-lg p-6 shadow-sm;
+  }
+  
+  .wealth-card-accent {
+    @apply bg-gradient-to-br from-saffron-orange/5 to-saffron-orange/10 border rounded-lg p-6 shadow-sm;
+  }
+  
+  /* Background Patterns */
+  .mandala-pattern {
+    @apply relative;
+    background-color: #FDF6EC;
+    background-image: url('/assets/mandala-watermark.png');
+    background-repeat: repeat;
+    background-size: 800px;
+    background-position: center;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+  }
 }
 
 @layer utilities {
@@ -138,5 +168,17 @@
   
   .bg-wealthveda-saffron {
     background-color: hsl(var(--wealthveda-saffron));
+  }
+  
+  .text-ivory-white {
+    color: hsl(var(--ivory-white));
+  }
+  
+  .bg-ivory-white {
+    background-color: hsl(var(--ivory-white));
+  }
+  
+  .text-charcoal {
+    color: hsl(var(--charcoal-black));
   }
 }
