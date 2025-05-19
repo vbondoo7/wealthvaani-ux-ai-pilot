@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/components/logo/LogoExtended'; // Updated to use the extended Logo component
@@ -11,7 +12,8 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-royal-blue/5 to-saffron-orange/5">
-      <Logo size="lg" variant="light" className="mb-8" />
+      {/* Use variant 'full' instead of 'light' since we added the className to handle the text color */}
+      <Logo size="lg" variant="full" className="text-white mb-8" />
       <h1 className="text-4xl font-bold text-white mb-4">Welcome to Wealthवाणी</h1>
       <p className="text-lg text-white mb-6">Your journey to financial wellness starts here.</p>
       <button 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Navigate, Outlet } from 'react-router-dom';
 import AuthForms from '@/components/auth/AuthForms';
@@ -10,6 +9,11 @@ import { isAdminLoggedIn } from '@/lib/adminService';
 import { Globe } from "lucide-react";
 import { toast } from "sonner";
 import { asLanguageOption } from '@/lib/typeUtils';
+
+// Define props for all components that need onChangeScreen
+interface ComponentWithScreenProps {
+  onChangeScreen: (screen: string) => void;
+}
 
 // Import all necessary components
 import OnboardingCarousel from '@/components/OnboardingCarousel';
@@ -39,14 +43,34 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BottomTabs } from '@/components/ui/bottom-tabs';
 
-// Define props types for components that need onChangeScreen
-interface ComponentWithScreenChangeProps {
-  onChangeScreen?: (screen: string) => void;
-}
+// Create a type declaration for all supported component props
+type ComponentWithProps = {
+  [key: string]: React.ComponentType<ComponentWithScreenProps | any>;
+};
 
-// Fix type for components that need changeAction
+// Define all components that need the onChangeScreen prop
+const componentsWithScreenChangeProp: ComponentWithProps = {
+  Dashboard,
+  BankConnection,
+  GoalTracker,
+  ChatInterface,
+  NotificationSettings,
+  BudgetAndExpenses,
+  SavingRecommendations,
+  UserProfile,
+  SavedNudges,
+  Transactions,
+  SubscriptionPlans,
+  TalkToAdvisor,
+  FestivalPlanning,
+  InvestmentIntelligence,
+  FamilyManagement,
+  LearningCenter
+};
+
+// Analytics has a different prop name
 interface AnalyticsProps {
-  onAction?: (screen: string) => void;
+  onAction: (screen: string) => void;
 }
 
 const MAX_IDLE_TIME = 5 * 60 * 1000; // 5 minutes
@@ -242,44 +266,21 @@ const Index = () => {
   // Main authenticated interface
   const renderScreen = () => {
     console.log('Rendering screen:', currentScreen);
-    switch (currentScreen) {
-      case 'dashboard':
-        return <Dashboard onChangeScreen={setCurrentScreen} />;
-      case 'banking':
-        return <BankConnection onChangeScreen={setCurrentScreen} />;
-      case 'goals':
-        return <GoalTracker onChangeScreen={setCurrentScreen} />;
-      case 'chat':
-        return <ChatInterface onChangeScreen={setCurrentScreen} />;
-      case 'notifications':
-        return <NotificationSettings onChangeScreen={setCurrentScreen} />;
-      case 'budget':
-        return <BudgetAndExpenses onChangeScreen={setCurrentScreen} />;
-      case 'saving-recommendations':
-        return <SavingRecommendations onChangeScreen={setCurrentScreen} />;
-      case 'profile':
-        return <UserProfile onChangeScreen={setCurrentScreen} />;
-      case 'saved-nudges':
-        return <SavedNudges onChangeScreen={setCurrentScreen} />;
-      case 'transactions':
-        return <Transactions onChangeScreen={setCurrentScreen} />;
-      case 'subscription':
-        return <SubscriptionPlans onChangeScreen={setCurrentScreen} />;
-      case 'analytics':
-        return <FinancialAnalytics onAction={setCurrentScreen} />;
-      case 'advisor':
-        return <TalkToAdvisor onChangeScreen={setCurrentScreen} />;
-      case 'festival-planning':
-        return <FestivalPlanning onChangeScreen={setCurrentScreen} />;
-      case 'investment-intelligence':
-        return <InvestmentIntelligence onChangeScreen={setCurrentScreen} />;
-      case 'family-management':
-        return <FamilyManagement onChangeScreen={setCurrentScreen} />;
-      case 'learning-center':
-        return <LearningCenter onChangeScreen={setCurrentScreen} />;
-      default:
-        return <Dashboard onChangeScreen={setCurrentScreen} />;
+    
+    // Handle special case for FinancialAnalytics which has a different prop name
+    if (currentScreen === 'analytics') {
+      return <FinancialAnalytics onAction={setCurrentScreen} />;
     }
+    
+    // Check if the component is defined in our map
+    const Component = componentsWithScreenChangeProp[currentScreen.charAt(0).toUpperCase() + currentScreen.slice(1)];
+    
+    if (Component) {
+      return <Component onChangeScreen={setCurrentScreen} />;
+    }
+    
+    // Default to Dashboard
+    return <Dashboard onChangeScreen={setCurrentScreen} />;
   };
 
   const shouldShowBottomTabs = () => {

@@ -34,8 +34,7 @@ const goalSchema = z.object({
 type GoalFormValues = z.infer<typeof goalSchema>;
 
 const GoalForm: React.FC<GoalFormProps> = ({ goalId, onComplete, onCancel }) => {
-  const { addGoal, updateGoal } = useUserStore();
-  const goals = useUserStore(state => state.goals);
+  const { addGoal, updateGoal, goals } = useUserStore();
   const [isEditing, setIsEditing] = useState(false);
 
   const form = useForm<GoalFormValues>({
@@ -45,7 +44,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ goalId, onComplete, onCancel }) => 
       category: 'home',
       targetAmount: 0,
       deadline: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
-      priority: 'medium',
+      priority: 'medium' as const, // Explicitly typed as const to satisfy TypeScript
       description: ''
     }
   });
@@ -61,12 +60,15 @@ const GoalForm: React.FC<GoalFormProps> = ({ goalId, onComplete, onCancel }) => 
           : new Date(new Date().setFullYear(new Date().getFullYear() + (goal.timelineYears || 5)));
         
         form.reset({
-          title: goal.title || goal.name,
-          category: goal.category || goal.name,
+          title: goal.title || goal.name || '',
+          category: goal.category || goal.name || '',
           targetAmount: goal.targetAmount || goal.cost || 0,
           deadline,
-          priority: goal.priority || 'medium',
-          description: goal.description || `Goal to ${goal.name.replace(/_/g, ' ')}`
+          // Ensure priority is one of the allowed values
+          priority: (goal.priority === 'low' || goal.priority === 'medium' || goal.priority === 'high') 
+            ? goal.priority 
+            : 'medium',
+          description: goal.description || `Goal to ${goal.name?.replace(/_/g, ' ') || ''}`
         });
       }
     }

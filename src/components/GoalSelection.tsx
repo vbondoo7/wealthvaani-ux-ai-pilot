@@ -40,6 +40,7 @@ const GoalSelection: React.FC = () => {
         deadlineDate.setFullYear(currentDate.getFullYear() + goal.timelineYears);
 
         addGoal({
+          id: `goal-${goalId}-${Date.now()}`, // Add unique ID for each goal
           title: goal.label,
           targetAmount: goal.cost,
           deadline: deadlineDate.toISOString().split('T')[0],
