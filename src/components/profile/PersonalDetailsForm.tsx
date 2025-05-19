@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +23,13 @@ const PersonalDetailsForm: React.FC<{ onNext: () => void }> = ({ onNext }) => {
     occupation: currentUser?.personalDetails?.occupation || '',
     phoneNumber: currentUser?.personalDetails?.phoneNumber || '',
     address: currentUser?.personalDetails?.address || '',
+    firstName: currentUser?.personalDetails?.firstName || '',
+    lastName: currentUser?.personalDetails?.lastName || '',
+    dateOfBirth: currentUser?.personalDetails?.dateOfBirth || '',
+    gender: currentUser?.personalDetails?.gender || '',
+    income: currentUser?.personalDetails?.income || 0,
+    location: currentUser?.personalDetails?.location || '',
+    phone: currentUser?.personalDetails?.phone || ''
   });
   
   const [challengeText, setChallengeText] = useState<string>('');

@@ -16,35 +16,36 @@ export interface User {
 }
 
 export interface PersonalDetails {
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  gender: string;
-  occupation: string;
-  income: number;
-  location: string;
-  phone: string;
   age?: number;
   familySize?: number;
   maritalStatus?: string;
-  riskTolerance?: string;
   dependents?: number;
+  riskTolerance?: string;
   financialChallenges?: string[];
+  occupation?: string;
   phoneNumber?: string;
   address?: string;
+  // Legacy fields kept for compatibility
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  income?: number;
+  location?: string;
+  phone?: string;
 }
 
 export interface FinancialDetails {
-  monthlyIncome: number;
-  monthlyExpenses: number;
-  totalSavings: number;
-  investmentExperience: string;
-  riskTolerance: string;
-  debtAmount: number;
-  existingInvestments: Investment[];
-  insurancePolicies: InsurancePolicy[];
-  festivalPlanning?: { [festival: string]: FestivalPlan };
-  seasonalPlanning?: { [season: string]: SeasonalPlan };
+  // Legacy fields kept for compatibility
+  monthlyIncome?: number;
+  monthlyExpenses?: number;
+  totalSavings?: number;
+  investmentExperience?: string;
+  riskTolerance?: string;
+  debtAmount?: number;
+  existingInvestments?: Investment[];
+  insurancePolicies?: InsurancePolicy[];
+  // New fields
   totalIncome?: number;
   incomeSources?: { [source: string]: number };
   expenses?: { [category: string]: number };
@@ -53,12 +54,14 @@ export interface FinancialDetails {
   debts?: { type: string; amount: number; interestRate: number; monthlyPayment: number; remainingTenure?: number }[];
   debtToIncomeRatio?: number;
   savingsRate?: number;
+  festivalPlanning?: { [festival: string]: FestivalPlan };
+  seasonalPlanning?: { [season: string]: SeasonalPlan };
   investmentIntelligence?: any;
 }
 
 export interface Investment {
   type: string;
-  value: number;
+  value?: number;
   amount?: number;
 }
 
@@ -164,6 +167,9 @@ export interface PricingPlan {
   features: string[] | Record<string, string>[];
   recommended?: boolean;
   color?: string;
+  description?: string | Record<string, string>;
+  popular?: boolean;
+  cta?: string | Record<string, string>;
 }
 
 export interface FestivalPlan {

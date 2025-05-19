@@ -1,765 +1,616 @@
-import React, { useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import useUserStore from '@/lib/userStore';
-import { ChevronRight, CalendarDays, Sparkles, BadgeIndianRupee, Gift, Plus } from "lucide-react";
+import { FestivalPlan, SeasonalPlan } from '@/lib/types';
+import { Progress } from "@/components/ui/progress";
+import { PlusIcon, Trash2Icon, SunIcon, CloudRainIcon, UmbrellaIcon, SnowflakeIcon } from "lucide-react";
+import { formatCurrency } from '@/lib/utils';
 
-interface Festival {
+interface FestivalItem {
   name: string;
-  date: string;
-  description: string;
-  imageUrl: string;
+  cost: number;
 }
 
-interface Season {
-  name: string;
-  months: string;
-  description: string;
-  imageUrl: string;
-}
-
-const festivals: Festival[] = [
-  {
-    name: "Diwali",
-    date: "2025-10-23",
-    description: "The festival of lights symbolizing the victory of light over darkness",
-    imageUrl: "https://images.unsplash.com/photo-1513545581296-caf398111853?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGl3YWxpfGVufDB8fDB8fHww"
-  },
-  {
-    name: "Holi",
-    date: "2026-03-14",
-    description: "The festival of colors celebrating the arrival of spring",
-    imageUrl: "https://images.unsplash.com/photo-1585644156283-71c754ee7d83?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG9saXxlbnwwfHwwfHx8MA%3D%3D"
-  },
-  {
-    name: "Navratri",
-    date: "2025-09-25",
-    description: "Nine nights dedicated to the worship of Goddess Durga",
-    imageUrl: "https://images.unsplash.com/photo-1633074795278-3c349def69a4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bmF2cmF0cml8ZW58MHx8MHx8fDA%3D"
-  },
-  {
-    name: "Raksha Bandhan",
-    date: "2025-08-09",
-    description: "Celebrates the bond between brothers and sisters",
-    imageUrl: "https://images.unsplash.com/photo-1628106645640-080c1675171c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFrc2hhJTIwYmFuZGhhbnxlbnwwfHwwfHx8MA%3D%3D"
-  }
+const festivals = [
+  { id: 'diwali', name: 'Diwali', description: 'Festival of Lights', date: '2025-11-12', icon: '🪔' },
+  { id: 'holi', name: 'Holi', description: 'Festival of Colors', date: '2026-03-10', icon: '🎨' },
+  { id: 'rakhi', name: 'Raksha Bandhan', description: 'Celebration of Siblings', date: '2025-08-19', icon: '🧶' },
+  { id: 'eid', name: 'Eid', description: 'Festival of Breaking the Fast', date: '2025-05-23', icon: '🌙' },
 ];
 
-const seasons: Season[] = [
-  {
-    name: "Summer",
-    months: "March - June",
-    description: "Plan for vacations, home improvements, and summer expenditures",
-    imageUrl: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3VtbWVyfGVufDB8fDB8fHww"
-  },
-  {
-    name: "Monsoon",
-    months: "July - September",
-    description: "Save for maintenance, repairs, and health expenses during rainy season",
-    imageUrl: "https://images.unsplash.com/photo-1501691223387-dd0500403074?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFpbnxlbnwwfHwwfHx8MA%3D%3D"
-  },
-  {
-    name: "Winter",
-    months: "November - February",
-    description: "Budget for winter clothing, heating costs, and winter travel",
-    imageUrl: "https://images.unsplash.com/photo-1452697620382-f6543ead73b5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2ludGVyfGVufDB8fDB8fHww"
-  }
+const seasons = [
+  { id: 'summer', name: 'Summer', description: 'April - July', icon: <SunIcon className="h-4 w-4" /> },
+  { id: 'monsoon', name: 'Monsoon', description: 'July - September', icon: <CloudRainIcon className="h-4 w-4" /> },
+  { id: 'autumn', name: 'Autumn', description: 'October - November', icon: <UmbrellaIcon className="h-4 w-4" /> },
+  { id: 'winter', name: 'Winter', description: 'December - February', icon: <SnowflakeIcon className="h-4 w-4" /> },
 ];
 
 const FestivalPlanning: React.FC = () => {
   const { currentUser, updateFestivalPlan, updateSeasonalPlan } = useUserStore();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("festivals");
-  const [isAddingFestival, setIsAddingFestival] = useState(false);
-  const [isAddingSeason, setIsAddingSeason] = useState(false);
-  const [newBudget, setNewBudget] = useState({
-    name: "",
-    budget: 0,
-    saved: 0
-  });
-
-  if (!currentUser) return null;
-
-  const festivalPlans = currentUser.financialDetails?.festivalPlanning || {};
-  const seasonalPlans = currentUser.financialDetails?.seasonalPlanning || {};
+  const [activeTab, setActiveTab] = useState('festivals');
   
-  const isPremiumOrPro = currentUser.subscription.plan === 'Premium' || currentUser.subscription.plan === 'Pro';
-
-  const handleAddFestivalPlan = () => {
-    if (!newBudget.name || newBudget.budget <= 0) {
-      toast({
-        title: "Invalid Input",
-        description: "Please select a festival and enter a budget greater than zero",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    updateFestivalPlan(
-      newBudget.name.toLowerCase().replace(/\s/g, '_'), 
-      { 
-        budget: newBudget.budget, 
-        saved: newBudget.saved || 0,
-        items: [] // Add empty items array to match FestivalPlan type
-      }
-    );
-    
-    toast({
-      title: "Festival Plan Added",
-      description: `Budget for ${newBudget.name} has been set successfully`,
-    });
-    
-    setIsAddingFestival(false);
-    setNewBudget({ name: "", budget: 0, saved: 0 });
-  };
-
-  const handleAddSeasonalPlan = () => {
-    if (!newBudget.name || newBudget.budget <= 0) {
-      toast({
-        title: "Invalid Input",
-        description: "Please select a season and enter a budget greater than zero",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    updateSeasonalPlan(
-      newBudget.name.toLowerCase(), 
-      { 
-        budget: newBudget.budget, 
-        saved: newBudget.saved || 0,
-        items: [], // Add empty items array to match SeasonalPlan type
-        purpose: newBudget.name === "Summer" 
-          ? "Vacation" 
-          : newBudget.name === "Monsoon" 
-            ? "Home Maintenance" 
-            : "Winter Expenses"
-      }
-    );
-    
-    toast({
-      title: "Seasonal Plan Added",
-      description: `Budget for ${newBudget.name} has been set successfully`,
-    });
-    
-    setIsAddingSeason(false);
-    setNewBudget({ name: "", budget: 0, saved: 0 });
-  };
+  const festivalPlans = currentUser?.financialDetails?.festivalPlanning || {};
+  const seasonalPlans = currentUser?.financialDetails?.seasonalPlanning || {};
   
-  const getTimeUntil = (dateString: string) => {
-    const targetDate = new Date(dateString);
-    const currentDate = new Date();
-    const diffTime = Math.abs(targetDate.getTime() - currentDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  // Active festival/season states
+  const [activeFestival, setActiveFestival] = useState<string>('');
+  const [activeSeason, setActiveSeason] = useState<string>('');
+  
+  // Festival planning state
+  const [festivalBudget, setFestivalBudget] = useState<number>(0);
+  const [festivalItems, setFestivalItems] = useState<FestivalItem[]>([]);
+  const [newFestivalItem, setNewFestivalItem] = useState<FestivalItem>({ name: '', cost: 0 });
+  const [festivalSaved, setFestivalSaved] = useState<number>(0);
+  const [festivalNotes, setFestivalNotes] = useState<string>('');
+  
+  // Season planning state
+  const [seasonBudget, setSeasonBudget] = useState<number>(0);
+  const [seasonItems, setSeasonItems] = useState<FestivalItem[]>([]);
+  const [newSeasonItem, setNewSeasonItem] = useState<FestivalItem>({ name: '', cost: 0 });
+  const [seasonSaved, setSeasonSaved] = useState<number>(0);
+  const [seasonNotes, setSeasonNotes] = useState<string>('');
+  const [seasonPurpose, setSeasonPurpose] = useState<string>('');
+  
+  // Load festival data when active festival changes
+  useEffect(() => {
+    if (!activeFestival) return;
     
-    return diffDays <= 30 
-      ? `${diffDays} days away`
-      : diffDays <= 60
-        ? "In about 2 months"
-        : diffDays <= 90
-          ? "In about 3 months"
-          : diffDays <= 180
-            ? "In about 6 months"
-            : "Later this year";
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
-    });
-  };
-
-  const handleAddToSavings = (type: 'festival' | 'season', name: string, amount: number) => {
-    if (amount <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter an amount greater than zero",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    if (type === 'festival') {
-      const festival = festivalPlans[name];
-      if (festival) {
-        updateFestivalPlan(name, { 
-          budget: festival.budget, 
-          saved: (festival.saved || 0) + amount,
-          items: festival.items || [] 
-        });
-        
-        toast({
-          title: "Amount Added",
-          description: `₹${amount} added to your ${name.replace(/_/g, ' ')} budget`,
-        });
-      }
+    const plan = festivalPlans[activeFestival];
+    if (plan) {
+      setFestivalBudget(plan.budget || 0);
+      setFestivalItems(plan.items || []);
+      setFestivalSaved(plan.saved || 0); // Using number for saved amount
+      setFestivalNotes(plan.notes || '');
     } else {
-      const season = seasonalPlans[name];
-      if (season) {
-        updateSeasonalPlan(name, { 
-          budget: season.budget, 
-          saved: (season.saved || 0) + amount,
-          items: season.items || [],
-          purpose: season.purpose
-        });
-        
-        toast({
-          title: "Amount Added",
-          description: `₹${amount} added to your ${name} budget`,
-        });
-      }
+      // Default values for new festival plan
+      setFestivalBudget(5000);
+      setFestivalItems([]);
+      setFestivalSaved(0);
+      setFestivalNotes('');
     }
+  }, [activeFestival, festivalPlans]);
+  
+  // Load season data when active season changes
+  useEffect(() => {
+    if (!activeSeason) return;
+    
+    const plan = seasonalPlans[activeSeason];
+    if (plan) {
+      setSeasonBudget(plan.budget || 0);
+      setSeasonItems(plan.items || []);
+      setSeasonSaved(plan.saved || 0); // Using number for saved amount
+      setSeasonNotes(plan.notes || '');
+      setSeasonPurpose(plan.purpose || '');
+    } else {
+      // Default values for new season plan
+      setSeasonBudget(10000);
+      setSeasonItems([]);
+      setSeasonSaved(0);
+      setSeasonNotes('');
+      setSeasonPurpose('');
+    }
+  }, [activeSeason, seasonalPlans]);
+  
+  // Set defaults on component mount
+  useEffect(() => {
+    if (festivals.length > 0 && activeFestival === '') {
+      setActiveFestival(festivals[0].id);
+    }
+    if (seasons.length > 0 && activeSeason === '') {
+      setActiveSeason(seasons[0].id);
+    }
+  }, []);
+  
+  const handleAddFestivalItem = () => {
+    if (newFestivalItem.name && newFestivalItem.cost > 0) {
+      setFestivalItems([...festivalItems, newFestivalItem]);
+      setNewFestivalItem({ name: '', cost: 0 });
+    }
+  };
+  
+  const handleRemoveFestivalItem = (index: number) => {
+    const updatedItems = [...festivalItems];
+    updatedItems.splice(index, 1);
+    setFestivalItems(updatedItems);
+  };
+  
+  const handleAddSeasonItem = () => {
+    if (newSeasonItem.name && newSeasonItem.cost > 0) {
+      setSeasonItems([...seasonItems, newSeasonItem]);
+      setNewSeasonItem({ name: '', cost: 0 });
+    }
+  };
+  
+  const handleRemoveSeasonItem = (index: number) => {
+    const updatedItems = [...seasonItems];
+    updatedItems.splice(index, 1);
+    setSeasonItems(updatedItems);
+  };
+  
+  const handleSaveFestivalPlan = () => {
+    if (!activeFestival) return;
+    
+    const plan: FestivalPlan = {
+      budget: festivalBudget,
+      items: festivalItems,
+      saved: festivalSaved, // Number value
+      notes: festivalNotes
+    };
+    
+    updateFestivalPlan(activeFestival, plan);
+    
+    toast({
+      title: `${getActiveFestivalName()} plan saved`,
+      description: `Your budget of ₹${festivalBudget.toLocaleString()} has been saved.`,
+      variant: "default",
+    });
+  };
+  
+  const handleSaveSeasonalPlan = () => {
+    if (!activeSeason) return;
+    
+    const plan: SeasonalPlan = {
+      budget: seasonBudget,
+      items: seasonItems,
+      saved: seasonSaved, // Number value
+      notes: seasonNotes,
+      purpose: seasonPurpose
+    };
+    
+    updateSeasonalPlan(activeSeason, plan);
+    
+    toast({
+      title: `${getActiveSeasonName()} plan saved`,
+      description: `Your budget of ₹${seasonBudget.toLocaleString()} has been saved.`,
+      variant: "default",
+    });
+  };
+  
+  const calculateFestivalProgress = () => {
+    if (festivalBudget <= 0) return 0;
+    const progress = (festivalSaved / festivalBudget) * 100;
+    return Math.min(progress, 100);
+  };
+  
+  const calculateSeasonProgress = () => {
+    if (seasonBudget <= 0) return 0;
+    const progress = (seasonSaved / seasonBudget) * 100;
+    return Math.min(progress, 100);
+  };
+  
+  const getActiveFestivalName = () => {
+    const festival = festivals.find(f => f.id === activeFestival);
+    return festival ? festival.name : '';
+  };
+  
+  const getActiveSeasonName = () => {
+    const season = seasons.find(s => s.id === activeSeason);
+    return season ? season.name : '';
+  };
+  
+  const getTotalCost = (items: FestivalItem[]) => {
+    return items.reduce((total, item) => total + item.cost, 0);
   };
   
   return (
-    <div className="wv-container py-6">
-      <h2 className="text-2xl font-bold mb-2">Festival & Season Planning</h2>
-      <p className="text-muted-foreground mb-6">
-        Plan ahead for festivals and seasonal expenses to avoid financial strain
-      </p>
-
-      <Tabs defaultValue="festivals" onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-2 max-w-xs mb-6">
-          <TabsTrigger value="festivals">Festivals</TabsTrigger>
-          <TabsTrigger value="seasons">Seasons</TabsTrigger>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold mb-2">Budget Planning</h1>
+        <p className="text-muted-foreground">
+          Plan your budget for festivals and seasons to avoid unexpected expenses.
+        </p>
+      </div>
+      
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="mb-6">
+          <TabsTrigger value="festivals">Festival Planning</TabsTrigger>
+          <TabsTrigger value="seasons">Seasonal Planning</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="festivals">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold">Your Festival Plans</h3>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="flex items-center gap-1"
-                  onClick={() => setIsAddingFestival(true)}
-                >
-                  <Plus className="h-4 w-4" />
-                  Add Festival
-                </Button>
-              </div>
-              
-              <div className="space-y-4">
-                {Object.entries(festivalPlans).length > 0 ? (
-                  Object.entries(festivalPlans).map(([key, plan]) => {
-                    const festival = festivals.find(f => f.name.toLowerCase() === key.replace(/_/g, ' '));
-                    const progress = (plan.saved / plan.budget) * 100;
-                    
-                    return (
-                      <Card key={key} className="overflow-hidden">
-                        <div className="grid grid-cols-1 md:grid-cols-3">
-                          <div className="h-48 md:h-auto w-full bg-muted">
-                            {festival?.imageUrl && (
-                              <img 
-                                src={festival.imageUrl} 
-                                alt={festival.name} 
-                                className="w-full h-full object-cover"
-                              />
-                            )}
-                          </div>
-                          <div className="md:col-span-2 p-4">
-                            <h4 className="font-semibold text-lg">
-                              {key.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}
-                            </h4>
-                            
-                            {festival && (
-                              <>
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                                  <CalendarDays className="h-4 w-4" />
-                                  <span>{formatDate(festival.date)}</span>
-                                  <span className="px-1.5 py-0.5 rounded-full text-xs bg-wealthveda-indigo/10 text-wealthveda-indigo">
-                                    {getTimeUntil(festival.date)}
-                                  </span>
-                                </div>
-                                
-                                <p className="text-sm mt-2">{festival.description}</p>
-                              </>
-                            )}
-                            
-                            <div className="mt-4">
-                              <div className="flex justify-between text-sm mb-1">
-                                <span>Savings Progress</span>
-                                <span>₹{plan.saved.toLocaleString()} of ₹{plan.budget.toLocaleString()}</span>
-                              </div>
-                              <Progress value={progress} className="h-2" />
-                              
-                              <div className="flex items-center gap-2 mt-4">
-                                <Input 
-                                  type="number"
-                                  placeholder="Amount"
-                                  className="max-w-[120px]"
-                                  onChange={(e) => setNewBudget({
-                                    ...newBudget,
-                                    saved: parseInt(e.target.value) || 0
-                                  })}
-                                />
-                                <Button 
-                                  size="sm"
-                                  onClick={() => handleAddToSavings('festival', key, newBudget.saved)}
-                                >
-                                  Add to Savings
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    );
-                  })
-                ) : (
-                  <Card className="p-6 flex flex-col items-center text-center">
-                    <Gift className="h-12 w-12 text-muted-foreground mb-2" />
-                    <h3 className="font-semibold text-lg">No Festival Plans Yet</h3>
-                    <p className="text-muted-foreground mb-4">
-                      Start planning for upcoming festivals to manage your expenses better
-                    </p>
-                    <Button onClick={() => setIsAddingFestival(true)}>
-                      Add Your First Festival
-                    </Button>
-                  </Card>
-                )}
-              </div>
-            </div>
-            
-            <div>
-              <h3 className="font-semibold mb-4">Upcoming Festivals</h3>
-              <div className="space-y-3">
-                {festivals.map((festival, index) => (
-                  <Card key={index} className="overflow-hidden">
-                    <div className="h-28 relative">
-                      <img 
-                        src={festival.imageUrl} 
-                        alt={festival.name} 
-                        className="w-full h-full object-cover"
+        {/* Festival Planning Tab */}
+        <TabsContent value="festivals" className="space-y-6">
+          {/* Festival Selection Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {festivals.map(festival => (
+              <Card 
+                key={festival.id}
+                className={`cursor-pointer transition-all ${
+                  activeFestival === festival.id ? 'ring-2 ring-royal-blue' : ''
+                }`}
+                onClick={() => setActiveFestival(festival.id)}
+              >
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="text-4xl">{festival.icon}</div>
+                  <div>
+                    <h3 className="font-medium">{festival.name}</h3>
+                    <p className="text-sm text-muted-foreground">{festival.description}</p>
+                    <p className="text-xs mt-1">Date: {festival.date}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          {/* Active Festival Planning */}
+          {activeFestival && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="md:col-span-2">
+                <CardHeader>
+                  <CardTitle>
+                    {getActiveFestivalName()} Planning
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="festival-budget">Budget (₹)</Label>
+                      <Input
+                        id="festival-budget"
+                        type="number"
+                        value={festivalBudget}
+                        onChange={(e) => setFestivalBudget(Number(e.target.value))}
+                        min={0}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
-                        <h4 className="font-semibold text-white">{festival.name}</h4>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="festival-saved">Saved So Far (₹)</Label>
+                      <Input
+                        id="festival-saved"
+                        type="number"
+                        value={festivalSaved}
+                        onChange={(e) => setFestivalSaved(Number(e.target.value))}
+                        min={0}
+                        max={festivalBudget}
+                      />
+                      <div className="mt-2">
+                        <Progress value={calculateFestivalProgress()} className="h-2" />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {`${formatCurrency(festivalSaved)} of ${formatCurrency(festivalBudget)} (${Math.round(calculateFestivalProgress())}%)`}
+                        </p>
                       </div>
                     </div>
-                    <CardContent className="p-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <CalendarDays className="h-4 w-4 mr-1" />
-                          <span>{formatDate(festival.date)}</span>
-                        </div>
-                        <span className="text-xs bg-wealthveda-indigo/10 text-wealthveda-indigo px-2 py-0.5 rounded-full">
-                          {getTimeUntil(festival.date)}
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label>Planned Expenses</Label>
+                        <span className="text-sm">
+                          Total: {formatCurrency(getTotalCost(festivalItems))}
                         </span>
                       </div>
                       
-                      {!Object.keys(festivalPlans).some(key => 
-                        key.toLowerCase().replace(/_/g, ' ') === festival.name.toLowerCase()
-                      ) && (
-                        <Button 
-                          variant="outline"
-                          size="sm"
-                          className="w-full mt-2"
-                          onClick={() => {
-                            setNewBudget({
-                              name: festival.name,
-                              budget: 0,
-                              saved: 0
-                            });
-                            setIsAddingFestival(true);
-                          }}
-                        >
-                          Create Budget
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-              
-              {isPremiumOrPro && (
-                <Card className="mt-6">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Festival Tips</CardTitle>
-                    <CardDescription>Financial advice for festivals</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="h-4 w-4 text-wealthveda-teal mt-1" />
-                      <p className="text-sm">Start saving at least 3-4 months before major festivals</p>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="h-4 w-4 text-wealthveda-teal mt-1" />
-                      <p className="text-sm">Set aside 5-10% of monthly income for festival expenses</p>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="h-4 w-4 text-wealthveda-teal mt-1" />
-                      <p className="text-sm">Look for pre-festival sales to save on gifts and decorations</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="seasons">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold">Your Seasonal Plans</h3>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="flex items-center gap-1"
-                  onClick={() => setIsAddingSeason(true)}
-                  disabled={!isPremiumOrPro}
-                >
-                  <Plus className="h-4 w-4" />
-                  Add Season
-                </Button>
-              </div>
-              
-              {isPremiumOrPro ? (
-                <div className="space-y-4">
-                  {Object.entries(seasonalPlans).length > 0 ? (
-                    Object.entries(seasonalPlans).map(([key, plan]) => {
-                      const season = seasons.find(s => s.name.toLowerCase() === key);
-                      const progress = (plan.saved / plan.budget) * 100;
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="col-span-2">
+                          <Input
+                            placeholder="Item name"
+                            value={newFestivalItem.name}
+                            onChange={(e) => setNewFestivalItem({ ...newFestivalItem, name: e.target.value })}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Input
+                            type="number"
+                            placeholder="Cost"
+                            value={newFestivalItem.cost || ''}
+                            onChange={(e) => setNewFestivalItem({ ...newFestivalItem, cost: Number(e.target.value) })}
+                            min={0}
+                          />
+                          <Button 
+                            size="icon" 
+                            className="shrink-0" 
+                            onClick={handleAddFestivalItem}
+                            disabled={!newFestivalItem.name || newFestivalItem.cost <= 0}
+                          >
+                            <PlusIcon className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
                       
-                      return (
-                        <Card key={key} className="overflow-hidden">
-                          <div className="grid grid-cols-1 md:grid-cols-3">
-                            <div className="h-48 md:h-auto w-full bg-muted">
-                              {season?.imageUrl && (
-                                <img 
-                                  src={season.imageUrl} 
-                                  alt={season.name} 
-                                  className="w-full h-full object-cover"
-                                />
-                              )}
-                            </div>
-                            <div className="md:col-span-2 p-4">
-                              <h4 className="font-semibold text-lg">{season?.name || key}</h4>
-                              
-                              {season && (
-                                <>
-                                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                                    <CalendarDays className="h-4 w-4" />
-                                    <span>{season.months}</span>
-                                  </div>
-                                  
-                                  <div className="flex items-center gap-2 text-sm mt-1">
-                                    <span className="font-medium">Purpose:</span>
-                                    <span>{plan.purpose}</span>
-                                  </div>
-                                  
-                                  <p className="text-sm mt-2">{season.description}</p>
-                                </>
-                              )}
-                              
-                              <div className="mt-4">
-                                <div className="flex justify-between text-sm mb-1">
-                                  <span>Savings Progress</span>
-                                  <span>₹{plan.saved.toLocaleString()} of ₹{plan.budget.toLocaleString()}</span>
-                                </div>
-                                <Progress value={progress} className="h-2" />
-                                
-                                <div className="flex items-center gap-2 mt-4">
-                                  <Input 
-                                    type="number"
-                                    placeholder="Amount"
-                                    className="max-w-[120px]"
-                                    onChange={(e) => setNewBudget({
-                                      ...newBudget,
-                                      saved: parseInt(e.target.value) || 0
-                                    })}
-                                  />
-                                  <Button 
-                                    size="sm"
-                                    onClick={() => handleAddToSavings('season', key, newBudget.saved)}
-                                  >
-                                    Add to Savings
-                                  </Button>
-                                </div>
+                      {festivalItems.length > 0 ? (
+                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                          {festivalItems.map((item, index) => (
+                            <div key={index} className="flex justify-between items-center p-2 bg-muted/50 rounded-md">
+                              <span className="font-medium">{item.name}</span>
+                              <div className="flex items-center gap-2">
+                                <span>₹{item.cost.toLocaleString()}</span>
+                                <Button 
+                                  size="icon" 
+                                  variant="ghost" 
+                                  className="h-6 w-6" 
+                                  onClick={() => handleRemoveFestivalItem(index)}
+                                >
+                                  <Trash2Icon className="h-3 w-3" />
+                                </Button>
                               </div>
                             </div>
-                          </div>
-                        </Card>
-                      );
-                    })
-                  ) : (
-                    <Card className="p-6 flex flex-col items-center text-center">
-                      <CalendarDays className="h-12 w-12 text-muted-foreground mb-2" />
-                      <h3 className="font-semibold text-lg">No Seasonal Plans Yet</h3>
-                      <p className="text-muted-foreground mb-4">
-                        Plan for seasonal expenses like vacations, home maintenance, and more
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center p-4 text-muted-foreground">
+                          <p>No expenses added yet.</p>
+                          <p className="text-sm">Add items to plan your budget.</p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="festival-notes">Notes</Label>
+                      <textarea
+                        id="festival-notes"
+                        className="w-full h-24 p-2 border rounded-md resize-none"
+                        value={festivalNotes}
+                        onChange={(e) => setFestivalNotes(e.target.value)}
+                        placeholder="Add any notes about your festival planning..."
+                      />
+                    </div>
+                    
+                    <Button 
+                      className="w-full" 
+                      onClick={handleSaveFestivalPlan}
+                    >
+                      Save Plan
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>{getActiveFestivalName()} Overview</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-sm font-medium mb-1">Budget Status</h3>
+                      <div className="text-2xl font-bold">{formatCurrency(festivalBudget)}</div>
+                      <Progress value={calculateFestivalProgress()} className="h-2 mt-2" />
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-sm font-medium mb-1">Remaining to Save</h3>
+                      <div className="text-2xl font-bold">
+                        {formatCurrency(Math.max(0, festivalBudget - festivalSaved))}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Saved so far: {formatCurrency(festivalSaved)}
                       </p>
-                      <Button onClick={() => setIsAddingSeason(true)}>
-                        Add Your First Season
-                      </Button>
-                    </Card>
-                  )}
-                </div>
-              ) : (
-                <Card className="p-6 flex flex-col items-center text-center">
-                  <BadgeIndianRupee className="h-12 w-12 text-muted-foreground mb-2" />
-                  <h3 className="font-semibold text-lg">Premium Feature</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Upgrade to Pro or Premium to access seasonal planning features
-                  </p>
-                  <Button 
-                    className="bg-wealthveda-teal hover:bg-wealthveda-teal/90"
-                    onClick={() => {
-                      toast({
-                        title: "Premium Feature",
-                        description: "Please upgrade your subscription to access seasonal planning",
-                      });
-                    }}
-                  >
-                    Upgrade Now
-                  </Button>
-                </Card>
-              )}
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-sm font-medium mb-1">Budget vs Expenses</h3>
+                      <div className={`text-xl font-bold ${
+                        getTotalCost(festivalItems) > festivalBudget ? 'text-red-600' : 'text-green-600'
+                      }`}>
+                        {formatCurrency(festivalBudget - getTotalCost(festivalItems))}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {getTotalCost(festivalItems) > festivalBudget ? 
+                          'Your planned expenses exceed your budget' : 
+                          'Your budget covers all planned expenses'}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            
-            {isPremiumOrPro && (
-              <div>
-                <h3 className="font-semibold mb-4">Seasonal Planning</h3>
-                <div className="space-y-3">
-                  {seasons.map((season, index) => (
-                    <Card key={index} className="overflow-hidden">
-                      <div className="h-28 relative">
-                        <img 
-                          src={season.imageUrl} 
-                          alt={season.name} 
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
-                          <h4 className="font-semibold text-white">{season.name}</h4>
+          )}
+        </TabsContent>
+        
+        {/* Seasonal Planning Tab */}
+        <TabsContent value="seasons" className="space-y-6">
+          {/* Season Selection Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {seasons.map(season => (
+              <Card 
+                key={season.id}
+                className={`cursor-pointer transition-all ${
+                  activeSeason === season.id ? 'ring-2 ring-royal-blue' : ''
+                }`}
+                onClick={() => setActiveSeason(season.id)}
+              >
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="h-9 w-9 bg-muted rounded-full flex items-center justify-center">
+                    {season.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-medium">{season.name}</h3>
+                    <p className="text-sm text-muted-foreground">{season.description}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          {/* Active Season Planning */}
+          {activeSeason && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="md:col-span-2">
+                <CardHeader>
+                  <CardTitle>
+                    {getActiveSeasonName()} Planning
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="season-purpose">Purpose</Label>
+                      <Input
+                        id="season-purpose"
+                        value={seasonPurpose}
+                        onChange={(e) => setSeasonPurpose(e.target.value)}
+                        placeholder="e.g., Summer Vacation, Back to School, Winter Clothes"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="season-budget">Budget (₹)</Label>
+                      <Input
+                        id="season-budget"
+                        type="number"
+                        value={seasonBudget}
+                        onChange={(e) => setSeasonBudget(Number(e.target.value))}
+                        min={0}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="season-saved">Saved So Far (₹)</Label>
+                      <Input
+                        id="season-saved"
+                        type="number"
+                        value={seasonSaved}
+                        onChange={(e) => setSeasonSaved(Number(e.target.value))}
+                        min={0}
+                        max={seasonBudget}
+                      />
+                      <div className="mt-2">
+                        <Progress value={calculateSeasonProgress()} className="h-2" />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {`${formatCurrency(seasonSaved)} of ${formatCurrency(seasonBudget)} (${Math.round(calculateSeasonProgress())}%)`}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Season items entry and list */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label>Planned Expenses</Label>
+                        <span className="text-sm">
+                          Total: {formatCurrency(getTotalCost(seasonItems))}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-3 gap-2 mb-2">
+                        <div className="col-span-2">
+                          <Input
+                            placeholder="Item name"
+                            value={newSeasonItem.name}
+                            onChange={(e) => setNewSeasonItem({ ...newSeasonItem, name: e.target.value })}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Input
+                            type="number"
+                            placeholder="Cost"
+                            value={newSeasonItem.cost || ''}
+                            onChange={(e) => setNewSeasonItem({ ...newSeasonItem, cost: Number(e.target.value) })}
+                            min={0}
+                          />
+                          <Button 
+                            size="icon" 
+                            className="shrink-0" 
+                            onClick={handleAddSeasonItem}
+                            disabled={!newSeasonItem.name || newSeasonItem.cost <= 0}
+                          >
+                            <PlusIcon className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
-                      <CardContent className="p-3">
-                        <div className="flex items-center text-sm text-muted-foreground mb-2">
-                          <CalendarDays className="h-4 w-4 mr-1" />
-                          <span>{season.months}</span>
+                      
+                      {seasonItems.length > 0 ? (
+                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                          {seasonItems.map((item, index) => (
+                            <div key={index} className="flex justify-between items-center p-2 bg-muted/50 rounded-md">
+                              <span className="font-medium">{item.name}</span>
+                              <div className="flex items-center gap-2">
+                                <span>₹{item.cost.toLocaleString()}</span>
+                                <Button 
+                                  size="icon" 
+                                  variant="ghost" 
+                                  className="h-6 w-6" 
+                                  onClick={() => handleRemoveSeasonItem(index)}
+                                >
+                                  <Trash2Icon className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <p className="text-xs line-clamp-2">{season.description}</p>
-                        
-                        {!Object.keys(seasonalPlans).some(key => key === season.name.toLowerCase()) && (
-                          <Button 
-                            variant="outline"
-                            size="sm"
-                            className="w-full mt-2"
-                            onClick={() => {
-                              setNewBudget({
-                                name: season.name,
-                                budget: 0,
-                                saved: 0
-                              });
-                              setIsAddingSeason(true);
-                            }}
-                          >
-                            Create Budget
-                          </Button>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-                
-                <Card className="mt-6">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Seasonal Tips</CardTitle>
-                    <CardDescription>Financial advice for seasonal planning</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="h-4 w-4 text-wealthveda-teal mt-1" />
-                      <p className="text-sm">Book summer vacations 3-4 months in advance for better deals</p>
+                      ) : (
+                        <div className="text-center p-4 text-muted-foreground">
+                          <p>No expenses added yet.</p>
+                          <p className="text-sm">Add items to plan your seasonal budget.</p>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="h-4 w-4 text-wealthveda-teal mt-1" />
-                      <p className="text-sm">Allocate funds for monsoon home maintenance to avoid costly repairs</p>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="season-notes">Notes</Label>
+                      <textarea
+                        id="season-notes"
+                        className="w-full h-24 p-2 border rounded-md resize-none"
+                        value={seasonNotes}
+                        onChange={(e) => setSeasonNotes(e.target.value)}
+                        placeholder="Add any notes about your seasonal planning..."
+                      />
                     </div>
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="h-4 w-4 text-wealthveda-teal mt-1" />
-                      <p className="text-sm">Create a winter fund for heating costs and seasonal shopping</p>
+                    
+                    <Button 
+                      className="w-full" 
+                      onClick={handleSaveSeasonalPlan}
+                    >
+                      Save Plan
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>{getActiveSeasonName()} Overview</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {seasonPurpose && (
+                      <div>
+                        <h3 className="text-sm font-medium mb-1">Purpose</h3>
+                        <div className="text-base">{seasonPurpose}</div>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <h3 className="text-sm font-medium mb-1">Budget Status</h3>
+                      <div className="text-2xl font-bold">{formatCurrency(seasonBudget)}</div>
+                      <Progress value={calculateSeasonProgress()} className="h-2 mt-2" />
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </div>
+                    
+                    <div>
+                      <h3 className="text-sm font-medium mb-1">Remaining to Save</h3>
+                      <div className="text-2xl font-bold">
+                        {formatCurrency(Math.max(0, seasonBudget - seasonSaved))}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Saved so far: {formatCurrency(seasonSaved)}
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-sm font-medium mb-1">Budget vs Expenses</h3>
+                      <div className={`text-xl font-bold ${
+                        getTotalCost(seasonItems) > seasonBudget ? 'text-red-600' : 'text-green-600'
+                      }`}>
+                        {formatCurrency(seasonBudget - getTotalCost(seasonItems))}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {getTotalCost(seasonItems) > seasonBudget ? 
+                          'Your planned expenses exceed your budget' : 
+                          'Your budget covers all planned expenses'}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </TabsContent>
       </Tabs>
-      
-      {/* Add Festival Dialog */}
-      <Dialog open={isAddingFestival} onOpenChange={setIsAddingFestival}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Festival Budget</DialogTitle>
-            <DialogDescription>
-              Create a savings plan for an upcoming festival
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Select Festival</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {festivals.map((festival, index) => (
-                  <div
-                    key={index}
-                    className={`p-2 border rounded-md cursor-pointer transition-colors ${
-                      newBudget.name === festival.name 
-                        ? 'border-wealthveda-indigo bg-wealthveda-indigo/5' 
-                        : 'border-border hover:border-wealthveda-indigo/50'
-                    }`}
-                    onClick={() => setNewBudget({...newBudget, name: festival.name})}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-muted overflow-hidden">
-                        <img 
-                          src={festival.imageUrl} 
-                          alt={festival.name} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <span className="font-medium">{festival.name}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="budget">Budget Amount (₹)</Label>
-              <Input 
-                id="budget"
-                type="number" 
-                value={newBudget.budget || ''} 
-                onChange={(e) => setNewBudget({...newBudget, budget: parseInt(e.target.value) || 0})}
-                placeholder="Enter budget amount"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="saved">Already Saved (₹)</Label>
-              <Input 
-                id="saved"
-                type="number" 
-                value={newBudget.saved || ''} 
-                onChange={(e) => setNewBudget({...newBudget, saved: parseInt(e.target.value) || 0})}
-                placeholder="Amount already saved (optional)"
-              />
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddingFestival(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleAddFestivalPlan}>
-              Create Budget
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      
-      {/* Add Season Dialog */}
-      <Dialog open={isAddingSeason} onOpenChange={setIsAddingSeason}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Seasonal Budget</DialogTitle>
-            <DialogDescription>
-              Create a savings plan for seasonal expenses
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Select Season</Label>
-              <div className="grid grid-cols-1 gap-2">
-                {seasons.map((season, index) => (
-                  <div
-                    key={index}
-                    className={`p-2 border rounded-md cursor-pointer transition-colors ${
-                      newBudget.name === season.name 
-                        ? 'border-wealthveda-indigo bg-wealthveda-indigo/5' 
-                        : 'border-border hover:border-wealthveda-indigo/50'
-                    }`}
-                    onClick={() => setNewBudget({...newBudget, name: season.name})}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-muted overflow-hidden">
-                        <img 
-                          src={season.imageUrl} 
-                          alt={season.name} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div>
-                        <span className="font-medium">{season.name}</span>
-                        <p className="text-xs text-muted-foreground">{season.months}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="budget">Budget Amount (₹)</Label>
-              <Input 
-                id="budget"
-                type="number" 
-                value={newBudget.budget || ''} 
-                onChange={(e) => setNewBudget({...newBudget, budget: parseInt(e.target.value) || 0})}
-                placeholder="Enter budget amount"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="saved">Already Saved (₹)</Label>
-              <Input 
-                id="saved"
-                type="number" 
-                value={newBudget.saved || ''} 
-                onChange={(e) => setNewBudget({...newBudget, saved: parseInt(e.target.value) || 0})}
-                placeholder="Amount already saved (optional)"
-              />
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddingSeason(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleAddSeasonalPlan}>
-              Create Budget
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

@@ -28,7 +28,16 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
     investments: currentUser?.financialDetails?.investments || [],
     debts: currentUser?.financialDetails?.debts || [], 
     debtToIncomeRatio: currentUser?.financialDetails?.debtToIncomeRatio || 0,
-    savingsRate: currentUser?.financialDetails?.savingsRate || 0
+    savingsRate: currentUser?.financialDetails?.savingsRate || 0,
+    // Legacy fields added for compatibility
+    monthlyIncome: currentUser?.financialDetails?.monthlyIncome || 50000,
+    monthlyExpenses: currentUser?.financialDetails?.monthlyExpenses || 47000,
+    totalSavings: currentUser?.financialDetails?.totalSavings || 3000,
+    investmentExperience: currentUser?.financialDetails?.investmentExperience || 'beginner',
+    riskTolerance: currentUser?.financialDetails?.riskTolerance || 'medium',
+    debtAmount: currentUser?.financialDetails?.debtAmount || 0,
+    existingInvestments: currentUser?.financialDetails?.existingInvestments || [],
+    insurancePolicies: currentUser?.financialDetails?.insurancePolicies || []
   });
   
   const [newInvestment, setNewInvestment] = useState({ type: '', amount: 0 });
@@ -57,7 +66,8 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
       return {
         ...prev,
         incomeSources: updatedSources,
-        totalIncome
+        totalIncome,
+        monthlyIncome: totalIncome // Update legacy field
       };
     });
   };
@@ -66,21 +76,38 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
     const { name, value } = e.target;
     const numValue = Number(value);
     
-    setFormData(prev => ({
-      ...prev,
-      expenses: {
+    setFormData(prev => {
+      const updatedExpenses = {
         ...prev.expenses,
         [name]: numValue
-      }
-    }));
+      };
+      
+      // Calculate total expenses for legacy field
+      const totalExpenses = Object.values(updatedExpenses).reduce((sum, val) => sum + val, 0);
+      
+      return {
+        ...prev,
+        expenses: updatedExpenses,
+        monthlyExpenses: totalExpenses
+      };
+    });
   };
   
   const addInvestment = () => {
     if (newInvestment.type && newInvestment.amount > 0) {
-      setFormData(prev => ({
-        ...prev,
-        investments: [...prev.investments, newInvestment]
-      }));
+      setFormData(prev => {
+        // Also update legacy investments
+        const legacyInvestment = {
+          type: newInvestment.type,
+          value: newInvestment.amount
+        };
+        
+        return {
+          ...prev,
+          investments: [...prev.investments, newInvestment],
+          existingInvestments: [...(prev.existingInvestments || []), legacyInvestment]
+        };
+      });
       setNewInvestment({ type: '', amount: 0 });
     }
   };
@@ -88,7 +115,8 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
   const removeInvestment = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      investments: prev.investments.filter((_, i) => i !== index)
+      investments: prev.investments.filter((_, i) => i !== index),
+      existingInvestments: (prev.existingInvestments || []).filter((_, i) => i !== index)
     }));
   };
   
@@ -99,10 +127,17 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
       newDebt.interestRate > 0 && 
       newDebt.monthlyPayment > 0
     ) {
-      setFormData(prev => ({
-        ...prev,
-        debts: [...(prev.debts || []), newDebt]
-      }));
+      setFormData(prev => {
+        const updatedDebts = [...(prev.debts || []), newDebt];
+        // Update total debt amount for legacy field
+        const totalDebt = updatedDebts.reduce((sum, debt) => sum + debt.amount, 0);
+        
+        return {
+          ...prev,
+          debts: updatedDebts,
+          debtAmount: totalDebt
+        };
+      });
       setNewDebt({ 
         type: '', 
         amount: 0, 
@@ -114,10 +149,16 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
   };
   
   const removeDebt = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      debts: (prev.debts || []).filter((_, i) => i !== index)
-    }));
+    setFormData(prev => {
+      const updatedDebts = (prev.debts || []).filter((_, i) => i !== index);
+      const totalDebt = updatedDebts.reduce((sum, debt) => sum + debt.amount, 0);
+      
+      return {
+        ...prev,
+        debts: updatedDebts,
+        debtAmount: totalDebt
+      };
+    });
   };
   
   const calculateTotalExpenses = () => {
@@ -137,7 +178,9 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
     const updatedData = {
       ...formData,
       debtToIncomeRatio,
-      savingsRate
+      savingsRate,
+      monthlyExpenses: totalExpenses,
+      totalSavings: formData.totalIncome - totalExpenses
     };
     
     setTimeout(() => {
@@ -304,7 +347,7 @@ const FinancialDetailsForm: React.FC<{ onComplete: () => void }> = ({ onComplete
               name="savings"
               type="number"
               value={formData.savings}
-              onChange={(e) => setFormData(prev => ({ ...prev, savings: Number(e.target.value) }))}
+              onChange={(e) => setFormData(prev => ({ ...prev, savings: Number(e.target.value), totalSavings: Number(e.target.value) }))}
               min={0}
               className="bg-muted/30"
             />

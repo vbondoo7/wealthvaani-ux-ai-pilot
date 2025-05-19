@@ -6,15 +6,16 @@ import { BlogPost as BlogPostType } from '@/lib/types';
 
 interface BlogDetailsProps {
   slug?: string;
+  blogPost?: BlogPostType;
 }
 
-const BlogDetails: React.FC<BlogDetailsProps> = ({ slug }) => {
+const BlogDetails: React.FC<BlogDetailsProps> = ({ slug: propSlug, blogPost: propBlogPost }) => {
   // If slug is not provided as prop, try to get it from URL params
   const { slug: urlSlug } = useParams<{ slug: string }>();
-  const postSlug = slug || urlSlug;
+  const postSlug = propSlug || urlSlug;
   
-  // Fetch blog post data
-  const blogPost = getBlogPostBySlug(postSlug || '');
+  // Use provided blog post or fetch it by slug
+  const blogPost = propBlogPost || getBlogPostBySlug(postSlug || '');
   
   if (!blogPost) {
     return (

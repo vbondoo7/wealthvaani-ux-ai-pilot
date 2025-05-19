@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Navigate, Outlet } from 'react-router-dom';
 import AuthForms from '@/components/auth/AuthForms';
@@ -166,19 +165,22 @@ const Index = () => {
               </select>
             </div>
           </div>
-          <AuthForms onSuccess={() => {
-            console.log('Auth success');
-            // Admin redirect to blog, regular users to dashboard
-            if (isAdminLoggedIn()) {
-              console.log('Admin logged in, redirecting to blog');
-              setCurrentScreen('blog');
-              navigate('/blog');
-            } else {
-              console.log('Regular user logged in, redirecting to dashboard');
-              setCurrentScreen('dashboard');
-              navigate('/dashboard');
-            }
-          }} defaultTab={location.state?.defaultTab || 'login'} />
+          <AuthForms 
+            onSuccess={() => {
+              console.log('Auth success');
+              // Admin redirect to blog, regular users to dashboard
+              if (isAdminLoggedIn()) {
+                console.log('Admin logged in, redirecting to blog');
+                setCurrentScreen('blog');
+                navigate('/blog');
+              } else {
+                console.log('Regular user logged in, redirecting to dashboard');
+                setCurrentScreen('dashboard');
+                navigate('/dashboard');
+              }
+            }}
+            defaultTab={location.state?.defaultTab || 'login'} 
+          />
         </div>
       </div>
     );

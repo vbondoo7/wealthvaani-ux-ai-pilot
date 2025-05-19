@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -9,16 +10,22 @@ import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useLanguage } from '@/contexts/LanguageContext';
 import { loginUser, registerUser } from '@/lib/authService';
 import { isLanguage } from '@/lib/typeUtils';
+import LoginOptions from './LoginOptions';
 
 type DefaultTab = 'login' | 'signup';
 
-const AuthForms = () => {
+interface AuthFormsProps {
+  onSuccess?: () => void;
+  defaultTab?: DefaultTab;
+}
+
+const AuthForms: React.FC<AuthFormsProps> = ({ onSuccess, defaultTab = 'login' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const { language } = useLanguage();
   
-  const [activeTab, setActiveTab] = useState<DefaultTab>('login');
+  const [activeTab, setActiveTab] = useState<DefaultTab>(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
@@ -40,13 +47,19 @@ const AuthForms = () => {
       setActiveTab('signup');
     }
   }, [location]);
+  
+  // Handle selection of pre-defined user
+  const handleSelectUser = (email: string, password: string) => {
+    setLoginEmail(email);
+    setLoginPassword(password);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
 
     try {
-      const user = await loginUser(loginEmail, loginPassword);
+      await loginUser(loginEmail, loginPassword);
       toast({
         title: isLanguage(language, 'en') 
           ? "Login successful" 
@@ -59,7 +72,12 @@ const AuthForms = () => {
             ? "वेल्थवाणी में आपका स्वागत है!"
             : "Wealthवाणी mein aapka swagat hai!",
       });
-      navigate('/dashboard');
+      
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -111,9 +129,14 @@ const AuthForms = () => {
             ? "अब आप अपने नए खाते से लॉगिन कर सकते हैं।"
             : "Ab aap apne new account se login kar sakte hain.",
       });
-      setActiveTab('login');
-      setLoginEmail(signupEmail);
-      setLoginPassword(signupPassword);
+      
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        setActiveTab('login');
+        setLoginEmail(signupEmail);
+        setLoginPassword(signupPassword);
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -218,6 +241,9 @@ const AuthForms = () => {
                 </span>
               )}
             </Button>
+            
+            {/* Login options with demo users */}
+            <LoginOptions onSelectUser={handleSelectUser} />
           </form>
         </TabsContent>
         

@@ -1,11 +1,10 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { 
   User, Goal, Nudge, Transaction, PersonalDetails, FinancialDetails, FestivalPlan, SeasonalPlan, FamilyMember
 } from './types';
 import { sampleGoals, sampleNudges, sampleTransactions, generateId, sampleSubscriptions } from './mockData';
 import { predefinedUsers, adminUser } from './config';
-import { mapLegacyGoal } from './typeUtils';
-import { persist } from 'zustand/middleware';
 
 interface UserStore {
   users: User[];

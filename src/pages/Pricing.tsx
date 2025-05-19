@@ -1,369 +1,368 @@
 
-import React from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import Logo from '@/components/logo/Logo';
-import { Button } from "@/components/ui/button";
-import { CheckCircle, DollarSign } from 'lucide-react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { useLanguage } from '@/contexts/LanguageContext';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { isLanguage } from '@/lib/typeUtils';
 import { PricingPlan } from '@/lib/types';
 
-const Pricing: React.FC = () => {
-  const { language, t } = useLanguage();
+const PricingPlans: React.FC = () => {
   const navigate = useNavigate();
-  const [annual, setAnnual] = React.useState(false);
+  const { language } = useLanguage();
+  const [isYearly, setIsYearly] = useState(false);
   
-  const pricingPlans: PricingPlan[] = [
+  const plans: PricingPlan[] = [
     {
       id: 'basic',
       name: 'Basic',
+      price: { monthly: 0, yearly: 0 },
       description: {
-        en: 'Perfect for individuals just starting their financial journey',
-        hi: 'वित्तीय यात्रा शुरू करने वाले व्यक्तियों के लिए एकदम सही',
-        hinglish: 'Financial journey shuru karne wale individuals ke liye ekdum sahi',
-      },
-      price: {
-        monthly: 0,
-        yearly: 0,
+        en: 'Perfect for beginners starting their financial journey',
+        hi: 'अपनी वित्तीय यात्रा शुरू करने वालों के लिए एकदम सही',
+        hinglish: 'Financial journey shuru karne walon ke liye perfect'
       },
       features: [
         {
-          en: 'Basic budget tracking',
-          hi: 'बेसिक बजट ट्रैकिंग',
-          hinglish: 'Basic budget tracking',
+          en: 'Auto expense tracking', 
+          hi: 'स्वचालित खर्च ट्रैकिंग', 
+          hinglish: 'Auto expense tracking'
         },
         {
-          en: 'Limited personalized recommendations',
-          hi: 'सीमित व्यक्तिगत सिफारिशें',
-          hinglish: 'Limited personalized recommendations',
+          en: 'Basic financial nudges (3 per month)', 
+          hi: 'बेसिक वित्तीय नज (प्रति माह 3)', 
+          hinglish: 'Basic financial nudges (month mein 3)'
         },
         {
-          en: 'Up to 3 financial goals',
-          hi: '3 वित्तीय लक्ष्यों तक',
-          hinglish: '3 financial goals tak',
+          en: 'Auto-save suggestions', 
+          hi: 'स्वचालित बचत सुझाव', 
+          hinglish: 'Auto-save suggestions'
         },
+        {
+          en: 'Privacy-first approach', 
+          hi: 'गोपनीयता-प्रथम दृष्टिकोण', 
+          hinglish: 'Privacy-first approach'
+        }
       ],
+      recommended: false,
+      color: 'bg-gray-100',
+      popular: false,
       cta: {
-        en: 'Get Started Free',
-        hi: 'मुफ्त शुरू करें',
-        hinglish: 'Free mein shuru karein',
+        en: 'Get Started',
+        hi: 'आरंभ करें',
+        hinglish: 'Shuroo Karein'
       }
     },
     {
       id: 'pro',
       name: 'Pro',
+      price: { monthly: 199, yearly: 1999 },
       description: {
-        en: 'For individuals serious about financial growth',
-        hi: 'वित्तीय विकास के प्रति गंभीर व्यक्तियों के लिए',
-        hinglish: 'Financial growth ke prati serious individuals ke liye',
-      },
-      price: {
-        monthly: 199,
-        yearly: 1999,
+        en: 'Advanced features for individuals serious about financial planning',
+        hi: 'वित्तीय नियोजन के बारे में गंभीर व्यक्तियों के लिए उन्नत सुविधाएँ',
+        hinglish: 'Financial planning ke baare mein serious logon ke liye advanced features'
       },
       features: [
         {
-          en: 'Advanced budget tracking',
-          hi: 'एडवांस्ड बजट ट्रैकिंग',
-          hinglish: 'Advanced budget tracking',
+          en: 'Everything in Basic', 
+          hi: 'बेसिक में सब कुछ', 
+          hinglish: 'Basic mein sab kuch'
         },
         {
-          en: 'Unlimited personalized recommendations',
-          hi: 'असीमित व्यक्तिगत सिफारिशें',
-          hinglish: 'Unlimited personalized recommendations',
+          en: 'Unlimited financial nudges', 
+          hi: 'असीमित वित्तीय नज', 
+          hinglish: 'Unlimited financial nudges'
         },
         {
-          en: 'Up to 10 financial goals',
-          hi: '10 वित्तीय लक्ष्यों तक',
-          hinglish: '10 financial goals tak',
+          en: 'Goal-based planning & tracking', 
+          hi: 'लक्ष्य-आधारित योजना और ट्रैकिंग', 
+          hinglish: 'Goal-based planning & tracking'
         },
         {
-          en: 'AI-powered wealth insights',
-          hi: 'AI-संचालित धन अंतर्दृष्टि',
-          hinglish: 'AI-powered wealth insights',
+          en: 'Cash flow forecasting', 
+          hi: 'कैश फ्लो पूर्वानुमान', 
+          hinglish: 'Cash flow forecasting'
         },
+        {
+          en: 'Festival & seasonal planning', 
+          hi: 'त्योहार और मौसमी योजना', 
+          hinglish: 'Festival & seasonal planning'
+        }
       ],
+      recommended: true,
+      color: 'bg-royal-blue',
       popular: true,
       cta: {
         en: 'Upgrade to Pro',
-        hi: 'प्रो पर अपग्रेड करें',
-        hinglish: 'Pro par upgrade karein',
+        hi: 'प्रो में अपग्रेड करें',
+        hinglish: 'Pro Mein Upgrade Karein'
       }
     },
     {
       id: 'premium',
       name: 'Premium',
+      price: { monthly: 499, yearly: 4999 },
       description: {
-        en: 'For families seeking comprehensive financial management',
-        hi: 'व्यापक वित्तीय प्रबंधन की तलाश करने वाले परिवारों के लिए',
-        hinglish: 'Comprehensive financial management ki talash karne wale families ke liye',
-      },
-      price: {
-        monthly: 499,
-        yearly: 4999,
+        en: 'Comprehensive solution for families and serious investors',
+        hi: 'परिवारों और गंभीर निवेशकों के लिए व्यापक समाधान',
+        hinglish: 'Families aur serious investors ke liye comprehensive solution'
       },
       features: [
         {
-          en: 'Everything in Pro',
-          hi: 'प्रो में सब कुछ',
-          hinglish: 'Pro mein sab kuch',
+          en: 'Everything in Pro', 
+          hi: 'प्रो में सब कुछ', 
+          hinglish: 'Pro mein sab kuch'
         },
         {
-          en: 'Family account management',
-          hi: 'परिवार खाता प्रबंधन',
-          hinglish: 'Family account management',
+          en: 'Family profiles & management', 
+          hi: 'परिवार प्रोफाइल और प्रबंधन', 
+          hinglish: 'Family profiles & management'
         },
         {
-          en: 'Unlimited financial goals',
-          hi: 'असीमित वित्तीय लक्ष्य',
-          hinglish: 'Unlimited financial goals',
+          en: 'Advanced investment intelligence', 
+          hi: 'उन्नत निवेश बुद्धिमत्ता', 
+          hinglish: 'Advanced investment intelligence'
         },
         {
-          en: 'Priority support',
-          hi: 'प्राथमिकता समर्थन',
-          hinglish: 'Priority support',
+          en: 'Monthly detailed financial reports', 
+          hi: 'मासिक विस्तृत वित्तीय रिपोर्ट', 
+          hinglish: 'Monthly detailed financial reports'
         },
         {
-          en: 'Quarterly consultation with financial expert',
-          hi: 'वित्तीय विशेषज्ञ के साथ त्रैमासिक परामर्श',
-          hinglish: 'Financial expert ke saath quarterly consultation',
-        },
+          en: 'Priority advisor access', 
+          hi: 'प्राथमिकता सलाहकार पहुंच', 
+          hinglish: 'Priority advisor access'
+        }
       ],
+      recommended: false,
+      color: 'bg-saffron-orange',
+      popular: false,
       cta: {
-        en: 'Go Premium',
-        hi: 'प्रीमियम चुनें',
-        hinglish: 'Premium chunein',
+        en: 'Get Premium',
+        hi: 'प्रीमियम प्राप्त करें',
+        hinglish: 'Premium Paayen'
       }
-    },
+    }
   ];
   
+  const getLocalizedFeature = (feature: string | Record<string, string>) => {
+    if (typeof feature === 'string') return feature;
+    
+    return isLanguage(language, 'en')
+      ? feature.en
+      : isLanguage(language, 'hi')
+        ? feature.hi
+        : feature.hinglish || feature.en;
+  };
+  
   return (
-    <div className="min-h-screen bg-ivory-white">
-      {/* Navigation */}
-      <nav className="py-4 px-6 bg-white/80 backdrop-blur-sm border-b sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="cursor-pointer" onClick={() => navigate('/')}>
-            <Logo size="md" variant="full" />
-          </div>
+    <div className="min-h-screen">
+      {/* Header */}
+      <header className="border-b border-gray-200 bg-white">
+        <div className="container mx-auto px-4 py-4">
           <Button 
-            variant="outline"
-            className="text-royal-blue border-royal-blue hover:bg-royal-blue/10"
-            onClick={() => navigate('/login')}
+            variant="link" 
+            className="text-royal-blue"
+            onClick={() => navigate('/')}
           >
-            {t('login')}
+            &larr; {isLanguage(language, 'en') ? 'Back to Home' : isLanguage(language, 'hi') ? 'होम पेज पर वापस जाएं' : 'Home Page Par Wapas Jaayen'}
           </Button>
         </div>
-      </nav>
+      </header>
       
-      {/* Hero Section */}
-      <section className="py-16 px-6 bg-gradient-to-r from-royal-blue to-saffron-orange text-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 flex items-center justify-center gap-2">
-            <DollarSign className="h-8 w-8" />
-            {language === 'en' ? "Simple, Transparent Pricing" : 
-             language === 'hi' ? "सरल, पारदर्शी मूल्य निर्धारण" :
-             "Simple, Transparent Pricing"}
+      {/* Pricing Content */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-bold mb-4">
+            {isLanguage(language, 'en') 
+              ? 'Simple, Transparent Pricing' 
+              : isLanguage(language, 'hi') 
+                ? 'सरल, पारदर्शी मूल्य निर्धारण' 
+                : 'Simple, Transparent Pricing'}
           </h1>
-          <p className="text-xl mb-8 max-w-3xl mx-auto">
-            {language === 'en' ? "Choose the plan that's right for your financial journey" : 
-             language === 'hi' ? "अपनी वित्तीय यात्रा के लिए सही योजना चुनें" :
-             "Apni financial journey ke liye sahi plan chunein"}
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            {isLanguage(language, 'en')
+              ? 'Choose the plan that best suits your financial journey.'
+              : isLanguage(language, 'hi')
+                ? 'वह प्लान चुनें जो आपकी वित्तीय यात्रा के लिए सबसे उपयुक्त हो।'
+                : 'Wo plan chunein jo aapki financial journey ke liye sabse suitable ho.'}
           </p>
           
-          {/* Billing Toggle */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <span className={`${!annual ? 'text-white' : 'text-white/70'}`}>
-              {language === 'en' ? "Monthly" : 
-               language === 'hi' ? "मासिक" :
-               "Monthly"}
+          <div className="flex items-center justify-center mt-8">
+            <span className={`mr-3 ${isYearly ? 'text-muted-foreground' : 'font-medium'}`}>
+              {isLanguage(language, 'en') ? 'Monthly' : isLanguage(language, 'hi') ? 'मासिक' : 'Monthly'}
             </span>
-            <button 
-              onClick={() => setAnnual(!annual)}
-              className={`w-16 h-8 rounded-full flex items-center p-1 transition-colors ${annual ? 'bg-white justify-end' : 'bg-white/30 justify-start'}`}
-            >
-              <div className="w-6 h-6 rounded-full bg-saffron-orange"></div>
-            </button>
-            <span className={`${annual ? 'text-white' : 'text-white/70'}`}>
-              {language === 'en' ? "Yearly (Save 15%)" : 
-               language === 'hi' ? "वार्षिक (15% की बचत)" :
-               "Yearly (15% bachaye)"}
+            <Switch
+              checked={isYearly}
+              onCheckedChange={setIsYearly}
+            />
+            <span className={`ml-3 ${isYearly ? 'font-medium' : 'text-muted-foreground'}`}>
+              {isLanguage(language, 'en') ? 'Yearly (Save 15%)' : isLanguage(language, 'hi') ? 'वार्षिक (15% बचाएं)' : 'Yearly (15% Bachayen)'}
             </span>
           </div>
         </div>
-      </section>
-      
-      {/* Pricing Cards */}
-      <section className="py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pricingPlans.map((plan) => (
-              <div 
-                key={plan.id} 
-                className={`wealth-card relative ${plan.popular ? 'border-2 border-royal-blue shadow-lg' : ''}`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-royal-blue text-white px-4 py-1 rounded-full text-sm font-medium">
-                    {language === 'en' ? "Most Popular" : 
-                     language === 'hi' ? "सबसे लोकप्रिय" :
-                     "Sabse Popular"}
-                  </div>
-                )}
-                
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {plans.map((plan) => (
+            <div 
+              key={plan.id} 
+              className={`border rounded-lg overflow-hidden transition-all ${
+                plan.popular ? 'ring-2 ring-royal-blue transform scale-105' : ''
+              }`}
+            >
+              {plan.popular && (
+                <div className="bg-royal-blue text-white py-1 px-4 text-center text-sm font-medium">
+                  {isLanguage(language, 'en') 
+                    ? 'Most Popular' 
+                    : isLanguage(language, 'hi') 
+                      ? 'सबसे लोकप्रिय' 
+                      : 'Sabse Popular'}
+                </div>
+              )}
+              
+              <div className="p-6">
                 <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <p className="text-muted-foreground mb-6">{plan.description[language as keyof typeof plan.description]}</p>
+                <p className="text-muted-foreground mb-6">
+                  {typeof plan.description === 'string' 
+                    ? plan.description 
+                    : isLanguage(language, 'en')
+                      ? plan.description.en
+                      : isLanguage(language, 'hi')
+                        ? plan.description.hi
+                        : plan.description.hinglish || plan.description.en}
+                </p>
                 
                 <div className="flex items-baseline mb-6">
-                  <span className="text-3xl font-bold">₹</span>
-                  <span className="text-5xl font-bold">
-                    {annual ? plan.price.yearly : plan.price.monthly}
+                  <span className="text-4xl font-bold">
+                    ₹{isYearly 
+                      ? (typeof plan.price === 'number' 
+                          ? plan.price
+                          : plan.price.yearly)
+                      : (typeof plan.price === 'number'
+                          ? plan.price
+                          : plan.price.monthly)}
                   </span>
-                  {plan.price.monthly > 0 && (
-                    <span className="text-muted-foreground ml-2">
-                      /{language === 'en' ? (annual ? 'year' : 'month') : 
-                        language === 'hi' ? (annual ? 'साल' : 'महीना') :
-                        (annual ? 'saal' : 'month')}
-                    </span>
-                  )}
+                  <span className="text-muted-foreground ml-1">
+                    /{isYearly 
+                      ? isLanguage(language, 'en') ? 'year' : isLanguage(language, 'hi') ? 'वर्ष' : 'saal'
+                      : isLanguage(language, 'en') ? 'month' : isLanguage(language, 'hi') ? 'माह' : 'mahina'}
+                  </span>
                 </div>
                 
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle className="h-5 w-5 text-royal-blue shrink-0 mt-0.5" />
-                      <span>{feature[language as keyof typeof feature]}</span>
-                    </li>
-                  ))}
-                </ul>
-                
                 <Button 
-                  className={`w-full ${plan.popular 
-                    ? 'bg-royal-blue hover:bg-royal-blue/90' 
-                    : 'bg-saffron-orange hover:bg-saffron-orange/90'} text-white`}
+                  className={`w-full mb-6 ${
+                    plan.recommended 
+                      ? 'bg-royal-blue hover:bg-royal-blue/90' 
+                      : 'bg-muted hover:bg-muted/80'
+                  }`}
+                  onClick={() => navigate('/login', { state: { defaultTab: 'signup' } })}
                 >
-                  {plan.cta[language as keyof typeof plan.cta]}
+                  {typeof plan.cta === 'string'
+                    ? plan.cta
+                    : isLanguage(language, 'en')
+                      ? plan.cta.en
+                      : isLanguage(language, 'hi')
+                        ? plan.cta.hi
+                        : plan.cta.hinglish || plan.cta.en}
                 </Button>
+                
+                <div className="space-y-3">
+                  {Array.isArray(plan.features) && plan.features.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span>{getLocalizedFeature(feature)}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
-      
-      {/* FAQs Section */}
-      <section className="py-16 px-6 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">
-            {language === 'en' ? "Frequently Asked Questions" : 
-             language === 'hi' ? "अक्सर पूछे जाने वाले प्रश्न" :
-             "Frequently Asked Questions"}
+        
+        {/* FAQ Section */}
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold text-center mb-8">
+            {isLanguage(language, 'en') 
+              ? 'Frequently Asked Questions' 
+              : isLanguage(language, 'hi') 
+                ? 'अक्सर पूछे जाने वाले प्रश्न' 
+                : 'Aksar Puche Jaane Waale Questions'}
           </h2>
           
-          <div className="space-y-6">
-            <div className="wealth-card">
-              <h3 className="text-xl font-bold mb-2">
-                {language === 'en' ? "Can I change plans later?" : 
-                 language === 'hi' ? "क्या मैं बाद में योजनाएं बदल सकता हूं?" :
-                 "Kya main baad mein plans change kar sakta hoon?"}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="border rounded-lg p-6">
+              <h3 className="font-bold mb-2">
+                {isLanguage(language, 'en')
+                  ? 'Can I upgrade my plan later?'
+                  : isLanguage(language, 'hi')
+                    ? 'क्या मैं बाद में अपना प्लान अपग्रेड कर सकता हूं?'
+                    : 'Kya main baad mein apna plan upgrade kar sakta hoon?'}
               </h3>
-              <p>
-                {language === 'en'
-                  ? "Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle."
-                  : language === 'hi'
-                    ? "हां, आप किसी भी समय अपनी योजना को अपग्रेड या डाउनग्रेड कर सकते हैं। आपके अगले बिलिंग चक्र की शुरुआत में परिवर्तन प्रभावी होते हैं।"
-                    : "Haan, aap kisi bhi samay apne plan ko upgrade ya downgrade kar sakte hain. Changes aapke next billing cycle ki shuruat mein effective hote hain."}
+              <p className="text-muted-foreground">
+                {isLanguage(language, 'en')
+                  ? 'Yes, you can upgrade your plan at any time. Your new benefits will be available immediately and we'll prorate your billing.'
+                  : isLanguage(language, 'hi')
+                    ? 'हां, आप किसी भी समय अपना प्लान अपग्रेड कर सकते हैं। आपके नए लाभ तुरंत उपलब्ध होंगे और हम आपके बिलिंग को आनुपातिक रूप से समायोजित करेंगे।'
+                    : 'Haan, aap kisi bhi samay apna plan upgrade kar sakte hain. Aapke new benefits turant available honge aur hum aapke billing ko prorate karenge.'}
               </p>
             </div>
             
-            <div className="wealth-card">
-              <h3 className="text-xl font-bold mb-2">
-                {language === 'en' ? "Is my financial data secure?" : 
-                 language === 'hi' ? "क्या मेरा वित्तीय डेटा सुरक्षित है?" :
-                 "Kya mera financial data secure hai?"}
+            <div className="border rounded-lg p-6">
+              <h3 className="font-bold mb-2">
+                {isLanguage(language, 'en')
+                  ? 'Is there a free trial available?'
+                  : isLanguage(language, 'hi')
+                    ? 'क्या फ्री ट्रायल उपलब्ध है?'
+                    : 'Kya free trial available hai?'}
               </h3>
-              <p>
-                {language === 'en'
-                  ? "Absolutely. We use bank-level encryption to protect your data and never sell your information to third parties."
-                  : language === 'hi'
-                    ? "बिल्कुल। हम आपके डेटा की सुरक्षा के लिए बैंक-स्तरीय एन्क्रिप्शन का उपयोग करते हैं और आपकी जानकारी को कभी भी तीसरे पक्ष को नहीं बेचते हैं।"
-                    : "Bilkul. Hum aapke data ki suraksha ke liye bank-level encryption use karte hain aur aapki information kabhi bhi third parties ko nahi bechte hain."}
+              <p className="text-muted-foreground">
+                {isLanguage(language, 'en')
+                  ? 'Our Basic plan is free forever. This gives you a chance to try out our core features before deciding to upgrade.'
+                  : isLanguage(language, 'hi')
+                    ? 'हमारा बेसिक प्लान हमेशा के लिए फ्री है। इससे आपको अपग्रेड करने का निर्णय लेने से पहले हमारी मुख्य सुविधाओं को आज़माने का अवसर मिलता है।'
+                    : 'Hamara Basic plan hamesha ke liye free hai. Isse aapko upgrade karne ka decision lene se pehle hamari core features ko try karne ka mauka milta hai.'}
               </p>
             </div>
             
-            <div className="wealth-card">
-              <h3 className="text-xl font-bold mb-2">
-                {language === 'en' ? "Can I cancel my subscription?" : 
-                 language === 'hi' ? "क्या मैं अपनी सदस्यता रद्द कर सकता हूँ?" :
-                 "Kya main apni subscription cancel kar sakta hoon?"}
+            <div className="border rounded-lg p-6">
+              <h3 className="font-bold mb-2">
+                {isLanguage(language, 'en')
+                  ? 'Can I cancel my subscription?'
+                  : isLanguage(language, 'hi')
+                    ? 'क्या मैं अपनी सदस्यता रद्द कर सकता हूं?'
+                    : 'Kya main apni subscription cancel kar sakta hoon?'}
               </h3>
-              <p>
-                {language === 'en'
-                  ? "Yes, you can cancel at any time. If you cancel, you'll still have access to your current plan until the end of your billing period."
-                  : language === 'hi'
-                    ? "हाँ, आप किसी भी समय रद्द कर सकते हैं। यदि आप रद्द करते हैं, तो आपके बिलिंग अवधि के अंत तक आपके पास अपनी वर्तमान योजना तक पहुंच बनी रहेगी।"
-                    : "Haan, aap kisi bhi samay cancel kar sakte hain. Agar aap cancel karte hain, to aapke billing period ke end tak aapke paas apne current plan tak access bana rahega."}
+              <p className="text-muted-foreground">
+                {isLanguage(language, 'en')
+                  ? 'Yes, you can cancel your subscription at any time. You'll continue to have access to your plan until the end of your billing period.'
+                  : isLanguage(language, 'hi')
+                    ? 'हां, आप किसी भी समय अपनी सदस्यता रद्द कर सकते हैं। आपके बिलिंग अवधि के अंत तक आपके पास अपने प्लान की एक्सेस रहेगी।'
+                    : 'Haan, aap kisi bhi samay apni subscription cancel kar sakte hain. Aapke billing period ke end tak aapke paas apne plan ki access rahegi.'}
+              </p>
+            </div>
+            
+            <div className="border rounded-lg p-6">
+              <h3 className="font-bold mb-2">
+                {isLanguage(language, 'en')
+                  ? 'Is my financial data secure?'
+                  : isLanguage(language, 'hi')
+                    ? 'क्या मेरा वित्तीय डेटा सुरक्षित है?'
+                    : 'Kya mera financial data secure hai?'}
+              </h3>
+              <p className="text-muted-foreground">
+                {isLanguage(language, 'en')
+                  ? 'Absolutely. We use bank-level encryption and security protocols to ensure your data is always protected. We never share your information with third parties.'
+                  : isLanguage(language, 'hi')
+                    ? 'बिल्कुल। हम आपके डेटा की सुरक्षा सुनिश्चित करने के लिए बैंक-स्तरीय एन्क्रिप्शन और सुरक्षा प्रोटोकॉल का उपयोग करते हैं। हम आपकी जानकारी कभी भी तीसरे पक्ष के साथ साझा नहीं करते हैं।'
+                    : 'Bilkul. Hum aapke data ki suraksha sunishchit karne ke liye bank-level encryption aur security protocols ka use karte hain. Hum aapki information kabhi bhi third parties ke saath share nahi karte hain.'}
               </p>
             </div>
           </div>
         </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-16 px-6 bg-gradient-to-r from-royal-blue to-saffron-orange text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">
-            {language === 'en' ? "Ready to take control of your finances?" : 
-             language === 'hi' ? "अपने वित्त का नियंत्रण लेने के लिए तैयार हैं?" :
-             "Apne finances ka control lene ke liye ready hain?"}
-          </h2>
-          <p className="text-xl mb-8">
-            {language === 'en' 
-              ? "Join thousands of Indians who are transforming their financial future with Wealthवाणी" 
-              : language === 'hi' 
-                ? "हजारों भारतीयों से जुड़ें जो Wealthवाणी के साथ अपने वित्तीय भविष्य को बदल रहे हैं" 
-                : "Hazaaron Indians se judein jo Wealthवाणी ke saath apne financial future ko badal rahe hain"}
-          </p>
-          <Button 
-            onClick={() => navigate('/signup')}
-            size="lg" 
-            className="bg-white text-royal-blue hover:bg-white/90"
-          >
-            {language === 'en' ? "Start Free Trial" : 
-             language === 'hi' ? "फ्री ट्रायल शुरू करें" :
-             "Free Trial Start Karein"}
-          </Button>
-        </div>
-      </section>
-      
-      {/* Footer */}
-      <footer className="py-10 px-6 border-t bg-white/80 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              &copy; 2025 Wealthवाणी. {language === 'en' ? "All rights reserved." : language === 'hi' ? "सर्वाधिकार सुरक्षित।" : "All rights reserved."}
-            </p>
-            <div className="flex gap-4 mt-4 md:mt-0">
-              <Button 
-                variant="link" 
-                className="text-sm text-muted-foreground p-0 h-auto"
-                onClick={() => navigate('/terms')}
-              >
-                {language === 'en' ? "Terms & Conditions" : 
-                 language === 'hi' ? "नियम और शर्तें" :
-                 "Terms & Conditions"}
-              </Button>
-              <Button 
-                variant="link" 
-                className="text-sm text-muted-foreground p-0 h-auto"
-                onClick={() => navigate('/careers')}
-              >
-                {language === 'en' ? "Careers" : 
-                 language === 'hi' ? "करियर" :
-                 "Careers"}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 };
 
-export default Pricing;
+export default PricingPlans;

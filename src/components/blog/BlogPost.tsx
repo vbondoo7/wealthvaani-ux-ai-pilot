@@ -17,8 +17,7 @@ const BlogPost: React.FC = () => {
     return <Navigate to="/blog" replace />;
   }
   
-  // Pass the slug as a prop to BlogDetails
-  return <BlogDetails slug={slug} />;
+  return <BlogDetails blogPost={blogPost} slug={slug} />;
 };
 
 export default BlogPost;
