@@ -17,7 +17,7 @@ const BlogPost: React.FC = () => {
     return <Navigate to="/blog" replace />;
   }
   
-  return <BlogDetails slug={slug} />;
+  return <BlogDetails slug={slug as any} />;
 };
 
 export default BlogPost;

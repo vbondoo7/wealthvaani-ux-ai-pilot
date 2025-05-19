@@ -11,6 +11,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Investments',
     featuredImage: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=2071&auto=format&fit=crop',
     keywords: ['mutual funds', 'investments', 'finance', 'wealth'],
+    categories: ['Investments', 'Finance'], // Added categories array
     title: {
       en: 'Understanding Mutual Funds: A Beginner\'s Guide',
       hi: 'म्यूचुअल फंड समझना: एक शुरुआती गाइड',

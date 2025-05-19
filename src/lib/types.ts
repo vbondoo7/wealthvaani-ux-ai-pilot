@@ -30,6 +30,8 @@ export interface PersonalDetails {
   riskTolerance?: string;
   dependents?: number;
   financialChallenges?: string[];
+  phoneNumber?: string;
+  address?: string;
 }
 
 export interface FinancialDetails {
@@ -51,6 +53,7 @@ export interface FinancialDetails {
   debts?: { type: string; amount: number; interestRate: number; monthlyPayment: number; remainingTenure?: number }[];
   debtToIncomeRatio?: number;
   savingsRate?: number;
+  investmentIntelligence?: any;
 }
 
 export interface Investment {
@@ -128,7 +131,7 @@ export interface UpgradeOption {
 }
 
 // Updated LanguageOption to be a string literal type instead of an interface
-export type LanguageOption = 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te';
+export type LanguageOption = 'en' | 'hi' | 'hinglish' | 'bn' | 'ta' | 'te' | 'pa' | 'ml' | 'gu';
 
 export interface BlogPost {
   id: string;
@@ -167,12 +170,15 @@ export interface FestivalPlan {
   budget: number;
   items: { name: string; cost: number; }[];
   notes?: string;
+  saved?: boolean;
 }
 
 export interface SeasonalPlan {
   budget: number;
   items: { name: string; cost: number; }[];
   notes?: string;
+  saved?: boolean;
+  purpose?: string;
 }
 
 export interface FamilyMember {
@@ -182,4 +188,7 @@ export interface FamilyMember {
   dateOfBirth: string;
   financialDependence: boolean;
   annualExpenses: number;
+  age?: number;
+  income?: number;
+  expenses?: number;
 }

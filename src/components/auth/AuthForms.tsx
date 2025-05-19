@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useLanguage } from '@/contexts/LanguageContext';
 import { loginUser, registerUser } from '@/lib/authService';
-import useUserStore from '@/lib/userStore';
 import { isLanguage } from '@/lib/typeUtils';
 
 type DefaultTab = 'login' | 'signup';
@@ -19,7 +17,7 @@ const AuthForms = () => {
   const location = useLocation();
   const { toast } = useToast();
   const { language } = useLanguage();
-  const { setCurrentUser } = useUserStore();
+  
   const [activeTab, setActiveTab] = useState<DefaultTab>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -49,7 +47,6 @@ const AuthForms = () => {
 
     try {
       const user = await loginUser(loginEmail, loginPassword);
-      setCurrentUser(user);
       toast({
         title: isLanguage(language, 'en') 
           ? "Login successful" 

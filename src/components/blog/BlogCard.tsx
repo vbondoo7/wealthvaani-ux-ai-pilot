@@ -22,7 +22,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
   // Ensure we have localized content or provide fallbacks
   const title = getLocalizedContent(post.title, language);
   const excerpt = getLocalizedContent(post.excerpt, language);
-  const imageAlt = getLocalizedContent(post.imageAlt, language) || 'Blog post image';
+  const imageAlt = post.imageAlt ? getLocalizedContent(post.imageAlt, language) : 'Blog post image';
+  
+  // Safely access categories with null check
+  const categories = post.categories || [];
   
   return (
     <div className="wealth-card hover:shadow-lg transition-shadow">
@@ -35,8 +38,8 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
       </div>
       
       <div className="mb-2 flex gap-2">
-        {post.categories && post.categories.length > 0 ? 
-          post.categories.slice(0, 2).map(category => (
+        {categories.length > 0 ? 
+          categories.slice(0, 2).map(category => (
             <span 
               key={category} 
               className="text-xs py-0.5 px-2 bg-royal-blue/10 text-royal-blue rounded-full"
@@ -46,7 +49,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
           ))
           : 
           <span className="text-xs py-0.5 px-2 bg-royal-blue/10 text-royal-blue rounded-full">
-            General
+            {post.category || "General"}
           </span>
         }
       </div>
@@ -64,15 +67,15 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
         className="p-0 text-saffron-orange hover:text-saffron-orange/80"
         onClick={handleClick}
       >
-        {language === 'en'
+        {isLanguage(language, 'en')
           ? "Read More" 
-          : language === 'hi'
+          : isLanguage(language, 'hi')
             ? "और पढ़ें" 
-            : language === 'hinglish'
+            : isLanguage(language, 'hinglish')
               ? "Aur Padhein"
-              : language === 'bn'
+              : isLanguage(language, 'bn')
                 ? "আরো পড়ুন"
-                : language === 'ta'
+                : isLanguage(language, 'ta')
                   ? "மேலும் படிக்க"
                   : "మరింత చదవండి"}
         <ArrowRight className="ml-1 h-4 w-4" />
